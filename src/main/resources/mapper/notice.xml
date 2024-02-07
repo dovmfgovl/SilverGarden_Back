@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mybatis.mapper.NoticeMapper">
+    <select id="noticeList" resultType="map" >
+        select n_no, n_title, n_content, n_date, e_no, n_hit
+        from notice
+    </select>
+
+    <insert id="noticeInsert" useGeneratedKeys="true" parameterType="map" keyColumn="n_no" keyProperty ="n_no">
+        insert into notice
+            (n_no, n_title, n_content, n_date, e_no, n_hit)
+        values
+            (notice_seq.nextval,#{n_title},#{n_content},to_char(SYSDATE,'YYYY-MM-DD'),#{e_no},0)
+    </insert>
+
+    <insert id="fileUpload" parameterType="java.util.List">
+        INSERT ALL
+        <foreach collection="list" item="item" index="index" separator=" ">
+            INTO notice_attachment(na_no, n_no, na_originname, na_newname, na_path, na_size)
+            VALUES
+            (#{item.na_no},
+            #{item.n_no},
+            #{item.na_originname},
+            #{item.na_newname},
+            #{item.na_path},
+            #{item.na_size})
+        </foreach>
+        SELECT * FROM DUAL
+    </insert>
+
+    <insert id="fileUpload2" parameterType="java.util.List">
+        INSERT INTO notice_attachment(na_no, n_no, na_originname, na_newname, na_path, na_size)
+        SELECT na_seq.nextval, A.* from
+        (
+        <foreach collection="list" item="item" index="index" separator="UNION ALL">
+            SELECT
+            #{item.n_no} as n_no,
+            #{item.na_originname} as na_originname,
+            #{item.na_newname} as na_newname,
+            #{item.na_path} as na_path,
+            #{item.na_size} as na_size
+            from dual
+        </foreach>
+        ) A
+    </insert>
+
+    <delete id="noticeDelete" parameterType="map">
+        delete from notice where n_no = #{n_no}
+    </delete>
+
+    <update id="noticeUpdate" parameterType="map">
+        update notice
+        set
+            n_title=#{n_title},
+            n_content=#{n_content},
+            n_date=#{n_date},
+            e_no=#{e_no},
+            n_hit=#{n_hit}
+        where n_no = #{n_no}
+    </update>
+</mapper>

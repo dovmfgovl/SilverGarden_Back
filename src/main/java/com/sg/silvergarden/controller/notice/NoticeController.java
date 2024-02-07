@@ -1,0 +1,119 @@
+package com.sg.silvergarden.controller.notice;
+
+import com.google.gson.Gson;
+import com.sg.silvergarden.config.YAMLConfiguration;
+import com.sg.silvergarden.service.notice.NoticeService;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.FilenameUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.*;
+
+@Slf4j
+@RestController
+@RequestMapping("/notice/*")
+public class NoticeController {
+
+    @Autowired
+    NoticeService noticeService;
+
+    @Autowired
+    YAMLConfiguration config;
+
+    @GetMapping("noticeList")
+    public String noticeList(@RequestParam Map<String, Object> rmap){
+        log.info("noticeList");
+        List<Map<String, Object>> nlist = null;
+        nlist = noticeService.noticeList(rmap);
+        Gson g = new Gson();
+        String temp = g.toJson(nlist);
+        return temp;
+    }
+    @PostMapping("noticeInsert")
+    public String noticeInsert(@RequestParam Map<String, Object> pmap, @RequestParam(name="files", required = false) MultipartFile[] files){
+        log.info(pmap.toString());
+        List<Map<String, Object>> list = new ArrayList<>();
+        if(files != null){//파일이 있는 경우
+            for(MultipartFile file : files){
+                Map<String, Object> nmap = new HashMap<>();
+                String originalFilename = file.getOriginalFilename();
+                String uploadFilename = getCurrentTimeMillisFormat() + "_" + FilenameUtils.getName(originalFilename);
+                String fileSize = String.valueOf(file.getSize()+"byte");
+                File upFile = new File(config.getUploadPath(), uploadFilename);//지정된 경로에 파일저장
+                try {
+                    file.transferTo(upFile);
+                    nmap.put("na_path", config.getUploadPath());
+                    nmap.put("na_originname", originalFilename);
+                    nmap.put("na_newname", uploadFilename);
+                    nmap.put("na_size", fileSize);
+                    list.add(nmap);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            pmap.put("list", list);//맵에 파일리스트를 추가해줌
+        }
+        log.info(pmap.toString());
+        int result = -1;
+        result = noticeService.noticeInsert(pmap);
+        return result == 1?"ok":"error";
+    }
+
+    @GetMapping("uploadTest")
+    public String uploadTest(){
+        List<Map<String, Object>> list = new ArrayList<>();
+        Map<String, Object> nmap = new HashMap<>();
+        nmap.put("n_no", 1604010);
+        nmap.put("na_originname", "원래이름");
+        nmap.put("na_newname", "새로운이름");
+        nmap.put("na_path", "저장소경로");
+        nmap.put("na_size", "파일사이즈");
+        list.add(nmap);
+        nmap = new HashMap<>();
+        nmap.put("n_no", 1604010);
+        nmap.put("na_originname", "원래이름2");
+        nmap.put("na_newname", "새로운이름2");
+        nmap.put("na_path", "저장소경로2");
+        nmap.put("na_size", "파일사이즈2");
+        list.add(nmap);
+        nmap = new HashMap<>();
+        nmap.put("n_no", 1604010);
+        nmap.put("na_originname", "원래이름3");
+        nmap.put("na_newname", "새로운이름3");
+        nmap.put("na_path", "저장소경로3");
+        nmap.put("na_size", "파일사이즈3");
+        list.add(nmap);
+        log.info(list.toString());
+        noticeService.fileUpload(list);
+        return "ok";
+    }
+
+
+    @GetMapping("noticeDelete")
+    public String noticeDelete(@RequestParam Map<String, Object> pmap){
+        log.info(pmap.toString());
+        int result = -1;
+        result = noticeService.noticeDelete(pmap);
+        return "ok";
+    }
+
+    @GetMapping("noticeUpdate")
+    public String noticeUpdate(@RequestParam Map<String, Object> pmap){
+        log.info(pmap.toString());
+        int result = -1;
+        result = noticeService.noticeUpdate(pmap);
+        return "ok";
+    }
+
+    private String getCurrentTimeMillisFormat() {
+        long currentTime = System.currentTimeMillis();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmssSSS");
+        return dateFormat.format(new Date(currentTime));
+    }
+
+}
