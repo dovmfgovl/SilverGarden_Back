@@ -141,18 +141,17 @@ public class NoticeController {
     //파일 삭제 처리
     @PostMapping("deleteFile")
     public ResponseEntity<String> deleteFile(String filename){
+        log.info(filename);
         File file = null;
-        try {
-            String encodedFilename = URLEncoder.encode(filename, "UTF-8").replace("+", "%20");
-            file = new File(config.getUploadPath() + encodedFilename);
-            if(file.delete() == true){
-                return new ResponseEntity<>("삭제성공!!!", HttpStatus.OK);
-            }else{
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-            }
-        } catch (UnsupportedEncodingException e) {
-            throw new RuntimeException(e);
+        //String encodedFilename = URLEncoder.encode(filename, "UTF-8").replace("+", "_");
+        file = new File(config.getUploadPath() + filename);
+        log.info(file.toString());
+        if(file.delete() == true){
+            int result = -1;
+            result = noticeService.deleteFile(filename);
+            return new ResponseEntity<>("삭제성공!!!", HttpStatus.OK);
+        }else{
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
-
 }
