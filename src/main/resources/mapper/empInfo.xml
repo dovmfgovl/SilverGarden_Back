@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mybatis.mapper.EmpInfoMapper">
+    <select id="empList" parameterType="map" resultType="map">
+        SELECT
+            emp.E_NO,
+            emp.E_NAME,
+            emp.E_ADDRESS,
+            emp.E_AUTH,
+            emp.E_STATUS,
+            emp.E_EMAIL,
+            emp.E_GENDER,
+            emp.E_HIREDATE,
+            emp.E_ENDDATE,
+            emp.E_PASSWORD,
+            emp.E_PHONE,
+            emp.E_RANK,
+            emp.E_BIRTH,
+            emp.DEPT_NAME,
+            emp.E_OCCUP,
+            MAX(edu.HIGH_SCHOOL_PERIOD) AS HIGH_SCHOOL_PERIOD,
+            MAX(edu.HIGH_SCHOOL_NAME) AS HIGH_SCHOOL_NAME,
+            MAX(edu.HIGH_SCHOOL_MAJOR) AS HIGH_SCHOOL_MAJOR,
+            MAX(edu.HIGH_SCHOOL_STATUS) AS HIGH_SCHOOL_STATUS,
+            MAX(edu.UNIVERSITY_PERIOD) AS UNIVERSITY_PERIOD,
+            MAX(edu.UNIVERSITY_NAME) AS UNIVERSITY_NAME,
+            MAX(edu.UNIVERSITY_MAJOR) AS UNIVERSITY_MAJOR,
+            MAX(edu.UNIVERSITY_STATUS) AS UNIVERSITY_STATUS,
+            MAX(edu.GRADUATE_SCHOOL_PERIOD) AS GRADUATE_SCHOOL_PERIOD,
+            MAX(edu.GRADUATE_SCHOOL_NAME) AS GRADUATE_SCHOOL_NAME,
+            MAX(edu.GRADUATE_SCHOOL_MAJOR) AS GRADUATE_SCHOOL_MAJOR,
+            MAX(edu.GRADUATE_SCHOOL_STATUS) AS GRADUATE_SCHOOL_STATUS,
+            MAX(exp.EXP_NO) AS EXP_NO,
+            MAX(exp.EXP_NAME) AS EXP_NAME,
+            MAX(exp.EXP_DEPT) AS EXP_DEPT,
+            MAX(exp.EXP_RANK) AS EXP_RANK,
+            MAX(exp.EXP_DUTY) AS EXP_DUTY,
+            MAX(exp.EXP_PERIOD) AS EXP_PERIOD,
+            MAX(cer.CERTI_NO) AS CERTI_NO,
+            MAX(cer.CERTI_CATE) AS CERTI_CATE,
+            MAX(cer.CERTI_CODE) AS CERTI_CODE,
+            MAX(cer.CERTI_ISSUER) AS CERTI_ISSUER,
+            MAX(cer.CERTI_ACQUIRE) AS CERTI_ACQUIRE
+        FROM
+            EMPLOYEE emp
+                LEFT JOIN (
+                SELECT
+                    E_NO,
+                    MAX(CASE WHEN EDU_DIVISION = '고등학교' THEN EDU_PERIOD END) AS HIGH_SCHOOL_PERIOD,
+                    MAX(CASE WHEN EDU_DIVISION = '고등학교' THEN EDU_NAME END) AS HIGH_SCHOOL_NAME,
+                    MAX(CASE WHEN EDU_DIVISION = '고등학교' THEN EDU_MAJOR END) AS HIGH_SCHOOL_MAJOR,
+                    MAX(CASE WHEN EDU_DIVISION = '고등학교' THEN EDU_STATUS END) AS HIGH_SCHOOL_STATUS,
+                    MAX(CASE WHEN EDU_DIVISION = '대학교' THEN EDU_PERIOD END) AS UNIVERSITY_PERIOD,
+                    MAX(CASE WHEN EDU_DIVISION = '대학교' THEN EDU_NAME END) AS UNIVERSITY_NAME,
+                    MAX(CASE WHEN EDU_DIVISION = '대학교' THEN EDU_MAJOR END) AS UNIVERSITY_MAJOR,
+                    MAX(CASE WHEN EDU_DIVISION = '대학교' THEN EDU_STATUS END) AS UNIVERSITY_STATUS,
+                    MAX(CASE WHEN EDU_DIVISION = '대학원' THEN EDU_PERIOD END) AS GRADUATE_SCHOOL_PERIOD,
+                    MAX(CASE WHEN EDU_DIVISION = '대학원' THEN EDU_NAME END) AS GRADUATE_SCHOOL_NAME,
+                    MAX(CASE WHEN EDU_DIVISION = '대학원' THEN EDU_MAJOR END) AS GRADUATE_SCHOOL_MAJOR,
+                    MAX(CASE WHEN EDU_DIVISION = '대학원' THEN EDU_STATUS END) AS GRADUATE_SCHOOL_STATUS
+                FROM
+                    EDUCATION
+                GROUP BY
+                    E_NO
+            ) edu ON emp.E_NO = edu.E_NO
+                LEFT JOIN (
+                SELECT
+                    E_NO,
+                    MAX(EXP_NO) AS EXP_NO,
+                    MAX(EXP_NAME) AS EXP_NAME,
+                    MAX(EXP_DEPT) AS EXP_DEPT,
+                    MAX(EXP_RANK) AS EXP_RANK,
+                    MAX(EXP_DUTY) AS EXP_DUTY,
+                    MAX(EXP_PERIOD) AS EXP_PERIOD
+                FROM
+                    EXPERIENCE
+                GROUP BY
+                    E_NO
+            ) exp ON emp.E_NO = exp.E_NO
+                LEFT JOIN (
+                SELECT
+                    E_NO,
+                    MAX(CERTI_NO) AS CERTI_NO,
+                    MAX(CERTI_CATE) AS CERTI_CATE,
+                    MAX(CERTI_CODE) AS CERTI_CODE,
+                    MAX(CERTI_ISSUER) AS CERTI_ISSUER,
+                    MAX(CERTI_ACQUIRE) AS CERTI_ACQUIRE
+                FROM
+                    CERTIFICATION
+                GROUP BY
+                    E_NO
+            ) cer ON emp.E_NO = cer.E_NO
+        GROUP BY
+            emp.E_NO, emp.E_NAME, emp.E_ADDRESS, emp.E_AUTH, emp.E_STATUS, emp.E_EMAIL, emp.E_GENDER, emp.E_HIREDATE, emp.E_ENDDATE, emp.E_PASSWORD, emp.E_PHONE, emp.E_RANK, emp.E_BIRTH, emp.DEPT_NAME, emp.E_OCCUP
+        ORDER BY
+            emp.E_NO
+    </select>
+    <update id="empUpdate" parameterType="map">
+        update employee
+        set e_name = #{e_name}
+          , e_gender = #{e_gender}
+          , e_phone = #{e_phone}
+        where e_code = #{e_code}
+    </update>
+    <delete id="empDelete" parameterType="int">
+        delete from employee where e_no = #{value}
+    </delete>
+</mapper>
