@@ -16,7 +16,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.file.Files;
@@ -107,6 +106,20 @@ public class NoticeController {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmssSSS");
         return dateFormat.format(new Date(currentTime));
     }
+    @PostMapping("imageUpload")
+    public String imageUpload(@RequestParam(value = "image") MultipartFile image){
+        log.info("이미지 업로드");
+        log.info(image.getOriginalFilename());
+        String newFilename = getCurrentTimeMillisFormat()+"_"+image.getOriginalFilename();
+        File upImage = new File(config.getUploadPath(), newFilename);
+        try {
+            image.transferTo(upImage);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return newFilename;
+    }
+
     @GetMapping("fileDownload")
     public ResponseEntity<Object> fileDownload(@RequestParam(value="filename") String filename) {
         log.info("fileDownload 호출 성공");
@@ -135,7 +148,6 @@ public class NoticeController {
             // TODO Auto-generated catch block
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("파일 다운로드 오류");
-
         }
     }// end of fileDownLoad
     //파일 삭제 처리
