@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mybatis.mapper.MemberMapper">
+    <select id="memberList" resultType="java.util.Map">
+        SELECT client_id,client_name,client_birth
+             ,client_gender,client_age,client_tel
+             ,client_address,client_manager,client_photo
+             ,client_pageid,client_pw
+             ,reg_id,mod_id,reg_date,mod_date
+        FROM client
+        <where>
+            <if test="client_id!=null">AND client_id_=#{client_id}</if>
+            <if test="gubun!=null">
+                <choose>
+                    <when test='gubun.equals("client_name")'>
+                        AND client_name LIKE '%'||#{keyword}||'%'
+                    </when>
+                    <when test='gubun.equals("client_manager")'>
+                        AND client_manager LIKE '%'||#{keyword}||'%'
+                    </when>
+                </choose>
+            </if>
+        </where>
+    </select>
+    <delete id="memberDelete" parameterType="map">
+        delete from client where client_id = #{client_id}
+    </delete>
+    <update id="memberUpdate" parameterType="map">
+        update client
+        set
+            client_name=#{client_name},
+            client_birth=toDate(#{client_birth},yyyy-mm-dd),
+            client_gender=#{client_gender},
+            client_age=#{client_age},
+            client_tel=#{client_tel},
+            client_address=#{client_address},
+            client_manager=#{client_manager},
+            client_photo=#{client_photo},
+            client_pageid=#{client_pageid},
+            client_pw=#{client_pw},
+            mod_date=sysdate,
+            mod_id=#{e_no}
+        where client_id = #{client_id}
+    </update>
+    <insert id="memberInsert" useGeneratedKeys="true" parameterType="map" keyColumn="member_id" keyProperty ="member_id">
+        insert into member
+            ( client_id,client_name,client_birth
+            ,client_gender,client_age,client_tel
+            ,client_address,client_manager,client_photo
+            ,client_pageid,client_pw
+            ,reg_id,mod_id,reg_date,mod_date)
+        values
+            ((to_char(sysdate,'YYYYMM_')||lpad(SEQ_CLIENT_NO.nextval,8,0),#{client_name},toDate(#{client_birth},yyyy-mm-dd)
+            ,#{client_gender},#{client_age},#{client_tel}
+            ,#{client_address},#{client_manager},#{client_photo}
+            ,#{client_pageid},#{client_pw},#{e_no}, #{e_no},sysdate,sysdate)
+    </insert>
+</mapper>
