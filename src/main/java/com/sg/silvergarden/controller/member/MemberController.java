@@ -47,8 +47,8 @@ public class MemberController {
         result = memberService.memberUpdate(mMap);
         return "ok";
     }
-    @PostMapping("noticeInsert")
-    public String noticeInsert(@RequestParam Map<String, Object> mMap){
+    @PostMapping("memberInsert")
+    public String memberInsert(@RequestParam Map<String, Object> mMap){
         log.info(mMap.toString());
 //        List<Map<String, Object>> list = new ArrayList<>();
 //        mMap.put("list", list);//맵에 파일리스트를 추가해줌

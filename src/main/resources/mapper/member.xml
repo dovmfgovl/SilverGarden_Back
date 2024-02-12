@@ -52,7 +52,7 @@
             ,client_pageid,client_pw
             ,reg_id,mod_id,reg_date,mod_date)
         values
-            ((to_char(sysdate,'YYYYMM_')||lpad(SEQ_CLIENT_NO.nextval,8,0),#{client_name},toDate(#{client_birth},yyyy-mm-dd)
+            ((to_char(sysdate,'YYMM_')||lpad(SEQ_CLIENT_NO.nextval,8,0),#{client_name},toDate(#{client_birth},yyyy-mm-dd)
             ,#{client_gender},#{client_age},#{client_tel}
             ,#{client_address},#{client_manager},#{client_photo}
             ,#{client_pageid},#{client_pw},#{e_no}, #{e_no},sysdate,sysdate)
