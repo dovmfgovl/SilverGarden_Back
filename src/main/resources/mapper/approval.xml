@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mybatis.mapper.ApprovalMapper">
+    <select id="allApprovalList" parameterType="String" resultType="map">
+        select ad.d_no, ad.d_title, ad.d_content, ad.d_status, ad.e_no, ad.d_category,
+               to_char(ad.reg_date, 'YYYY-MM-DD') as reg_date, e.e_name, e.dept_name
+        from approval_doc ad
+                 join employee e
+                      on ad.e_no = e.e_no
+        where e.e_no = #{value}
+    </select>
+</mapper>
