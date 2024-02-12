@@ -26,7 +26,7 @@ public class EmpInfoDao {
         logger.info("empUpdate");
         int result = 0;
         try {
-            result = sqlSessionTemplate.update("empUpdate", eMap);
+            result = sqlSessionTemplate.update("empInfoUpdate", eMap);
         } catch (Exception e) {
             logger.info(e.toString());
         }
