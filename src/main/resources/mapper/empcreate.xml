@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="empcreateMapper">
+   <insert id="save">
+       INSERT INTO EMPLOYEE(e_no, e_birth, e_name, e_phone, dept_name, e_email, e_password, e_auth) VALUES (to_char(sysdate,'YYYYMM_')||lpad(SEQ_EMPLOYEE_NO.nextval, 8, 0), #{e_birth}, #{e_name}, #{e_phone}, #{dept_name}, #{e_email}, #{e_password}, #{e_auth})
+   </insert>
+    <select id="deptname" resultType="map" parameterType="map">
+        SELECT CD_VALUE FROM COMMON_CD WHERE GRP_CD = 'dept01'
+    </select>
+</mapper>
