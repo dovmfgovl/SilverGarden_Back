@@ -2,6 +2,7 @@ package com.sg.silvergarden.controller.approval;
 
 import com.google.gson.Gson;
 import com.sg.silvergarden.service.approval.ApprovalService;
+import lombok.experimental.PackagePrivate;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,6 +24,16 @@ public class ApprovalController {
         log.info("allApprovalList");
         List<Map<String, Object>> dList = null;
         dList = approvalService.allApprovalList(e_no);
+        Gson g = new Gson();
+        String temp = g.toJson(dList);
+        return temp;
+    }
+
+    @GetMapping("getDeptData")
+    public String getDeptDate(){
+        log.info("getDeptData");
+        List<Map<String, Object>> dList = null;
+        dList = approvalService.getDeptData();
         Gson g = new Gson();
         String temp = g.toJson(dList);
         return temp;

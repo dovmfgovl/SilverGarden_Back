@@ -20,4 +20,11 @@ public class ApprovalService {
         log.info(dList.toString());
         return dList;
     }
+
+    public List<Map<String, Object>> getDeptData() {
+        log.info("approvalService: getDeptData");
+        List<Map<String, Object>> dList = null;
+        dList = approvalDao.getDeptData();
+        return dList;
+    }
 }

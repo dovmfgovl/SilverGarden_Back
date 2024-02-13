@@ -110,14 +110,16 @@ public class NoticeController {
     public String imageUpload(@RequestParam(value = "image") MultipartFile image){
         log.info("이미지 업로드");
         log.info(image.getOriginalFilename());
-        String newFilename = getCurrentTimeMillisFormat()+"_"+image.getOriginalFilename();
+        String newFilename = getCurrentTimeMillisFormat()+"_"+FilenameUtils.getName(image.getOriginalFilename());
         File upImage = new File(config.getUploadPath(), newFilename);
+        log.info(newFilename);
         try {
             image.transferTo(upImage);
+            return newFilename;
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return newFilename;
+        return "error";
     }
 
     @GetMapping("fileDownload")

@@ -19,4 +19,11 @@ public class ApprovalDao {
         dList = sqlSessionTemplate.selectList("allApprovalList",e_no);
         return dList;
     }
+
+    public List<Map<String, Object>> getDeptData() {
+        log.info("ApprovalDao: getDeptData");
+        List<Map<String, Object>> dList = null;
+        dList = sqlSessionTemplate.selectList("getDeptData");
+        return dList;
+    }
 }
