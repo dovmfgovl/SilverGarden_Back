@@ -35,26 +35,29 @@ public class MemberController {
     @GetMapping("memberDelete")
     public String memberDelete(@RequestParam Map<String, Object> mMap){
         log.info(mMap.toString());
-        int result = -1;
+        int result = 0;
         result = memberService.memberDelete(mMap);
-        return "ok";
+        log.info(String.valueOf(result));
+        return String.valueOf(result);
     }
 
     @GetMapping("memberUpdate")
     public String memberUpdate(@RequestParam Map<String, Object> mMap){
         log.info(mMap.toString());
-        int result = -1;
+        int result = 0;
         result = memberService.memberUpdate(mMap);
-        return "ok";
+        log.info(String.valueOf(result));
+        return String.valueOf(result);
     }
     @PostMapping("memberInsert")
-    public String memberInsert(@RequestParam Map<String, Object> mMap){
+    public String memberInsert(@RequestBody Map<String, Object> mMap){
         log.info(mMap.toString());
 //        List<Map<String, Object>> list = new ArrayList<>();
 //        mMap.put("list", list);//맵에 파일리스트를 추가해줌
 //        log.info(mMap.toString());
-        int result = -1;
+        int result = 0;
         result = memberService.memberInsert(mMap);
-        return result == 1?"ok":"error";
+        log.info(String.valueOf(result));
+        return String.valueOf(result);
     }
 }

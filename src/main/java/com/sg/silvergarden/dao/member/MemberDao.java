@@ -20,20 +20,20 @@ public class MemberDao {
     }
 
     public int memberDelete(Map<String, Object> mMap) {
-        int result = -1;
+        int result = 0;
         result = sqlSessionTemplate.delete("memberDelete", mMap);
         return result;
     }
 
     public int memberUpdate(Map<String, Object> mMap) {
-        int result = -1;
-        result = sqlSessionTemplate.delete("memberUpdate", mMap);
+        int result = 0;
+        result = sqlSessionTemplate.update("memberUpdate", mMap);
         return result;
     }
 
     public int memberInsert(Map<String, Object> mMap) {
-        int result = -1;
-        result = sqlSessionTemplate.delete("memberInsert", mMap);
+        int result = 0;
+        result = sqlSessionTemplate.insert("memberInsert", mMap);
         return result;
     }
 }
