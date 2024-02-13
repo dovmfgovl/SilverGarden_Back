@@ -58,4 +58,10 @@ public class NoticeService {
         }
         return result;
     }
+
+    public int deleteFile(String filename) {
+        int result = -1;
+        result = noticeDao.fileDelete(filename);
+        return result;
+    }
 }

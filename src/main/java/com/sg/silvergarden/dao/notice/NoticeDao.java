@@ -55,4 +55,10 @@ public class NoticeDao {
         log.info("시퀀스 값"+pmap.get("n_no").toString());
         return result;
     }
+
+    public int fileDelete(String filename) {
+        int result = -1;
+        result = sqlSessionTemplate.delete("deleteFile", filename);
+        return result;
+    }
 }

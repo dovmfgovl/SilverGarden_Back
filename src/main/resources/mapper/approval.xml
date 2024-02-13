@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mybatis.mapper.ApprovalMapper">
+
+    <resultMap id="deptDataMap" type="map">
+        <id column="DEPT_NAME" property="dept_name" jdbcType="VARCHAR"/>
+        <collection property="emp" javaType="list" ofType="map">
+            <id column="E_NO" property="e_no" jdbcType="VARCHAR"/>
+            <result column="E_NAME" property="e_name" jdbcType="VARCHAR"/>
+            <result column="E_RANK" property="e_rank" jdbcType="VARCHAR"/>
+        </collection>
+    </resultMap>
+
+    <select id="allApprovalList" parameterType="String" resultType="map">
+        select ad.d_no as "d_no", ad.d_title as "d_title", ad.d_content as "d_content", ad.d_status as "d_status",
+               ad.e_no as "e_no", ad.d_category as "d_category",
+               to_char(ad.reg_date, 'YYYY-MM-DD') as "reg_date", e.e_name as "e_name", e.dept_name "dept_name"
+        from approval_doc ad
+                 join employee e
+                      on ad.e_no = e.e_no
+        where e.e_no = #{value}
+    </select>
+
+    <select id="getDeptData" resultMap="deptDataMap">
+        select dept.dept_name as "dept_name", e.e_no as "e_no", e.e_name "e_name", e.e_rank "e_rank"
+        from EMPLOYEE e
+                 join (select dept_name
+                       from EMPLOYEE
+                       group by dept_name
+                       having dept_name is not null) dept
+                      on e.dept_name = dept.dept_name
+        order by e.dept_name
+    </select>
+
+
+</mapper>
