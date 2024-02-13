@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mybatis.mapper.ProgramMapper">
+    <!-- 프로그램 추가 -->
+    <!-- 프로그램 추가 -->
+    <insert id="pgInsert" parameterType="java.util.Map">
+        INSERT INTO PROGRAM (
+            PG_NO, PG_NAME, PG_START, PG_END, PG_DAYSOFWEEK, PG_TEACHER, PG_CATEGORY, PG_CONTENT, PG_REPEAT_TYPE
+        ) VALUES (
+            seq_program_no.nextval,
+            #{PG_NAME},
+            TO_DATE(#{PG_START}, 'YYYY-MM-DD"T"HH24:MI:SS'),
+            TO_DATE(#{PG_END}, 'YYYY-MM-DD"T"HH24:MI:SS'),
+            #{PG_DAYSOFWEEK},
+            #{PG_TEACHER},
+            #{PG_CATEGORY},
+            #{PG_CONTENT},
+            #{PG_REPEAT_TYPE}
+        )
+    </insert>
+    <!--프로그램 조회-->
+    <select id="pgList" parameterType="java.util.Map" resultType="java.util.Map">
+        select * from PROGRAM
+        <where>
+            <if test = "pg_no!=null">And pg_no=#{pg_no}</if>
+            <if test ="gubun!=null">
+                <choose>
+                    <when test='gubun.equals("pg_no")'>
+                        AND pg_no LIKE %||#{keyword}||'%'
+                    </when>
+                    <when test='gubun.equals("pg_name")'>
+                        AND pg_name LIKE %||#{keyword}||'%'
+                    </when>
+                    <when test='gubun.equals("pg_teacher")'>
+                        AND pg_teacher LIKE %||#{keyword}||'%'
+                    </when>
+                    <when test='gubun.equals("pg_category")'>
+                        AND pg_category LIKE %||#{keyword}||'%'
+                    </when>
+                    <when test='gubun.equals("pg_content")'>
+                        AND pg_content LIKE %||#{keyword}||'%'
+                    </when>
+                </choose>
+            </if>
+        </where>
+        order by pg_no desc
+    </select>
+    <!--프로그램 업데이트(수정)-->
+    <update id="pgUpdate"  parameterType="java.util.Map">
+        update PROGRAM set
+            pg_name = #{pg_name},
+            pg_category = #{pg_category},
+            pg_teacher = #{pg_teacher},
+            pg_daysofweek = #{pg_daysofweek},
+            pg_start = TO_DATE(#{pg_start},'YYYY-MM-DD"T"HH24:MI'),
+            pg_end = TO_DATE(#{pg_end},'YYYY-MM-DD"T"HH24:MI'),
+            pg_content = #{pg_content},
+            pg_repeat_type = #{pg_repeat_type}
+        where pg_no = #{pg_no}
+    </update>
+    <!--프로그램 삭제-->
+    <delete id="pgDelete" parameterType="java.util.Map">
+        DELETE FROM PROGRAM
+        WHERE pg_no = #{PG_NO}
+    </delete>
+    <!--캘린더 조회-->
+    <select id="scheduleList" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT PG_NO, PG_NAME,
+            PG_DAYSOFWEEK, PG_CATEGORY, PG_TEACHER, PG_CONTENT, PG_START, PG_END, PG_REPEAT_TYPE
+        FROM PROGRAM
+    </select>
+</mapper>
