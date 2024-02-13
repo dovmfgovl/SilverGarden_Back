@@ -98,7 +98,7 @@
         ORDER BY
             emp.E_NO
     </select>
-    <update id="empInfoUpdate" parameterType="map">:ㅁ
+    <update id="empInfoUpdate" parameterType="map">
         update EMPLOYEE
         set
             E_NAME = #{E_NAME},
