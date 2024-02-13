@@ -60,7 +60,7 @@ public class MemberController {
         log.info(String.valueOf(result));
         return String.valueOf(result);
     }
-    @GetMapping("CounselList")
+    @GetMapping("counselList")
     public String counselList(@RequestParam Map<String, Object> cMap) {
         log.info("counselList");
         log.info(cMap.toString());
