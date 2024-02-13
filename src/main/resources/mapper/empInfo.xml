@@ -98,7 +98,7 @@
         ORDER BY
             emp.E_NO
     </select>
-    <update id="empInfoUpdate" parameterType="map">
+    <update id="empInfoUpdate" parameterType="map">:ㅁ
         update EMPLOYEE
         set
             E_NAME = #{E_NAME},
@@ -117,6 +117,9 @@
             E_OCCUP = #{E_OCCUP},
             E_PROFILE = #{E_PROFILE}
         where E_NO = #{E_NO}
+    </update>
+    <update id="empEduUpdate" parameterType="map">
+
     </update>
     <delete id="empDelete" parameterType="int">
         delete from employee where e_no = #{value}
