@@ -46,4 +46,11 @@ public class EmpInfoService {
         result = empInfoDao.empDelete(e_no);
         return result;
     }
+
+    public int empEduUpdate(Map<String, Object> eMap) {
+        logger.info("empEduUpdate");
+        int result = 0;
+        result = empInfoDao.empEduUpdate(eMap);
+        return result;
+    }
 }

@@ -61,4 +61,15 @@ public class EmpInfoController {
         String temp = g.toJson(result);
         return temp;
     }
+
+    // 직원 학력 수정
+    @CrossOrigin(origins = "http://localhost:3000")
+    @PutMapping("empEduUpdate")
+    public String empEduUpdate(@RequestBody Map<String, Object> eMap) {
+        logger.info("empUpdate");
+        logger.info(eMap.toString());
+        int result = 0;
+        result = empInfoService.empEduUpdate(eMap);
+        return String.valueOf(result);
+    }
 }

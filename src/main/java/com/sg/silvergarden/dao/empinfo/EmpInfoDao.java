@@ -43,4 +43,15 @@ public class EmpInfoDao {
         }
         return result;
     }
+
+    public int empEduUpdate(Map<String, Object> eMap) {
+        logger.info("empEduUpdate");
+        int result = 0;
+        try {
+            result = sqlSessionTemplate.update("empEduUpdate", eMap);
+        } catch (Exception e) {
+            logger.info(e.toString());
+        }
+        return result;
+    }
 }
