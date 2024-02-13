@@ -60,4 +60,42 @@ public class MemberController {
         log.info(String.valueOf(result));
         return String.valueOf(result);
     }
+    @GetMapping("CounselList")
+    public String counselList(@RequestParam Map<String, Object> cMap) {
+        log.info("counselList");
+        log.info(cMap.toString());
+        List<Map<String, Object>> cList = null;
+        cList = memberService.counseList(cMap);
+        Gson g = new Gson();
+        String temp = g.toJson(cList);
+        return temp;
+    }
+    @GetMapping("counselDelete")
+    public String counselDelete(@RequestParam Map<String, Object> cMap){
+        log.info(cMap.toString());
+        int result = 0;
+        result = memberService.counselDelete(cMap);
+        log.info(String.valueOf(result));
+        return String.valueOf(result);
+    }
+
+    @GetMapping("counselUpdate")
+    public String counselUpdate(@RequestParam Map<String, Object> cMap){
+        log.info(cMap.toString());
+        int result = 0;
+        result = memberService.counselUpdate(cMap);
+        log.info(String.valueOf(result));
+        return String.valueOf(result);
+    }
+    @PostMapping("counselInsert")
+    public String counselInsert(@RequestBody Map<String, Object> cMap){
+        log.info(cMap.toString());
+//        List<Map<String, Object>> list = new ArrayList<>();
+//        mMap.put("list", list);//맵에 파일리스트를 추가해줌
+//        log.info(mMap.toString());
+        int result = 0;
+        result = memberService.counselInsert(cMap);
+        log.info(String.valueOf(result));
+        return String.valueOf(result);
+    }
 }

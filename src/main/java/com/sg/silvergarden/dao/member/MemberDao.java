@@ -36,4 +36,28 @@ public class MemberDao {
         result = sqlSessionTemplate.insert("memberInsert", mMap);
         return result;
     }
+
+    public int counselInsert(Map<String, Object> cMap) {
+        int result = 0;
+        result = sqlSessionTemplate.insert("counselInsert", cMap);
+        return result;
+    }
+
+    public int counselUpdate(Map<String, Object> cMap) {
+        int result = 0;
+        result = sqlSessionTemplate.update("counselUpdate", cMap);
+        return result;
+    }
+
+    public int counselDelete(Map<String, Object> cMap) {
+        int result=0;
+        result = sqlSessionTemplate.delete("counselDelete", cMap);
+        return result;
+    }
+
+    public List<Map<String, Object>> counselList(Map<String, Object> cMap) {
+        List<Map<String, Object>> clist = null;
+        clist = sqlSessionTemplate.selectList("counselList",cMap);
+        return clist;
+    }
 }

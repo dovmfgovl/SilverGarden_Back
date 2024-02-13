@@ -43,4 +43,28 @@ public class MemberService{
       //  }
         return result;
     }
+
+    public List<Map<String, Object>> counseList(Map<String, Object> cMap) {
+        List<Map<String,Object>> cList = null;
+        cList=memberDao.counselList(cMap);
+        return cList;
+    }
+
+    public int counselDelete(Map<String, Object> cMap) {
+        int result = 0;
+        result = memberDao.counselDelete(cMap);
+        return result;
+    }
+
+    public int counselUpdate(Map<String, Object> cMap) {
+        int result = 0;
+        result = memberDao.counselUpdate(cMap);
+        return result;
+    }
+
+    public int counselInsert(Map<String, Object> cMap) {
+        int result = 0;
+        result = memberDao.counselInsert(cMap);
+        return result;
+    }
 }
