@@ -21,6 +21,7 @@
             emp.DEPT_NAME,
             emp.E_OCCUP,
             emp.E_PROFILE,
+          
             MAX(edu.HIGH_SCHOOL_PERIOD) AS HIGH_SCHOOL_PERIOD,
             MAX(edu.HIGH_SCHOOL_NAME) AS HIGH_SCHOOL_NAME,
             MAX(edu.HIGH_SCHOOL_MAJOR) AS HIGH_SCHOOL_MAJOR,
