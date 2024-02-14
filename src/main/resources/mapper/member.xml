@@ -49,9 +49,9 @@
 <!--  상담관련   -->
     <select id="counselList" parameterType="map" resultType="map">
         SELECT
-            co.COUNSEL_NO,TO_CHAR(COUNSEL_DATE, 'YYYY-MM-DD')
-             ,co.COUNSEL_CONTENT,co.COUNSEL_TIME,co.COUNSEL_HOW,co.COUNSEL_STATUS
-            ,co.CLIENT_ID,co.COUNSEL_MANAGER,co.REG_ID,co.MOD_ID,co.REG_DATE,co.MOD_DATE
+            COUNSEL_NO,COUNSEL_DATE
+             ,COUNSEL_CONTENT,COUNSEL_TIME,COUNSEL_HOW,COUNSEL_STATUS
+            ,co.CLIENT_ID,COUNSEL_MANAGER,co.REG_ID,co.MOD_ID,co.REG_DATE,co.MOD_DATE
         FROM
             COUNSEL co, CLIENT cl
         WHERE
@@ -67,7 +67,7 @@
         ,#{COUNSEL_TIME},#{COUNSEL_CONTENT},#{CLIENT_ID}
         ,#{COUNSEL_MANAGER},#{REG_ID},#{MOD_ID},SYSDATE,SYSDATE)
     </insert>
-    <delete id ="consultDelete" parameterType="int">
+    <delete id ="counselDelete" parameterType="int">
         DELETE FROM COUNSEL
         WHERE COUNSEL_NO = #{COUNSEL_NO}
     </delete>
@@ -80,7 +80,8 @@
             COUNSEL_MANAGER=#{COUNSEL_MANAGER},
             MOD_DATE=sysdate,
             MOD_ID=#{MOD_ID}
-        where CLIENT_ID = #{CLIENT_ID}
+        where
+            COUNSEL_NO= #{COUNSEL_NO}
     </update>
 </mapper>
 

@@ -50,6 +50,7 @@ public class MemberDao {
     }
 
     public int counselDelete(Map<String, Object> cMap) {
+        log.info("counselDelete-dao");
         int result=0;
         result = sqlSessionTemplate.delete("counselDelete", cMap);
         return result;

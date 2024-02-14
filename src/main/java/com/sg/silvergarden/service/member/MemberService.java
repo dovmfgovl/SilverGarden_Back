@@ -1,6 +1,7 @@
 package com.sg.silvergarden.service.member;
 
 import com.sg.silvergarden.dao.member.MemberDao;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -8,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 @Service
+@Slf4j
 public class MemberService{
     @Autowired
     MemberDao memberDao=null;
@@ -51,6 +53,7 @@ public class MemberService{
     }
 
     public int counselDelete(Map<String, Object> cMap) {
+        log.info("counselDelete");
         int result = 0;
         result = memberDao.counselDelete(cMap);
         return result;
