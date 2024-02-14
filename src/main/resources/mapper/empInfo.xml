@@ -153,52 +153,52 @@
     <update id="empEduUpdate" parameterType="map">
         UPDATE EDUCATION
         SET
-            HIGH_SCHOOL_PERIOD = CASE
-                                   WHEN EDU_NAME LIKE '%고등학교%' THEN COALESCE(#{EDU_PERIOD}, NULLIF(EDU_PERIOD, ''))
+            #{EDU_PERIOD} = CASE
+                                   WHEN EDU_NAME LIKE '%고등학교%' THEN COALESCE(HIGH_SCHOOL_PERIOD, NULLIF(#{EDU_PERIOD}, ''))
                                    ELSE NULL
                 END,
-            UNIVERSITY_PERIOD = CASE
-                                  WHEN EDU_NAME LIKE '%대학교%' THEN COALESCE(#{EDU_PERIOD}, NULLIF(EDU_PERIOD, ''))
+            #{EDU_PERIOD} = CASE
+                                  WHEN EDU_NAME LIKE '%대학교%' THEN COALESCE(UNIVERSITY_PERIOD, NULLIF(#{EDU_PERIOD}, ''))
                                   ELSE NULL
                 END,
-            GRADUATE_SCHOOL_PERIOD = CASE
-                                   WHEN EDU_NAME LIKE '%대학원%' THEN COALESCE(#{EDU_PERIOD}, NULLIF(EDU_PERIOD, ''))
+            #{EDU_PERIOD} = CASE
+                                   WHEN EDU_NAME LIKE '%대학원%' THEN COALESCE(GRADUATE_SCHOOL_PERIOD, NULLIF(#{EDU_PERIOD}, ''))
                                    ELSE NULL
                 END,
-            HIGH_SCHOOL_NAME = CASE
-                               WHEN EDU_NAME LIKE '%고등학교%' THEN COALESCE(#{EDU_NAME}, NULLIF(EDU_NAME, ''))
+            #{EDU_NAME} = CASE
+                               WHEN EDU_NAME LIKE '%고등학교%' THEN COALESCE(HIGH_SCHOOL_NAME, NULLIF(#{EDU_NAME}, ''))
                                 ELSE NULL
                 END,
-            UNIVERSITY_NAME = CASE
-                                   WHEN EDU_NAME LIKE '%대학교%' THEN COALESCE(#{EDU_NAME}, NULLIF(EDU_NAME, ''))
+            #{EDU_NAME} = CASE
+                                   WHEN EDU_NAME LIKE '%대학교%' THEN COALESCE(UNIVERSITY_NAME, NULLIF(#{EDU_NAME}, ''))
                             ELSE NULL
                 END,
-            GRADUATE_SCHOOL_NAME = CASE
-                                  WHEN EDU_NAME LIKE '%대학원%' THEN COALESCE(#{EDU_NAME}, NULLIF(EDU_NAME, ''))
+            #{EDU_NAME} = CASE
+                                  WHEN EDU_NAME LIKE '%대학원%' THEN COALESCE(GRADUATE_SCHOOL_NAME, NULLIF(#{EDU_NAME}, ''))
                             ELSE NULL
                 END,
-            HIGH_SCHOOL_MAJOR = CASE
-                                   WHEN EDU_NAME LIKE '%고등학교%' THEN COALESCE(#{EDU_MAJOR}, NULLIF(EDU_MAJOR, ''))
+            #{EDU_MAJOR} = CASE
+                                   WHEN EDU_NAME LIKE '%고등학교%' THEN COALESCE(HIGH_SCHOOL_MAJOR, NULLIF(HIGH_SCHOOL_MAJOR, ''))
                                    ELSE NULL
                 END,
-            UNIVERSITY_MAJOR = CASE
-                                  WHEN EDU_NAME LIKE '%대학교%' THEN COALESCE(#{EDU_MAJOR}, NULLIF(EDU_MAJOR, ''))
+            #{EDU_MAJOR} = CASE
+                                  WHEN EDU_NAME LIKE '%대학교%' THEN COALESCE(UNIVERSITY_MAJOR, NULLIF(UNIVERSITY_MAJOR, ''))
                                   ELSE NULL
                 END,
-            GRADUATE_SCHOOL_MAJOR = CASE
-                                       WHEN EDU_NAME LIKE '%대학원%' THEN COALESCE(#{EDU_MAJOR}, NULLIF(EDU_MAJOR, ''))
+            #{EDU_MAJOR} = CASE
+                                       WHEN EDU_NAME LIKE '%대학원%' THEN COALESCE(GRADUATE_SCHOOL_MAJOR, NULLIF(GRADUATE_SCHOOL_MAJOR, ''))
                                        ELSE NULL
                 END,
-            HIGH_SCHOOL_STATUS = CASE
-                                    WHEN EDU_NAME LIKE '%고등학교%' THEN COALESCE(#{EDU_STATUS}, NULLIF(EDU_STATUS, ''))
+            #{EDU_STATUS} = CASE
+                                    WHEN EDU_NAME LIKE '%고등학교%' THEN COALESCE(HIGH_SCHOOL_STATUS, NULLIF(HIGH_SCHOOL_STATUS, ''))
                                     ELSE NULL
                 END,
-            UNIVERSITY_STATUS = CASE
-                                   WHEN EDU_NAME LIKE '%대학교%' THEN COALESCE(#{EDU_STATUS}, NULLIF(EDU_STATUS, ''))
+            #{EDU_STATUS} = CASE
+                                   WHEN EDU_NAME LIKE '%대학교%' THEN COALESCE(UNIVERSITY_STATUS, NULLIF(UNIVERSITY_STATUS, ''))
                                    ELSE NULL
                 END,
-            GRADUATE_SCHOOL_STATUS = CASE
-                                        WHEN EDU_NAME LIKE '%대학원%' THEN COALESCE(#{EDU_STATUS}, NULLIF(EDU_STATUS, ''))
+            #{EDU_STATUS} = CASE
+                                        WHEN EDU_NAME LIKE '%대학원%' THEN COALESCE(GRADUATE_SCHOOL_STATUS, NULLIF(GRADUATE_SCHOOL_STATUS, ''))
                                         ELSE NULL
                 END
         WHERE E_NO = #{E_NO}
