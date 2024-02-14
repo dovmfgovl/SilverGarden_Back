@@ -116,11 +116,10 @@
             <if test="DEPT_NAME != null">DEPT_NAME = #{DEPT_NAME},</if>
             <if test="E_OCCUP != null">E_OCCUP = #{E_OCCUP},</if>
             <if test="E_PROFILE != null">E_PROFILE = #{E_PROFILE},</if>
-            <if test="E_ADDRESS != null">E_ADDRESS = #{E_ADDRESS},</if>
         </set>
         where E_NO = #{E_NO}
     </update>
-    <update id="empEduUpdate" parameterType="map">
+<!--    <update id="empEduUpdate" parameterType="map">
         UPDATE EDUCATION
         SET
             EDU_PERIOD = CASE
@@ -142,14 +141,68 @@
                             ELSE NULL
                 END,
             EDU_STATUS = CASE
-                             WHEN EDU_STATUS LIKE '%고등학교%' THEN COALESCE(#{EDU_STATUS}, NULLIF(EDU_STATUS, ''))
-                             WHEN EDU_STATUS LIKE '%대학교%' THEN COALESCE(#{EDU_STATUS}, NULLIF(EDU_STATUS, ''))
-                             WHEN EDU_STATUS LIKE '%대학원%' THEN COALESCE(#{EDU_STATUS}, NULLIF(EDU_STATUS, ''))
+                             WHEN EDU_NAME LIKE '%고등학교%' THEN COALESCE(#{EDU_STATUS}, NULLIF(EDU_STATUS, ''))
+                             WHEN EDU_NAME LIKE '%대학교%' THEN COALESCE(#{EDU_STATUS}, NULLIF(EDU_STATUS, ''))
+                             WHEN EDU_NAME LIKE '%대학원%' THEN COALESCE(#{EDU_STATUS}, NULLIF(EDU_STATUS, ''))
                              ELSE NULL
                 END
-        WHERE
-            E_NO = #{E_NO}
+        WHERE E_NO = #{E_NO}
+    </update>-->
+
+    <update id="empEduUpdate" parameterType="map">
+        UPDATE EDUCATION
+        SET
+            HIGH_SCHOOL_PERIOD = CASE
+                                   WHEN EDU_NAME LIKE '%고등학교%' THEN COALESCE(#{EDU_PERIOD}, NULLIF(EDU_PERIOD, ''))
+                                   ELSE NULL
+                END,
+            UNIVERSITY_PERIOD = CASE
+                                  WHEN EDU_NAME LIKE '%대학교%' THEN COALESCE(#{EDU_PERIOD}, NULLIF(EDU_PERIOD, ''))
+                                  ELSE NULL
+                END,
+            GRADUATE_SCHOOL_PERIOD = CASE
+                                   WHEN EDU_NAME LIKE '%대학원%' THEN COALESCE(#{EDU_PERIOD}, NULLIF(EDU_PERIOD, ''))
+                                   ELSE NULL
+                END,
+            HIGH_SCHOOL_NAME = CASE
+                               WHEN EDU_NAME LIKE '%고등학교%' THEN COALESCE(#{EDU_NAME}, NULLIF(EDU_NAME, ''))
+                                ELSE NULL
+                END,
+            UNIVERSITY_NAME = CASE
+                                   WHEN EDU_NAME LIKE '%대학교%' THEN COALESCE(#{EDU_NAME}, NULLIF(EDU_NAME, ''))
+                            ELSE NULL
+                END,
+            GRADUATE_SCHOOL_NAME = CASE
+                                  WHEN EDU_NAME LIKE '%대학원%' THEN COALESCE(#{EDU_NAME}, NULLIF(EDU_NAME, ''))
+                            ELSE NULL
+                END,
+            HIGH_SCHOOL_MAJOR = CASE
+                                   WHEN EDU_NAME LIKE '%고등학교%' THEN COALESCE(#{EDU_MAJOR}, NULLIF(EDU_MAJOR, ''))
+                                   ELSE NULL
+                END,
+            UNIVERSITY_MAJOR = CASE
+                                  WHEN EDU_NAME LIKE '%대학교%' THEN COALESCE(#{EDU_MAJOR}, NULLIF(EDU_MAJOR, ''))
+                                  ELSE NULL
+                END,
+            GRADUATE_SCHOOL_MAJOR = CASE
+                                       WHEN EDU_NAME LIKE '%대학원%' THEN COALESCE(#{EDU_MAJOR}, NULLIF(EDU_MAJOR, ''))
+                                       ELSE NULL
+                END,
+            HIGH_SCHOOL_STATUS = CASE
+                                    WHEN EDU_NAME LIKE '%고등학교%' THEN COALESCE(#{EDU_STATUS}, NULLIF(EDU_STATUS, ''))
+                                    ELSE NULL
+                END,
+            UNIVERSITY_STATUS = CASE
+                                   WHEN EDU_NAME LIKE '%대학교%' THEN COALESCE(#{EDU_STATUS}, NULLIF(EDU_STATUS, ''))
+                                   ELSE NULL
+                END,
+            GRADUATE_SCHOOL_STATUS = CASE
+                                        WHEN EDU_NAME LIKE '%대학원%' THEN COALESCE(#{EDU_STATUS}, NULLIF(EDU_STATUS, ''))
+                                        ELSE NULL
+                END
+        WHERE E_NO = #{E_NO}
     </update>
+
     <delete id="empDelete" parameterType="int">
         delete from employee where e_no = #{value}
     </delete>

@@ -50,7 +50,8 @@ public class EmpInfoDao {
         try {
             result = sqlSessionTemplate.update("empEduUpdate", eMap);
         } catch (Exception e) {
-            logger.info(e.toString());
+            /*logger.info(e.toString());*/
+            e.printStackTrace();
         }
         return result;
     }
