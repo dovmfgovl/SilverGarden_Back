@@ -20,6 +20,8 @@
             emp.E_BIRTH,
             emp.DEPT_NAME,
             emp.E_OCCUP,
+            emp.E_PROFILE,
+          
             MAX(edu.HIGH_SCHOOL_PERIOD) AS HIGH_SCHOOL_PERIOD,
             MAX(edu.HIGH_SCHOOL_NAME) AS HIGH_SCHOOL_NAME,
             MAX(edu.HIGH_SCHOOL_MAJOR) AS HIGH_SCHOOL_MAJOR,
@@ -48,18 +50,18 @@
                 LEFT JOIN (
                 SELECT
                     E_NO,
-                    MAX(CASE WHEN EDU_DIVISION = '고등학교' THEN EDU_PERIOD END) AS HIGH_SCHOOL_PERIOD,
-                    MAX(CASE WHEN EDU_DIVISION = '고등학교' THEN EDU_NAME END) AS HIGH_SCHOOL_NAME,
-                    MAX(CASE WHEN EDU_DIVISION = '고등학교' THEN EDU_MAJOR END) AS HIGH_SCHOOL_MAJOR,
-                    MAX(CASE WHEN EDU_DIVISION = '고등학교' THEN EDU_STATUS END) AS HIGH_SCHOOL_STATUS,
-                    MAX(CASE WHEN EDU_DIVISION = '대학교' THEN EDU_PERIOD END) AS UNIVERSITY_PERIOD,
-                    MAX(CASE WHEN EDU_DIVISION = '대학교' THEN EDU_NAME END) AS UNIVERSITY_NAME,
-                    MAX(CASE WHEN EDU_DIVISION = '대학교' THEN EDU_MAJOR END) AS UNIVERSITY_MAJOR,
-                    MAX(CASE WHEN EDU_DIVISION = '대학교' THEN EDU_STATUS END) AS UNIVERSITY_STATUS,
-                    MAX(CASE WHEN EDU_DIVISION = '대학원' THEN EDU_PERIOD END) AS GRADUATE_SCHOOL_PERIOD,
-                    MAX(CASE WHEN EDU_DIVISION = '대학원' THEN EDU_NAME END) AS GRADUATE_SCHOOL_NAME,
-                    MAX(CASE WHEN EDU_DIVISION = '대학원' THEN EDU_MAJOR END) AS GRADUATE_SCHOOL_MAJOR,
-                    MAX(CASE WHEN EDU_DIVISION = '대학원' THEN EDU_STATUS END) AS GRADUATE_SCHOOL_STATUS
+                    MAX(CASE WHEN EDU_NAME LIKE '%고등학교%' THEN EDU_PERIOD END) AS HIGH_SCHOOL_PERIOD,
+                    MAX(CASE WHEN EDU_NAME LIKE '%고등학교%' THEN EDU_NAME END) AS HIGH_SCHOOL_NAME,
+                    MAX(CASE WHEN EDU_NAME LIKE '%고등학교%' THEN EDU_MAJOR END) AS HIGH_SCHOOL_MAJOR,
+                    MAX(CASE WHEN EDU_NAME LIKE '%고등학교%' THEN EDU_STATUS END) AS HIGH_SCHOOL_STATUS,
+                    MAX(CASE WHEN EDU_NAME LIKE '%대학교%' THEN EDU_PERIOD END) AS UNIVERSITY_PERIOD,
+                    MAX(CASE WHEN EDU_NAME LIKE '%대학교%' THEN EDU_NAME END) AS UNIVERSITY_NAME,
+                    MAX(CASE WHEN EDU_NAME LIKE '%대학교%' THEN EDU_MAJOR END) AS UNIVERSITY_MAJOR,
+                    MAX(CASE WHEN EDU_NAME LIKE '%대학교%' THEN EDU_STATUS END) AS UNIVERSITY_STATUS,
+                    MAX(CASE WHEN EDU_NAME LIKE '%대학원%' THEN EDU_PERIOD END) AS GRADUATE_SCHOOL_PERIOD,
+                    MAX(CASE WHEN EDU_NAME LIKE '%대학원%' THEN EDU_NAME END) AS GRADUATE_SCHOOL_NAME,
+                    MAX(CASE WHEN EDU_NAME LIKE '%대학원%' THEN EDU_MAJOR END) AS GRADUATE_SCHOOL_MAJOR,
+                    MAX(CASE WHEN EDU_NAME LIKE '%대학원%' THEN EDU_STATUS END) AS GRADUATE_SCHOOL_STATUS
                 FROM
                     EDUCATION
                 GROUP BY
@@ -93,17 +95,115 @@
                     E_NO
             ) cer ON emp.E_NO = cer.E_NO
         GROUP BY
-            emp.E_NO, emp.E_NAME, emp.E_ADDRESS, emp.E_AUTH, emp.E_STATUS, emp.E_EMAIL, emp.E_GENDER, emp.E_HIREDATE, emp.E_ENDDATE, emp.E_PASSWORD, emp.E_PHONE, emp.E_RANK, emp.E_BIRTH, emp.DEPT_NAME, emp.E_OCCUP
+            emp.E_NO, emp.E_NAME, emp.E_ADDRESS, emp.E_AUTH, emp.E_STATUS, emp.E_EMAIL, emp.E_GENDER, emp.E_HIREDATE, emp.E_ENDDATE, emp.E_PASSWORD, emp.E_PHONE, emp.E_RANK, emp.E_BIRTH, emp.DEPT_NAME, emp.E_OCCUP, emp.E_PROFILE
         ORDER BY
             emp.E_NO
     </select>
-    <update id="empUpdate" parameterType="map">
-        update employee
-        set e_name = #{e_name}
-          , e_gender = #{e_gender}
-          , e_phone = #{e_phone}
-        where e_code = #{e_code}
+    <update id="empInfoUpdate" parameterType="map">
+        update EMPLOYEE
+        <set>
+            <if test="E_NAME != null">E_NAME = #{E_NAME},</if>
+            <if test="E_ADDRESS != null">E_ADDRESS = #{E_ADDRESS},</if>
+            <if test="E_AUTH != null">E_AUTH = #{E_AUTH},</if>
+            <if test="E_STATUS != null">E_STATUS = #{E_STATUS},</if>
+            <if test="E_EMAIL != null">E_EMAIL = #{E_EMAIL},</if>
+            <if test="E_GENDER != null">E_GENDER = #{E_GENDER},</if>
+            <if test="E_HIREDATE != null">E_HIREDATE = #{E_HIREDATE},</if>
+            <if test="E_ENDDATE != null">E_ENDDATE = #{E_ENDDATE},</if>
+            <if test="E_PASSWORD != null">E_PASSWORD = #{E_PASSWORD},</if>
+            <if test="E_PHONE != null">E_PHONE = #{E_PHONE},</if>
+            <if test="E_RANK != null">E_RANK = #{E_RANK},</if>
+            <if test="E_BIRTH != null">E_BIRTH = #{E_BIRTH},</if>
+            <if test="DEPT_NAME != null">DEPT_NAME = #{DEPT_NAME},</if>
+            <if test="E_OCCUP != null">E_OCCUP = #{E_OCCUP},</if>
+            <if test="E_PROFILE != null">E_PROFILE = #{E_PROFILE},</if>
+        </set>
+        where E_NO = #{E_NO}
     </update>
+<!--    <update id="empEduUpdate" parameterType="map">
+        UPDATE EDUCATION
+        SET
+            EDU_PERIOD = CASE
+                             WHEN EDU_NAME LIKE '%고등학교%' THEN COALESCE(#{EDU_PERIOD}, NULLIF(EDU_PERIOD, ''))
+                             WHEN EDU_NAME LIKE '%대학교%' THEN COALESCE(#{EDU_PERIOD}, NULLIF(EDU_PERIOD, ''))
+                             WHEN EDU_NAME LIKE '%대학원%' THEN COALESCE(#{EDU_PERIOD}, NULLIF(EDU_PERIOD, ''))
+                             ELSE NULL
+                END,
+            EDU_NAME = CASE
+                           WHEN EDU_NAME LIKE '%고등학교%' THEN COALESCE(#{EDU_NAME}, NULLIF(EDU_NAME, ''))
+                           WHEN EDU_NAME LIKE '%대학교%' THEN COALESCE(#{EDU_NAME}, NULLIF(EDU_NAME, ''))
+                           WHEN EDU_NAME LIKE '%대학원%' THEN COALESCE(#{EDU_NAME}, NULLIF(EDU_NAME, ''))
+                           ELSE NULL
+                END,
+            EDU_MAJOR = CASE
+                            WHEN EDU_NAME LIKE '%고등학교%' THEN COALESCE(#{EDU_MAJOR}, NULLIF(EDU_MAJOR, ''))
+                            WHEN EDU_NAME LIKE '%대학교%' THEN COALESCE(#{EDU_MAJOR}, NULLIF(EDU_MAJOR, ''))
+                            WHEN EDU_NAME LIKE '%대학원%' THEN COALESCE(#{EDU_MAJOR}, NULLIF(EDU_MAJOR, ''))
+                            ELSE NULL
+                END,
+            EDU_STATUS = CASE
+                             WHEN EDU_NAME LIKE '%고등학교%' THEN COALESCE(#{EDU_STATUS}, NULLIF(EDU_STATUS, ''))
+                             WHEN EDU_NAME LIKE '%대학교%' THEN COALESCE(#{EDU_STATUS}, NULLIF(EDU_STATUS, ''))
+                             WHEN EDU_NAME LIKE '%대학원%' THEN COALESCE(#{EDU_STATUS}, NULLIF(EDU_STATUS, ''))
+                             ELSE NULL
+                END
+        WHERE E_NO = #{E_NO}
+    </update>-->
+
+    <update id="empEduUpdate" parameterType="map">
+        UPDATE EDUCATION
+        SET
+            HIGH_SCHOOL_PERIOD = CASE
+                                   WHEN EDU_NAME LIKE '%고등학교%' THEN COALESCE(#{EDU_PERIOD}, NULLIF(EDU_PERIOD, ''))
+                                   ELSE NULL
+                END,
+            UNIVERSITY_PERIOD = CASE
+                                  WHEN EDU_NAME LIKE '%대학교%' THEN COALESCE(#{EDU_PERIOD}, NULLIF(EDU_PERIOD, ''))
+                                  ELSE NULL
+                END,
+            GRADUATE_SCHOOL_PERIOD = CASE
+                                   WHEN EDU_NAME LIKE '%대학원%' THEN COALESCE(#{EDU_PERIOD}, NULLIF(EDU_PERIOD, ''))
+                                   ELSE NULL
+                END,
+            HIGH_SCHOOL_NAME = CASE
+                               WHEN EDU_NAME LIKE '%고등학교%' THEN COALESCE(#{EDU_NAME}, NULLIF(EDU_NAME, ''))
+                                ELSE NULL
+                END,
+            UNIVERSITY_NAME = CASE
+                                   WHEN EDU_NAME LIKE '%대학교%' THEN COALESCE(#{EDU_NAME}, NULLIF(EDU_NAME, ''))
+                            ELSE NULL
+                END,
+            GRADUATE_SCHOOL_NAME = CASE
+                                  WHEN EDU_NAME LIKE '%대학원%' THEN COALESCE(#{EDU_NAME}, NULLIF(EDU_NAME, ''))
+                            ELSE NULL
+                END,
+            HIGH_SCHOOL_MAJOR = CASE
+                                   WHEN EDU_NAME LIKE '%고등학교%' THEN COALESCE(#{EDU_MAJOR}, NULLIF(EDU_MAJOR, ''))
+                                   ELSE NULL
+                END,
+            UNIVERSITY_MAJOR = CASE
+                                  WHEN EDU_NAME LIKE '%대학교%' THEN COALESCE(#{EDU_MAJOR}, NULLIF(EDU_MAJOR, ''))
+                                  ELSE NULL
+                END,
+            GRADUATE_SCHOOL_MAJOR = CASE
+                                       WHEN EDU_NAME LIKE '%대학원%' THEN COALESCE(#{EDU_MAJOR}, NULLIF(EDU_MAJOR, ''))
+                                       ELSE NULL
+                END,
+            HIGH_SCHOOL_STATUS = CASE
+                                    WHEN EDU_NAME LIKE '%고등학교%' THEN COALESCE(#{EDU_STATUS}, NULLIF(EDU_STATUS, ''))
+                                    ELSE NULL
+                END,
+            UNIVERSITY_STATUS = CASE
+                                   WHEN EDU_NAME LIKE '%대학교%' THEN COALESCE(#{EDU_STATUS}, NULLIF(EDU_STATUS, ''))
+                                   ELSE NULL
+                END,
+            GRADUATE_SCHOOL_STATUS = CASE
+                                        WHEN EDU_NAME LIKE '%대학원%' THEN COALESCE(#{EDU_STATUS}, NULLIF(EDU_STATUS, ''))
+                                        ELSE NULL
+                END
+        WHERE E_NO = #{E_NO}
+    </update>
+
     <delete id="empDelete" parameterType="int">
         delete from employee where e_no = #{value}
     </delete>

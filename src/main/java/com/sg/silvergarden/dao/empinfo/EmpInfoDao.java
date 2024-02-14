@@ -26,7 +26,7 @@ public class EmpInfoDao {
         logger.info("empUpdate");
         int result = 0;
         try {
-            result = sqlSessionTemplate.update("empUpdate", eMap);
+            result = sqlSessionTemplate.update("empInfoUpdate", eMap);
         } catch (Exception e) {
             logger.info(e.toString());
         }
@@ -40,6 +40,18 @@ public class EmpInfoDao {
             result = sqlSessionTemplate.delete("empDelete", e_no);
         } catch (Exception e) {
             logger.info(e.toString());
+        }
+        return result;
+    }
+
+    public int empEduUpdate(Map<String, Object> eMap) {
+        logger.info("empEduUpdate");
+        int result = 0;
+        try {
+            result = sqlSessionTemplate.update("empEduUpdate", eMap);
+        } catch (Exception e) {
+            /*logger.info(e.toString());*/
+            e.printStackTrace();
         }
         return result;
     }
