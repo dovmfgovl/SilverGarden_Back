@@ -16,7 +16,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.file.Files;
@@ -107,6 +106,22 @@ public class NoticeController {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmssSSS");
         return dateFormat.format(new Date(currentTime));
     }
+    @PostMapping("imageUpload")
+    public String imageUpload(@RequestParam(value = "image") MultipartFile image){
+        log.info("이미지 업로드");
+        log.info(image.getOriginalFilename());
+        String newFilename = getCurrentTimeMillisFormat()+"_"+FilenameUtils.getName(image.getOriginalFilename());
+        File upImage = new File(config.getUploadPath(), newFilename);
+        log.info(newFilename);
+        try {
+            image.transferTo(upImage);
+            return newFilename;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "error";
+    }
+
     @GetMapping("fileDownload")
     public ResponseEntity<Object> fileDownload(@RequestParam(value="filename") String filename) {
         log.info("fileDownload 호출 성공");
@@ -135,24 +150,22 @@ public class NoticeController {
             // TODO Auto-generated catch block
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("파일 다운로드 오류");
-
         }
     }// end of fileDownLoad
     //파일 삭제 처리
     @PostMapping("deleteFile")
     public ResponseEntity<String> deleteFile(String filename){
+        log.info(filename);
         File file = null;
-        try {
-            String encodedFilename = URLEncoder.encode(filename, "UTF-8").replace("+", "%20");
-            file = new File(config.getUploadPath() + encodedFilename);
-            if(file.delete() == true){
-                return new ResponseEntity<>("삭제성공!!!", HttpStatus.OK);
-            }else{
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-            }
-        } catch (UnsupportedEncodingException e) {
-            throw new RuntimeException(e);
+        //String encodedFilename = URLEncoder.encode(filename, "UTF-8").replace("+", "_");
+        file = new File(config.getUploadPath() + filename);
+        log.info(file.toString());
+        if(file.delete() == true){
+            int result = -1;
+            result = noticeService.deleteFile(filename);
+            return new ResponseEntity<>("삭제성공!!!", HttpStatus.OK);
+        }else{
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
-
 }
