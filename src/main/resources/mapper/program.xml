@@ -22,8 +22,23 @@
     </insert>
     <!--프로그램 조회-->
     <select id="pgList" parameterType="java.util.Map" resultType="java.util.Map">
-        select * from PROGRAM
-        <where>
+        SELECT
+            PG_NO,
+            PG_NAME,
+            TO_CHAR(CAST(PG_START AS TIMESTAMP), 'YYYY-MM-DD"T"HH24:MI') AS PG_START,
+            TO_CHAR(CAST(PG_END AS TIMESTAMP), 'YYYY-MM-DD"T"HH24:MI') AS PG_END,
+            PG_DAYSOFWEEK,
+            PG_TEACHER,
+            PG_CATEGORY,
+            PG_CONTENT,
+            PG_REPEAT_TYPE,
+            E_NAME,
+            TO_CHAR(CAST(REG_DATE AS TIMESTAMP), 'YYYY-MM-DD"T"HH24:MI') AS REG_DATE,
+            TO_CHAR(CAST(MOD_DATE AS TIMESTAMP), 'YYYY-MM-DD"T"HH24:MI') AS MOD_DATE,
+            REG_ID,
+            MOD_ID
+        FROM PROGRAM
+            <where>
             <if test = "pg_no!=null">And pg_no=#{pg_no}</if>
             <if test ="gubun!=null">
                 <choose>
@@ -48,17 +63,24 @@
         order by pg_no desc
     </select>
     <!--프로그램 업데이트(수정)-->
-    <update id="pgUpdate"  parameterType="java.util.Map">
-        update PROGRAM set
-            pg_name = #{pg_name},
-            pg_category = #{pg_category},
-            pg_teacher = #{pg_teacher},
-            pg_daysofweek = #{pg_daysofweek},
-            pg_start = TO_DATE(#{pg_start},'YYYY-MM-DD"T"HH24:MI'),
-            pg_end = TO_DATE(#{pg_end},'YYYY-MM-DD"T"HH24:MI'),
-            pg_content = #{pg_content},
-            pg_repeat_type = #{pg_repeat_type}
-        where pg_no = #{pg_no}
+    <update id="pgUpdate" parameterType="java.util.Map">
+        update PROGRAM
+        <set>
+            <if test="PG_NAME != null">PG_NAME = #{PG_NAME},</if>
+            <if test="PG_CATEGORY != null">PG_CATEGORY = #{PG_CATEGORY},</if>
+            <if test="PG_TEACHER != null">PG_TEACHER = #{PG_TEACHER},</if>
+            <if test="PG_DAYSOFWEEK != null">PG_DAYSOFWEEK = #{PG_DAYSOFWEEK},</if>
+            <if test="PG_START != null">PG_START = to_date(#{PG_START}, 'YYYY-MM-DD"T"HH24:MI'),</if>
+            <if test="PG_END != null">PG_END = to_date(#{PG_END}, 'YYYY-MM-DD"T"HH24:MI'),</if>
+            <if test="PG_CONTENT != null">PG_CONTENT = #{PG_CONTENT},</if>
+            <if test="PG_REPEAT_TYPE != null">PG_REPEAT_TYPE = #{PG_REPEAT_TYPE},</if>
+            <if test="E_NAME != null">E_NAME = #{E_NAME},</if>
+            <if test="REG_DATE != null">REG_DATE = to_date(#{REG_DATE}, 'YYYY-MM-DD"T"HH24:MI'),</if>
+            MOD_DATE=sysdate,
+            <if test="REG_ID != null">REG_ID = #{REG_ID},</if>
+            <if test="MOD_ID != null">MOD_ID = #{MOD_ID},</if>
+        </set>
+        where PG_NO = #{PG_NO}
     </update>
     <!--프로그램 삭제-->
     <delete id="pgDelete" parameterType="java.util.Map">
@@ -68,7 +90,16 @@
     <!--캘린더 조회-->
     <select id="scheduleList" parameterType="java.util.Map" resultType="java.util.Map">
         SELECT PG_NO, PG_NAME,
-            PG_DAYSOFWEEK, PG_CATEGORY, PG_TEACHER, PG_CONTENT, PG_START, PG_END, PG_REPEAT_TYPE
+            PG_DAYSOFWEEK, PG_CATEGORY, PG_TEACHER, PG_CONTENT,
+            TO_CHAR(CAST(PG_START AS TIMESTAMP), 'YYYY-MM-DD"T"HH24:MI') AS PG_START,
+            TO_CHAR(CAST(PG_END AS TIMESTAMP), 'YYYY-MM-DD"T"HH24:MI') AS PG_END,
+            PG_REPEAT_TYPE
         FROM PROGRAM
     </select>
+<!--    <select id="scheduleList" parameterType="java.util.Map" resultType="java.util.Map">-->
+<!--        SELECT PG_NO, PG_NAME,-->
+<!--               PG_DAYSOFWEEK, PG_CATEGORY, PG_TEACHER, PG_CONTENT,-->
+<!--               PG_START, PG_END, PG_REPEAT_TYPE-->
+<!--        FROM PROGRAM-->
+<!--    </select>-->
 </mapper>

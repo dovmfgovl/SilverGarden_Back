@@ -63,9 +63,8 @@ public class ProgramController {
         result = programService.pgDelete(pmap);
         return String.valueOf(result);
     }
-    @CrossOrigin(origins = "http://localhost:3000")
-    @PutMapping(value = "pgUpdate")
-    public String pgUpdate(@RequestBody Map<String, Object> pmap){
+    @GetMapping(value = "pgUpdate")
+    public String pgUpdate(@RequestParam Map<String, Object> pmap){
         logger.info("ProgramController-pgUpdate");
         logger.info("pmap: {}", pmap);
         int result = 0;
