@@ -4,11 +4,19 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.mybatis.mapper.EmpListMapper">
     <select id="allEmpList" parameterType="map" resultType="map">
-        SELECT
-            E_NO,E_NAME,E_ADDRESS,E_STATUS
-            ,E_EMAIL,E_PHONE,E_RANK,DEPT_NAME
-            ,E_OCCUP
-        FROM
-            EMPLOYEE
-    </select>
+    SELECT
+    E_NO, E_NAME, E_ADDRESS, E_STATUS,
+    E_EMAIL, E_PHONE, E_RANK, DEPT_NAME,
+    E_OCCUP
+    FROM
+    EMPLOYEE
+    <where>
+        <if test="gubun != null and menuTitle != null and !menuTitle.equals('전체')">
+            AND DEPT_NAME LIKE '%' || #{menuTitle} || '%'
+        </if>
+        <if test="find != null and keyword != null">
+            AND E_NAME LIKE '%' || #{keyword} || '%'
+        </if>
+    </where>
+</select>
 </mapper>

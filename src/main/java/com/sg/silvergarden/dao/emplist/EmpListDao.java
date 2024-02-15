@@ -17,4 +17,5 @@ public class EmpListDao {
         eList=sqlSessionTemplate.selectList("allEmpList",eMap);
         return eList;
     }
+
 }
