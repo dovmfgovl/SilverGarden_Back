@@ -26,19 +26,6 @@
             TO_CHAR(REG_DATE, 'YYYY-MM-DD"T"HH24:MI:SS') AS REG_DATE
         FROM PROGRAM_SCHEDULE2
     </select>
-<!--    <insert id="addProgramSchedule" parameterType="java.util.Map">-->
-<!--        INSERT INTO PROGRAM_SCHEDULE2 (-->
-<!--            PS_NO2, PS_NAME, PS_START, PS_END, REG_DATE, PS_INFO, REG_ID)-->
-<!--        VALUES (-->
-<!--                PS_NO2_SEQUENCE.nextval,-->
-<!--                #{PS_NAME},-->
-<!--                TO_DATE(#{PS_START},'YYYY-MM-DD"T"HH24:MI:SS'),-->
-<!--                TO_DATE(#{PS_END},'YYYY-MM-DD"T"HH24:MI:SS'),-->
-<!--                sysdate,-->
-<!--                #{PS_INFO},-->
-<!--                #{REG_ID}-->
-<!--            )-->
-<!--    </insert>-->
     <insert id="addProgramSchedule" parameterType="java.util.Map">
         INSERT INTO PROGRAM_SCHEDULE2 (
             PS_NO2, PS_NAME, PS_START, PS_END, REG_DATE, PS_INFO, REG_ID)

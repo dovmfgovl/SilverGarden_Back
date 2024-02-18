@@ -37,9 +37,9 @@ public class ProgramScheduleController {
         logger.info("updateProgramSchedule", pmap);
         programScheduleService.updateProgramSchedule(pmap);
     }
-
+    @CrossOrigin(origins = "http://localhost:3000")
     @DeleteMapping("delete")
-    public void deleteProgramSchedule(@RequestBody Map<String, Object> psNo2) {
+    public void deleteProgramSchedule(@RequestParam Map<String, Object> psNo2) {
         logger.info("deleteProgramSchedule", psNo2);
         programScheduleService.deleteProgramSchedule(psNo2);
     }
