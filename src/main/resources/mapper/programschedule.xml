@@ -3,7 +3,17 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.sg.silvergarden.dao.programcal.ProgramScheduleMapper">
-
+    <update id="updateProgramSchedule" parameterType="java.util.Map">
+        UPDATE PROGRAM_SCHEDULE2
+        SET
+        <if test="PS_NAME != null">PS_NAME = #{PS_NAME},</if>
+        <if test="PS_START != null">PS_START = TO_DATE(#{PS_START}, 'YYYY-MM-DD"T"HH24:MI:SS'),</if>
+        <if test="PS_END != null">PS_END = TO_DATE(#{PS_END}, 'YYYY-MM-DD"T"HH24:MI:SS'),</if>
+        MOD_DATE = TO_DATE(sysdate, 'YYYY-MM-DD"T"HH24:MI:SS')
+        <if test="PS_INFO != null">PS_INFO = #{PS_INFO},</if>
+        <if test="REG_ID != null">REG_ID = #{REG_ID},</if>
+        WHERE PS_NO2 = #{PS_NO2}
+    </update>
     <select id="getProgramSchedule" resultType="java.util.Map">
         SELECT
             PS_NO2,
@@ -16,45 +26,32 @@
             TO_CHAR(REG_DATE, 'YYYY-MM-DD"T"HH24:MI:SS') AS REG_DATE
         FROM PROGRAM_SCHEDULE2
     </select>
-
+<!--    <insert id="addProgramSchedule" parameterType="java.util.Map">-->
+<!--        INSERT INTO PROGRAM_SCHEDULE2 (-->
+<!--            PS_NO2, PS_NAME, PS_START, PS_END, REG_DATE, PS_INFO, REG_ID)-->
+<!--        VALUES (-->
+<!--                PS_NO2_SEQUENCE.nextval,-->
+<!--                #{PS_NAME},-->
+<!--                TO_DATE(#{PS_START},'YYYY-MM-DD"T"HH24:MI:SS'),-->
+<!--                TO_DATE(#{PS_END},'YYYY-MM-DD"T"HH24:MI:SS'),-->
+<!--                sysdate,-->
+<!--                #{PS_INFO},-->
+<!--                #{REG_ID}-->
+<!--            )-->
+<!--    </insert>-->
     <insert id="addProgramSchedule" parameterType="java.util.Map">
         INSERT INTO PROGRAM_SCHEDULE2 (
-            PS_NO2, PS_NAME, PS_START, PS_INFO, REG_ID, REG_DATE, PS_END)
+            PS_NO2, PS_NAME, PS_START, PS_END, REG_DATE, PS_INFO, REG_ID)
         VALUES (
                 PS_NO2_SEQUENCE.nextval,
-                #{PS_NAME},
-                TO_DATE(#{PS_START}, 'YYYY-MM-DD"T"HH24:MI:SS'),
-                #{PS_INFO},
-                #{REG_ID},
+                #{PS_NAME, jdbcType=VARCHAR},
+                TO_DATE(#{PS_START},'YYYY-MM-DD"T"HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'),
+                TO_DATE(#{PS_END},'YYYY-MM-DD"T"HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'),
                 sysdate,
-                TO_DATE(#{PS_END}, 'YYYY-MM-DD"T"HH24:MI:SS')
+                #{PS_INFO, jdbcType=VARCHAR},
+                #{REG_ID, jdbcType=VARCHAR}
                 )
     </insert>
-
-<!--    <update id="updateProgramSchedule" parameterType="java.util.Map">-->
-<!--        UPDATE PROGRAM_SCHEDULE2-->
-<!--        SET-->
-<!--            PS_NAME = #{PS_NAME},-->
-<!--            PS_START = TO_DATE(#{PS_START}, 'YYYY-MM-DD"T"HH24:MI:SS'),-->
-<!--            PS_END = TO_DATE(#{PS_END}, 'YYYY-MM-DD"T"HH24:MI:SS'),-->
-<!--            PS_INFO = #{PS_INFO},-->
-<!--            REG_ID = #{REG_ID},-->
-<!--            MOD_DATE = TO_DATE(sysdate, 'YYYY-MM-DD"T"HH24:MI:SS')-->
-<!--        WHERE PS_NO2 = #{PS_NO2}-->
-<!--    </update>-->
-    <update id="updateProgramSchedule" parameterType="java.util.Map">
-        UPDATE PROGRAM_SCHEDULE2
-        SET
-        <if test="PS_NAME != null">PS_NAME = #{PS_NAME},</if>
-        <if test="PS_START != null">PS_START = TO_DATE(#{PS_START}, 'YYYY-MM-DD"T"HH24:MI:SS'),</if>
-        <if test="PS_END != null">PS_END = TO_DATE(#{PS_END}, 'YYYY-MM-DD"T"HH24:MI:SS'),</if>
-        <if test="PS_INFO != null">PS_INFO = #{PS_INFO},</if>
-        <if test="REG_ID != null">REG_ID = #{REG_ID},</if>
-        MOD_DATE = TO_DATE(sysdate, 'YYYY-MM-DD"T"HH24:MI:SS')
-        WHERE PS_NO2 = #{PS_NO2}
-    </update>
-
-
     <delete id="deleteProgramSchedule" parameterType="java.util.Map">
         DELETE FROM PROGRAM_SCHEDULE2 WHERE PS_NO2 = #{PS_NO2}
     </delete>

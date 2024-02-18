@@ -29,6 +29,9 @@ public class ProgramScheduleDao {
 
     public int addProgramSchedule(Map<String, Object> pamp) {
         logger.info("ProgramScheduleDao - addProgramSchedule");
+        System.out.println("PS_NAME: " + pamp.get("PS_NAME")); //PS_NAME: PS_NAME: aaa
+        System.out.println("PS_START: " + pamp.get("PS_START")); //PS_START: 2024-02-01T23:21
+        System.out.println("PS_END: " + pamp.get("PS_END")); //PS_END: 2024-02-03T23:21
         return sqlSessionTemplate.insert("addProgramSchedule", pamp);
     }
 
