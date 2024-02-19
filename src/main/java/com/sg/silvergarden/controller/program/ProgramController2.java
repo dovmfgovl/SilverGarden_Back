@@ -54,25 +54,20 @@ public class ProgramController2 {
         logger.info("pmap: ", pmap);
         int result = -1;
         result = programService.pgInsert(pmap);
-        if (result == 1) {
-            // 프로그램 등록이 성공했을 때만 pgCalInsert 호출
-            int calInsertResult = programService.pgCalInsert(pmap);
-            logger.info("pgCalInsert result: {}", calInsertResult);
-        }
-        logger.info("error");
         return String.valueOf(result);
     }
-    @GetMapping("pgDelete")
+    @CrossOrigin(origins = "http://localhost:3000")
+    @DeleteMapping("pgDelete")
     public String pgDelete(@RequestParam Map<String, Object> pmap){
         logger.info("ProgramController2-pgDelete");
         int result = 0;
         result = programService.pgDelete(pmap);
         return String.valueOf(result);
     }
-    @GetMapping(value = "pgUpdate")
-    public String pgUpdate(@RequestParam Map<String, Object> pmap){
+    @PutMapping(value = "pgUpdate")
+    public String pgUpdate(@RequestBody Map<String, Object> pmap){
         logger.info("ProgramController2-pgUpdate");
-        logger.info("pmap: {}", pmap);
+        logger.info("pmap:", pmap);
         int result = 0;
         result = programService.pgUpdate(pmap);
         return String.valueOf(result);

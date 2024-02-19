@@ -9,14 +9,14 @@
             PG_NO, PG_NAME, PG_START, PG_END, PG_DAYSOFWEEK, PG_TEACHER, PG_CATEGORY, PG_CONTENT, PG_REPEAT_TYPE
         ) VALUES (
                 seq_program_no.nextval,
-                #{PG_NAME},
-                TO_DATE(#{PG_START}, 'YYYY-MM-DD"T"HH24:MI:SS'),
-                TO_DATE(#{PG_END}, 'YYYY-MM-DD"T"HH24:MI:SS'),
-                #{PG_DAYSOFWEEK},
-                #{PG_TEACHER},
-                #{PG_CATEGORY},
-                #{PG_CONTENT},
-                #{PG_REPEAT_TYPE}
+                #{PG_NAME, jdbcType=VARCHAR},
+                TO_DATE(#{PG_START}, 'YYYY-MM-DD"T"HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'),
+                TO_DATE(#{PG_END}, 'YYYY-MM-DD"T"HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'),
+                #{PG_DAYSOFWEEK, jdbcType=VARCHAR},
+                #{PG_TEACHER, jdbcType=VARCHAR},
+                #{PG_CATEGORY, jdbcType=VARCHAR},
+                #{PG_CONTENT, jdbcType=VARCHAR},
+                #{PG_REPEAT_TYPE, jdbcType=VARCHAR}
                 )
     </insert>
     <!--프로그램 조회-->

@@ -5,13 +5,15 @@
 <mapper namespace="com.sg.silvergarden.dao.programcal.ProgramScheduleMapper">
     <update id="updateProgramSchedule" parameterType="java.util.Map">
         UPDATE PROGRAM_SCHEDULE2
-        SET
-        <if test="PS_NAME != null">PS_NAME = #{PS_NAME},</if>
-        <if test="PS_START != null">PS_START = TO_DATE(#{PS_START}, 'YYYY-MM-DD"T"HH24:MI:SS'),</if>
-        <if test="PS_END != null">PS_END = TO_DATE(#{PS_END}, 'YYYY-MM-DD"T"HH24:MI:SS'),</if>
-        MOD_DATE = TO_DATE(sysdate, 'YYYY-MM-DD"T"HH24:MI:SS')
-        <if test="PS_INFO != null">PS_INFO = #{PS_INFO},</if>
-        <if test="REG_ID != null">REG_ID = #{REG_ID},</if>
+        <set>
+            <if test="PS_NAME != null">PS_NAME = #{PS_NAME},</if>
+            <if test="PS_START != null">PS_START = TO_DATE(#{PS_START}, 'YYYY-MM-DD"T"HH24:MI:SS'),</if>
+            <if test="PS_END != null">PS_END = TO_DATE(#{PS_END}, 'YYYY-MM-DD"T"HH24:MI:SS'),</if>
+            MOD_DATE = TO_DATE(sysdate, 'YYYY-MM-DD"T"HH24:MI:SS')<if test="PS_INFO != null">,</if>
+            <if test="PS_INFO != null">PS_INFO = #{PS_INFO},</if>
+            <if test="REG_ID != null">REG_ID = #{REG_ID},</if>
+            <if test="PS_CATEGORY != null">PS_CATEGORY = #{PS_CATEGORY}</if>
+        </set>
         WHERE PS_NO2 = #{PS_NO2}
     </update>
     <select id="getProgramSchedule" resultType="java.util.Map">
@@ -23,7 +25,13 @@
             PS_INFO,
             REG_ID,
             TO_CHAR(MOD_DATE, 'YYYY-MM-DD"T"HH24:MI:SS') AS MOD_DATE,
-            TO_CHAR(REG_DATE, 'YYYY-MM-DD"T"HH24:MI:SS') AS REG_DATE
+            TO_CHAR(REG_DATE, 'YYYY-MM-DD"T"HH24:MI:SS') AS REG_DATE,
+            CASE
+                WHEN PS_CATEGORY = '1' THEN '#E0FFFF'
+                WHEN PS_CATEGORY = '2' THEN '#E6E6FA'
+                WHEN PS_CATEGORY = '3' THEN '#FFF0F5'
+                ELSE '#000000'
+            END AS COLOR
         FROM PROGRAM_SCHEDULE2
     </select>
     <insert id="addProgramSchedule" parameterType="java.util.Map">

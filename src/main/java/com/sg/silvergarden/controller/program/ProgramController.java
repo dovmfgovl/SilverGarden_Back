@@ -63,7 +63,15 @@ public class ProgramController {
         result = programService.pgDelete(pmap);
         return String.valueOf(result);
     }
-    @GetMapping(value = "pgUpdate")
+//    @GetMapping(value = "pgUpdate")
+//    public String pgUpdate(@RequestParam Map<String, Object> pmap){
+//        logger.info("ProgramController-pgUpdate");
+//        logger.info("pmap: {}", pmap);
+//        int result = 0;
+//        result = programService.pgUpdate(pmap);
+//        return String.valueOf(result);
+//    }
+    @PutMapping(value = "pgUpdate")
     public String pgUpdate(@RequestParam Map<String, Object> pmap){
         logger.info("ProgramController-pgUpdate");
         logger.info("pmap: {}", pmap);
