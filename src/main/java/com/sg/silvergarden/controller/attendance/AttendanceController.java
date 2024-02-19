@@ -32,8 +32,9 @@ public class AttendanceController {
 
     // 근태 출근 insert
     @PostMapping("atInsert")
-    public String atInsert(@RequestParam Map<String, Object> atMap) {
+    public String atInsert(@RequestBody Map<String, Object> atMap) {
         logger.info("atInsert");
+        logger.info(atMap.toString());
         int result = 0;
         result = attendanceService.atInsert(atMap);
         return String.valueOf(result);
