@@ -49,6 +49,7 @@ public class EmpInfoService {
 
     public int empEduUpdate(Map<String, Object> eMap) {
         logger.info("empEduUpdate");
+        logger.info(eMap.toString());
         int result = 0;
         result = empInfoDao.empEduUpdate(eMap);
         return result;

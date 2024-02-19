@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mybatis.mapper.AttendanceMapper">
+    <select id="atList" parameterType="map" resultType="map">
+        select A.AT_DATE, A.E_NO, A.AT_START, A.AT_END, A.AT_STATUS, A.MOD_DATE, A.MOD_ID
+        from ATTENDANCE A inner join EMPLOYEE E
+            on A.E_NO = E.E_NO
+    </select>
+    <insert id="atInsert" parameterType="map">
+        INSERT INTO ATTENDANCE (AT_DATE, E_NO, AT_START, AT_STATUS, REG_DATE, REG_ID)
+        VALUES (trunc(sysdate), #{E_NO}, sysdate, '결근', sysdate, #{E_NO})
+    </insert>
+    <update id="atUpdate" parameterType="map">
+        update ATTENDANCE
+        set AT_END = sysdate,
+        AT_STATUS = case
+                        when to_char(sysdate, 'HH24:MI') between '04:00' and '23:59'
+                                 and to_char(sysdate, 'HH24:MI') &lt; '09:11'
+                                 and to_char(sysdate, 'HH24:MI') &gt; '17:59'
+                            then '정상출근'
+                        when to_char(sysdate, 'HH24:MI') between '09:11' and '24:00'
+                                 and to_char(sysdate, 'HH24:MI') &gt; '17:59'
+                             then '지각'
+                        when (sysdate - ATTENDANCE.AT_START) * 24 &gt;= 4 and (sysdate - ATTENDANCE.AT_START) * 24 &lt; 8 then '조퇴'
+                        else '결근'
+                    end
+        where AT_DATE = trunc(sysdate)
+        and E_NO = #{E_NO}
+    </update>
+    <update id="adminAtUpdate" parameterType="map">
+        UPDATE ATTENDANCE
+        set MOD_DATE = sysdate,
+            MOD_ID = #{ADMIN_NO},
+            AT_STATUS = #{AT_STATUS}
+        WHERE AT_DATE = trunc(sysdate)
+          AND E_NO = #{E_NO}
+    </update>
+</mapper>

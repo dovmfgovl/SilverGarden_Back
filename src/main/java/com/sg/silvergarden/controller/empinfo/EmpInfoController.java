@@ -66,7 +66,7 @@ public class EmpInfoController {
     @CrossOrigin(origins = "http://localhost:3000")
     @PutMapping("empEduUpdate")
     public String empEduUpdate(@RequestBody Map<String, Object> eMap) {
-        logger.info("empUpdate");
+        logger.info("empEduUpdate");
         logger.info(eMap.toString());
         int result = 0;
         result = empInfoService.empEduUpdate(eMap);
