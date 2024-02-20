@@ -113,7 +113,8 @@ public class EmpInfoDao {
                 Map<String, Object> eduMap = new HashMap<>();
                 eduMap.put("E_NO", eNo); // E_NO 추가
                 eduMap.put("VALUE", value); // 해당 키의 값을 VALUE로 설정
-                eduMap.put("ORDER", eduOrder); // 해당 키의 EDU_ORDER 값 설정
+                eduMap.put("EDU_ORDER", eduOrder); // 해당 키의 EDU_ORDER 값 설정
+                eduMap.put("key", key);
 
                 // 업데이트 쿼리 실행
                 result += sqlSessionTemplate.update("empEduUpdate", eduMap);

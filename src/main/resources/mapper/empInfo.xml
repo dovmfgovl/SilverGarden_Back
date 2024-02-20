@@ -282,10 +282,10 @@
         where E_NO = #{E_NO}
     </update>-->
 
-    <update id="empEduUpdate" parameterType="map">
+<!--    <update id="empEduUpdate" parameterType="map">
         update EDUCATION
         <set>
-            <!-- EDU_NAME 업데이트 -->
+            &lt;!&ndash; EDU_NAME 업데이트 &ndash;&gt;
             <if test="VALUE != null">
                 EDU_NAME =
                 <choose>
@@ -296,7 +296,7 @@
                 </choose>,
             </if>
 
-            <!-- EDU_MAJOR 업데이트 -->
+            &lt;!&ndash; EDU_MAJOR 업데이트 &ndash;&gt;
             <if test="VALUE != null">
                 EDU_MAJOR =
                 <choose>
@@ -307,7 +307,7 @@
                 </choose>,
             </if>
 
-            <!-- EDU_STATUS 업데이트 -->
+            &lt;!&ndash; EDU_STATUS 업데이트 &ndash;&gt;
             <if test="VALUE != null">
                 EDU_STATUS =
                 <choose>
@@ -316,6 +316,220 @@
                     <when test="ORDER == 3">#{VALUE}</when>
                     <otherwise>EDU_STATUS</otherwise>
                 </choose>,
+            </if>
+        </set>
+        where E_NO = #{E_NO}
+    </update>-->
+
+<!--****************************************************************************-->
+<!--    <update id="empEduUpdate" parameterType="map">
+        update EDUCATION
+        <set>
+            <if test="VALUE != null and EDU_ORDER == 1">
+                <if test="key != null and key.startsWith('HIGH_SCHOOL_NAME')">
+                    EDU_NAME = #{VALUE},
+                </if>
+                <if test="key != null and key.startsWith('HIGH_SCHOOL_PERIOD')">
+                    EDU_PERIOD = #{VALUE},
+                </if>
+                <if test="key != null and key.startsWith('HIGH_SCHOOL_MAJOR')">
+                    EDU_MAJOR = #{VALUE},
+                </if>
+                <if test="key != null and key.startsWith('HIGH_SCHOOL_STATUS')">
+                    EDU_STATUS = #{VALUE},
+                </if>
+            </if>
+
+            <if test="VALUE != null and EDU_ORDER == 2">
+                <if test="key != null and key.startsWith('UNIVERSITY_NAME')">
+                    EDU_NAME = #{VALUE},
+                </if>
+                <if test="key != null and key.startsWith('UNIVERSITY_PERIOD')">
+                    EDU_PERIOD = #{VALUE},
+                </if>
+                <if test="key != null and key.startsWith('UNIVERSITY_MAJOR')">
+                    EDU_MAJOR = #{VALUE},
+                </if>
+                <if test="key != null and key.startsWith('UNIVERSITY_STATUS')">
+                    EDU_STATUS = #{VALUE},
+                </if>
+            </if>
+
+            <if test="VALUE != null and EDU_ORDER == 3">
+                <if test="key != null and key.startsWith('GRADUATE_NAME')">
+                    EDU_NAME = #{VALUE},
+                </if>
+                <if test="key != null and key.startsWith('GRADUATE_PERIOD')">
+                    EDU_PERIOD = #{VALUE},
+                </if>
+                <if test="key != null and key.startsWith('GRADUATE_MAJOR')">
+                    EDU_MAJOR = #{VALUE},
+                </if>
+                <if test="key != null and key.startsWith('GRADUATE_STATUS')">
+                    EDU_STATUS = #{VALUE},
+                </if>
+            </if>
+        </set>
+        where E_NO = #{E_NO}
+    </update>-->
+
+<!--    <update id="empEduUpdate" parameterType="map">
+        update EDUCATION
+        <set>
+            <if test="VALUE != null and EDU_ORDER == 1 and KEY != null and KEY.startsWith('HIGH_SCHOOL_NAME')">
+                EDU_NAME = #{VALUE},
+            </if>
+            <if test="VALUE != null and EDU_ORDER == 2 and KEY != null and KEY.startsWith('UNIVERSITY_NAME')">
+                EDU_NAME = #{VALUE},
+            </if>
+            <if test="VALUE != null and EDU_ORDER == 3 and KEY != null and KEY.startsWith('GRADUATE_NAME')">
+                EDU_NAME = #{VALUE},
+            </if>
+
+            <if test="VALUE != null and EDU_ORDER == 1 and KEY != null and KEY.startsWith('HIGH_SCHOOL_MAJOR')">
+                EDU_MAJOR = #{VALUE},
+            </if>
+            <if test="VALUE != null and EDU_ORDER == 2 and KEY != null and KEY.startsWith('UNIVERSITY_MAJOR')">
+                EDU_MAJOR = #{VALUE},
+            </if>
+            <if test="VALUE != null and EDU_ORDER == 3 and KEY != null and KEY.startsWith('GRADUATE_MAJOR')">
+                EDU_MAJOR = #{VALUE},
+            </if>
+
+            <if test="VALUE != null and EDU_ORDER == 1 and KEY != null and KEY.startsWith('HIGH_SCHOOL_STATUS')">
+                EDU_STATUS = #{VALUE},
+            </if>
+            <if test="VALUE != null and EDU_ORDER == 2 and KEY != null and KEY.startsWith('UNIVERSITY_STATUS')">
+                EDU_STATUS = #{VALUE},
+            </if>
+            <if test="VALUE != null and EDU_ORDER == 3 and KEY != null and KEY.startsWith('GRADUATE_STATUS')">
+                EDU_STATUS = #{VALUE},
+            </if>
+        </set>
+        where E_NO = #{E_NO}
+    </update>-->
+
+<!--    <update id="empEduUpdate" parameterType="map">
+        update EDUCATION
+        <set>
+            <if test="VALUE != null and EDU_ORDER == 1">
+                <if test="key != null and key.startsWith('HIGH_SCHOOL_NAME')">
+                    <if test="VALUE != null">
+                        EDU_NAME = #{VALUE},
+                    </if>
+                </if>
+                <if test="key != null and key.startsWith('HIGH_SCHOOL_PERIOD')">
+                    <if test="VALUE != null">
+                        EDU_PERIOD = #{VALUE},
+                    </if>
+                </if>
+                <if test="key != null and key.startsWith('HIGH_SCHOOL_MAJOR')">
+                    <if test="VALUE != null">
+                        EDU_MAJOR = #{VALUE},
+                    </if>
+                </if>
+                <if test="key != null and key.startsWith('HIGH_SCHOOL_STATUS')">
+                    <if test="VALUE != null">
+                        EDU_STATUS = #{VALUE},
+                    </if>
+                </if>
+            </if>
+
+            <if test="VALUE != null and EDU_ORDER == 2">
+                <if test="key != null and key.startsWith('UNIVERSITY_NAME')">
+                    <if test="VALUE != null">
+                        EDU_NAME = #{VALUE},
+                    </if>
+                </if>
+                <if test="key != null and key.startsWith('UNIVERSITY_PERIOD')">
+                    <if test="VALUE != null">
+                        EDU_PERIOD = #{VALUE},
+                    </if>
+                </if>
+                <if test="key != null and key.startsWith('UNIVERSITY_MAJOR')">
+                    <if test="VALUE != null">
+                        EDU_MAJOR = #{VALUE},
+                    </if>
+                </if>
+                <if test="key != null and key.startsWith('UNIVERSITY_STATUS')">
+                    <if test="VALUE != null">
+                        EDU_STATUS = #{VALUE},
+                    </if>
+                </if>
+            </if>
+
+            <if test="VALUE != null and EDU_ORDER == 3">
+                <if test="key != null and key.startsWith('GRADUATE_NAME')">
+                    <if test="VALUE != null">
+                        EDU_NAME = #{VALUE},
+                    </if>
+                </if>
+                <if test="key != null and key.startsWith('GRADUATE_PERIOD')">
+                    <if test="VALUE != null">
+                        EDU_PERIOD = #{VALUE},
+                    </if>
+                </if>
+                <if test="key != null and key.startsWith('GRADUATE_MAJOR')">
+                    <if test="VALUE != null">
+                        EDU_MAJOR = #{VALUE},
+                    </if>
+                </if>
+                <if test="key != null and key.startsWith('GRADUATE_STATUS')">
+                    <if test="VALUE != null">
+                        EDU_STATUS = #{VALUE},
+                    </if>
+                </if>
+            </if>
+        </set>
+        where E_NO = #{E_NO}
+    </update>-->
+
+    <update id="empEduUpdate" parameterType="map">
+        update EDUCATION
+        <set>
+            <if test="VALUE != null and EDU_ORDER == 1">
+                <if test="key != null and key.startsWith('HIGH_SCHOOL_NAME')">
+                    EDU_NAME = #{VALUE},
+                </if>
+                <if test="key != null and key.startsWith('HIGH_SCHOOL_PERIOD')">
+                    EDU_PERIOD = #{VALUE},
+                </if>
+                <if test="key != null and key.startsWith('HIGH_SCHOOL_MAJOR')">
+                    EDU_MAJOR = #{VALUE},
+                </if>
+                <if test="key != null and key.startsWith('HIGH_SCHOOL_STATUS')">
+                    EDU_STATUS = #{VALUE}
+                </if>
+            </if>
+
+            <if test="VALUE != null and EDU_ORDER == 2">
+                <if test="key != null and key.startsWith('UNIVERSITY_NAME')">
+                    EDU_NAME = #{VALUE},
+                </if>
+                <if test="key != null and key.startsWith('UNIVERSITY_PERIOD')">
+                    EDU_PERIOD = #{VALUE},
+                </if>
+                <if test="key != null and key.startsWith('UNIVERSITY_MAJOR')">
+                    EDU_MAJOR = #{VALUE},
+                </if>
+                <if test="key != null and key.startsWith('UNIVERSITY_STATUS')">
+                    EDU_STATUS = #{VALUE}
+                </if>
+            </if>
+
+            <if test="VALUE != null and EDU_ORDER == 3">
+                <if test="key != null and key.startsWith('GRADUATE_NAME')">
+                    EDU_NAME = #{VALUE},
+                </if>
+                <if test="key != null and key.startsWith('GRADUATE_PERIOD')">
+                    EDU_PERIOD = #{VALUE},
+                </if>
+                <if test="key != null and key.startsWith('GRADUATE_MAJOR')">
+                    EDU_MAJOR = #{VALUE},
+                </if>
+                <if test="key != null and key.startsWith('GRADUATE_STATUS')">
+                    EDU_STATUS = #{VALUE}
+                </if>
             </if>
         </set>
         where E_NO = #{E_NO}
