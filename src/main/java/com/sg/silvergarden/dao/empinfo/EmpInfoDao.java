@@ -115,6 +115,7 @@ public class EmpInfoDao {
                 eduMap.put("VALUE", value); // 해당 키의 값을 VALUE로 설정
                 eduMap.put("EDU_ORDER", eduOrder); // 해당 키의 EDU_ORDER 값 설정
                 eduMap.put("key", key);
+                logger.info(eduMap.toString());
 
                 // 업데이트 쿼리 실행
                 result += sqlSessionTemplate.update("empEduUpdate", eduMap);
