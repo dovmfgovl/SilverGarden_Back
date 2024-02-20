@@ -322,7 +322,7 @@
     </update>-->
 
 <!--****************************************************************************-->
-<!--    <update id="empEduUpdate" parameterType="map">
+    <update id="empEduUpdate" parameterType="map">
         update EDUCATION
         <set>
             <if test="VALUE != null and EDU_ORDER == 1">
@@ -356,22 +356,22 @@
             </if>
 
             <if test="VALUE != null and EDU_ORDER == 3">
-                <if test="key != null and key.startsWith('GRADUATE_NAME')">
+                <if test="key != null and key.startsWith('GRADUATE_SCHOOL_NAME')">
                     EDU_NAME = #{VALUE},
                 </if>
-                <if test="key != null and key.startsWith('GRADUATE_PERIOD')">
+                <if test="key != null and key.startsWith('GRADUATE_SCHOOL_PERIOD')">
                     EDU_PERIOD = #{VALUE},
                 </if>
-                <if test="key != null and key.startsWith('GRADUATE_MAJOR')">
+                <if test="key != null and key.startsWith('GRADUATE_SCHOOL_MAJOR')">
                     EDU_MAJOR = #{VALUE},
                 </if>
-                <if test="key != null and key.startsWith('GRADUATE_STATUS')">
+                <if test="key != null and key.startsWith('GRADUATE_SCHOOL_STATUS')">
                     EDU_STATUS = #{VALUE},
                 </if>
             </if>
         </set>
         where E_NO = #{E_NO}
-    </update>-->
+    </update>
 
 <!--    <update id="empEduUpdate" parameterType="map">
         update EDUCATION
@@ -405,6 +405,16 @@
             <if test="VALUE != null and EDU_ORDER == 3 and KEY != null and KEY.startsWith('GRADUATE_STATUS')">
                 EDU_STATUS = #{VALUE},
             </if>
+
+            <if test="VALUE != null and EDU_ORDER == 1 and KEY != null and KEY.startsWith('HIGH_SCHOOL_PERIOD')">
+                EDU_PERIOD = #{VALUE},
+            </if>
+            <if test="VALUE != null and EDU_ORDER == 2 and KEY != null and KEY.startsWith('UNIVERSITY_PERIOD')">
+                EDU_PERIOD = #{VALUE},
+            </if>
+            <if test="VALUE != null and EDU_ORDER == 3 and KEY != null and KEY.startsWith('GRADUATE_PERIOD')">
+                EDU_PERIOD = #{VALUE},
+            </if>
         </set>
         where E_NO = #{E_NO}
     </update>-->
@@ -484,56 +494,85 @@
         where E_NO = #{E_NO}
     </update>-->
 
-    <update id="empEduUpdate" parameterType="map">
-        update EDUCATION
-        <set>
-            <if test="VALUE != null and EDU_ORDER == 1">
-                <if test="key != null and key.startsWith('HIGH_SCHOOL_NAME')">
-                    EDU_NAME = #{VALUE},
-                </if>
-                <if test="key != null and key.startsWith('HIGH_SCHOOL_PERIOD')">
-                    EDU_PERIOD = #{VALUE},
-                </if>
-                <if test="key != null and key.startsWith('HIGH_SCHOOL_MAJOR')">
-                    EDU_MAJOR = #{VALUE},
-                </if>
-                <if test="key != null and key.startsWith('HIGH_SCHOOL_STATUS')">
-                    EDU_STATUS = #{VALUE}
-                </if>
-            </if>
+<!--    <update id="empEduUpdate" parameterType="map">
+    <![CDATA[
+        DECLARE
+            v_value VARCHAR2(100);
+        BEGIN
+            IF #{VALUE} IS NOT NULL THEN
+                IF #{EDU_ORDER} = 1 THEN
+                    IF #{key} LIKE 'HIGH_SCHOOL_NAME%' THEN
+                        v_value := #{VALUE};
+                        UPDATE EDUCATION
+                        SET EDU_NAME = v_value
+                        WHERE E_NO = #{E_NO};
+                    ELSIF #{key} LIKE 'HIGH_SCHOOL_PERIOD%' THEN
+                        v_value := #{VALUE};
+                        UPDATE EDUCATION
+                        SET EDU_PERIOD = v_value
+                        WHERE E_NO = #{E_NO};
+                    ELSIF #{key} LIKE 'HIGH_SCHOOL_MAJOR%' THEN
+                        v_value := #{VALUE};
+                        UPDATE EDUCATION
+                        SET EDU_MAJOR = v_value
+                        WHERE E_NO = #{E_NO};
+                    ELSIF #{key} LIKE 'HIGH_SCHOOL_STATUS%' THEN
+                        v_value := #{VALUE};
+                        UPDATE EDUCATION
+                        SET EDU_STATUS = v_value
+                        WHERE E_NO = #{E_NO};
+                    END IF;
+                    ELSIF #{EDU_ORDER} = 2 THEN
+                        IF #{key} LIKE 'UNIVERSITY_NAME%' THEN
+                        v_value := #{VALUE};
+                        UPDATE EDUCATION
+                        SET EDU_NAME = v_value
+                        WHERE E_NO = #{E_NO};
+                    ELSIF #{key} LIKE 'UNIVERSITY_PERIOD%' THEN
+                        v_value := #{VALUE};
+                        UPDATE EDUCATION
+                        SET EDU_PERIOD = v_value
+                        WHERE E_NO = #{E_NO};
+                    ELSIF #{key} LIKE 'UNIVERSITY_MAJOR%' THEN
+                        v_value := #{VALUE};
+                        UPDATE EDUCATION
+                        SET EDU_MAJOR = v_value
+                        WHERE E_NO = #{E_NO};
+                    ELSIF #{key} LIKE 'UNIVERSITY_STATUS%' THEN
+                        v_value := #{VALUE};
+                        UPDATE EDUCATION
+                        SET EDU_STATUS = v_value
+                        WHERE E_NO = #{E_NO};
+                    END IF;
+                    ELSIF #{EDU_ORDER} = 3 THEN
+                        IF #{key} LIKE 'GRADUATE_SCHOOL_NAME%' THEN
+                        v_value := #{VALUE};
+                        UPDATE EDUCATION
+                        SET EDU_NAME = v_value
+                        WHERE E_NO = #{E_NO};
+                    ELSIF #{key} LIKE 'GRADUATE_SCHOOL_PERIOD%' THEN
+                        v_value := #{VALUE};
+                        UPDATE EDUCATION
+                        SET EDU_PERIOD = v_value
+                        WHERE E_NO = #{E_NO};
+                    ELSIF #{key} LIKE 'GRADUATE_SCHOOL_MAJOR%' THEN
+                        v_value := #{VALUE};
+                        UPDATE EDUCATION
+                        SET EDU_MAJOR = v_value
+                        WHERE E_NO = #{E_NO};
+                    ELSIF #{key} LIKE 'GRADUATE_SCHOOL_STATUS%' THEN
+                        v_value := #{VALUE};
+                        UPDATE EDUCATION
+                        SET EDU_STATUS = v_value
+                        WHERE E_NO = #{E_NO};
+                    END IF;
+                END IF;
+            END IF;
+        END;
+        ]]>
+</update>-->
 
-            <if test="VALUE != null and EDU_ORDER == 2">
-                <if test="key != null and key.startsWith('UNIVERSITY_NAME')">
-                    EDU_NAME = #{VALUE},
-                </if>
-                <if test="key != null and key.startsWith('UNIVERSITY_PERIOD')">
-                    EDU_PERIOD = #{VALUE},
-                </if>
-                <if test="key != null and key.startsWith('UNIVERSITY_MAJOR')">
-                    EDU_MAJOR = #{VALUE},
-                </if>
-                <if test="key != null and key.startsWith('UNIVERSITY_STATUS')">
-                    EDU_STATUS = #{VALUE}
-                </if>
-            </if>
 
-            <if test="VALUE != null and EDU_ORDER == 3">
-                <if test="key != null and key.startsWith('GRADUATE_NAME')">
-                    EDU_NAME = #{VALUE},
-                </if>
-                <if test="key != null and key.startsWith('GRADUATE_PERIOD')">
-                    EDU_PERIOD = #{VALUE},
-                </if>
-                <if test="key != null and key.startsWith('GRADUATE_MAJOR')">
-                    EDU_MAJOR = #{VALUE},
-                </if>
-                <if test="key != null and key.startsWith('GRADUATE_STATUS')">
-                    EDU_STATUS = #{VALUE}
-                </if>
-            </if>
-        </set>
-        where E_NO = #{E_NO}
-    </update>
 
 
     <delete id="empDelete" parameterType="int">
