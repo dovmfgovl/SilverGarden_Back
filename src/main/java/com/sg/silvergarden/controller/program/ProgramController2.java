@@ -1,7 +1,7 @@
 package com.sg.silvergarden.controller.program;
 
 import com.google.gson.Gson;
-import com.sg.silvergarden.service.program.ProgramService;
+import com.sg.silvergarden.service.program.ProgramService2;
 import com.sg.silvergarden.vo.programcal.ProgramSchedule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,18 +10,18 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Map;
 
-//얘가 원본!!
+
 @RestController
-@RequestMapping("/program2/*")
-public class ProgramController {
-    Logger logger = LoggerFactory.getLogger(ProgramController.class);
+@RequestMapping("/program/*")
+public class ProgramController2 {
+    Logger logger = LoggerFactory.getLogger(ProgramController2.class);
     @Autowired
-    ProgramService programService;
+    ProgramService2 programService;
 
     //    전체 목록조회하기
     @GetMapping("pgList")
     public String pgList(@RequestParam Map<String, Object> pmap){
-        logger.info("ProgramController-pgList");
+        logger.info("ProgramController2-pgList");
         List<Map<String, Object>> pgList = null;
         pgList = programService.pgList(pmap);
         if(pgList.size() == 0){
@@ -37,8 +37,8 @@ public class ProgramController {
     //  프로그램 상세 조회하기
     @GetMapping("pgDetail")
     public String pgDetail(@RequestParam Map<String, Object> pmap){
-        logger.info("ProgramController-pgDetail");
-        logger.info("pmap: {}", pmap);
+        logger.info("ProgramController2-pgDetail");
+        logger.info("pmap: ", pmap);
         List<Map<String, Object>> pgList = null;
         pgList = programService.pgList(pmap);
         Gson g = new Gson();
@@ -50,31 +50,25 @@ public class ProgramController {
     //    프로그램 등록하기
     @PostMapping("pgInsert")
     public String pgInsert(@RequestBody Map<String, Object> pmap){
-        logger.info("ProgramController-pgInsert");
-        logger.info("pmap: {}", pmap);
-        int result = 0;
+        logger.info("ProgramController2-pgInsert");
+        logger.info("pmap: ", pmap);
+        int result = -1;
         result = programService.pgInsert(pmap);
         return String.valueOf(result);
     }
-    @GetMapping("pgDelete")
+    @CrossOrigin(origins = "http://localhost:3000")
+    @DeleteMapping("pgDelete")
     public String pgDelete(@RequestParam Map<String, Object> pmap){
-        logger.info("ProgramController-pgDelete");
+        logger.info("ProgramController2-pgDelete");
         int result = 0;
         result = programService.pgDelete(pmap);
         return String.valueOf(result);
     }
-//    @GetMapping(value = "pgUpdate")
-//    public String pgUpdate(@RequestParam Map<String, Object> pmap){
-//        logger.info("ProgramController-pgUpdate");
-//        logger.info("pmap: {}", pmap);
-//        int result = 0;
-//        result = programService.pgUpdate(pmap);
-//        return String.valueOf(result);
-//    }
+    @CrossOrigin(origins = "http://localhost:3000")
     @PutMapping(value = "pgUpdate")
-    public String pgUpdate(@RequestParam Map<String, Object> pmap){
-        logger.info("ProgramController-pgUpdate");
-        logger.info("pmap: {}", pmap);
+    public String pgUpdate(@RequestBody Map<String, Object> pmap){
+        logger.info("ProgramController2-pgUpdate");
+        logger.info("pmap:", pmap);
         int result = 0;
         result = programService.pgUpdate(pmap);
         return String.valueOf(result);
@@ -82,7 +76,7 @@ public class ProgramController {
 
     @GetMapping("scheduleList")
     public String scheduleList(){
-        logger.info("ProgramController-scheduleList");
+        logger.info("ProgramController2-scheduleList");
         List<ProgramSchedule> calList = null;
         calList = programService.scheduleList();
         logger.info(calList.toString());
