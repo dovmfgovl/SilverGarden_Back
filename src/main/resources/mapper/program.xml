@@ -35,7 +35,16 @@
             TO_CHAR(REG_DATE, 'YYYY-MM-DD"T"HH24:MI') AS REG_DATE,
             TO_CHAR(MOD_DATE, 'YYYY-MM-DD"T"HH24:MI') AS MOD_DATE,
             REG_ID,
-            MOD_ID
+            MOD_ID,
+            CASE
+            --연보라/연핑크/연민트/기본 : 연초록
+            WHEN PG_CATEGORY = '신체' THEN '#E0FFFF'
+            WHEN PG_CATEGORY = '여가' THEN '#E6E6FA'
+            WHEN PG_CATEGORY = '교육' THEN '#FFF0F5'
+            WHEN PG_CATEGORY = '문화' THEN '#FFFFCC'
+            ELSE '#6495ED'
+            --#DDA0DD / #6495ED / #F0F8FF
+            END AS COLOR
         FROM PROGRAM
         <where>
             <if test = "pg_no!=null">And pg_no=#{pg_no}</if>

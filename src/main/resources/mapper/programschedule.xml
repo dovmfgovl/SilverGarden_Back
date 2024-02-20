@@ -18,19 +18,23 @@
     </update>
     <select id="getProgramSchedule" resultType="java.util.Map">
         SELECT
-            PS_NO2,
+            PS_NO2,--CRUD를 하는 PK키로 넣기
             PS_NAME,
             TO_CHAR(PS_START, 'YYYY-MM-DD"T"HH24:MI:SS') AS PS_START,
             TO_CHAR(PS_END, 'YYYY-MM-DD"T"HH24:MI:SS') AS PS_END,
             PS_INFO,
+            PS_CATEGORY,
             REG_ID,
             TO_CHAR(MOD_DATE, 'YYYY-MM-DD"T"HH24:MI:SS') AS MOD_DATE,
             TO_CHAR(REG_DATE, 'YYYY-MM-DD"T"HH24:MI:SS') AS REG_DATE,
+            --종류별로 컬러를 넣고 싶은 것으로 아래 case문 작성(색상 취향에 따라 선택)
             CASE
-                WHEN PS_CATEGORY = '1' THEN '#E0FFFF'
-                WHEN PS_CATEGORY = '2' THEN '#E6E6FA'
-                WHEN PS_CATEGORY = '3' THEN '#FFF0F5'
-                ELSE '#000000'
+                --연보라/연핑크/연민트/기본 : 연초록
+                WHEN PS_CATEGORY = '회의' THEN '#E0FFFF'
+                WHEN PS_CATEGORY = '출장' THEN '#E6E6FA'
+                WHEN PS_CATEGORY = '외근' THEN '#FFF0F5'
+                ELSE '#6495ED'
+                --#FFFFCC / #6495ED / #F0F8FF
             END AS COLOR
         FROM PROGRAM_SCHEDULE2
     </select>

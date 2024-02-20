@@ -38,7 +38,7 @@ public class ProgramController2 {
     @GetMapping("pgDetail")
     public String pgDetail(@RequestParam Map<String, Object> pmap){
         logger.info("ProgramController2-pgDetail");
-        logger.info("pmap: {}", pmap);
+        logger.info("pmap: ", pmap);
         List<Map<String, Object>> pgList = null;
         pgList = programService.pgList(pmap);
         Gson g = new Gson();
@@ -64,6 +64,7 @@ public class ProgramController2 {
         result = programService.pgDelete(pmap);
         return String.valueOf(result);
     }
+    @CrossOrigin(origins = "http://localhost:3000")
     @PutMapping(value = "pgUpdate")
     public String pgUpdate(@RequestBody Map<String, Object> pmap){
         logger.info("ProgramController2-pgUpdate");
