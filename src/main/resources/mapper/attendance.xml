@@ -46,7 +46,7 @@
             MOD_ID = #{E_NO},
             AT_STATUS = CASE
                         WHEN TO_CHAR(SYSDATE, 'HH24:MI') BETWEEN '08:30' AND '18:30' AND (SYSDATE - AT_START) * 24 >= 8 THEN '정상출근'  -- 출근 시간이 8시30분~18시30분 사이이면서 일 한 시간이 8시간 이상일 경우 정상출근
-                        WHEN TO_CHAR(SYSDATE, 'HH24:MI') BETWEEN '09:01' AND '18:30' THEN '지각'   -- 출근 시간이 9시 1분 이후인 경우 지각
+                        WHEN TO_CHAR(SYSDATE, 'HH24:MI') BETWEEN '09:01' AND '18:30' AND (SYSDATE - AT_START) * 24 >= 8 THEN '지각'   -- 출근 시간이 9시 1분 이후인 경우 지각
                         WHEN (SYSDATE - AT_START) * 24 >= 4 AND (SYSDATE - AT_START) * 24 &lt; 8 THEN '조퇴'  -- 근무 시간이 4시간 이상 8시간 미만인 경우 조퇴
                         ELSE '결근'
                     END
