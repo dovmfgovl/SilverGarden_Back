@@ -44,6 +44,45 @@ public class ApprovalController {
         return temp;
     }
 
+    @GetMapping("approvalCompleteList")
+    public String approvalCompleteList(String e_no){
+        log.info("approvalCompleteList");
+        List<Map<String, Object>> dList = null;
+        dList = approvalService.approvalCompleteList(e_no);
+        Gson g = new Gson();
+        String temp = g.toJson(dList);
+        return temp;
+    }
+
+    @GetMapping("approvalDenyList")
+    public String approvalDenyList(String e_no){
+        log.info("approvalDenyList");
+        List<Map<String, Object>> dList = null;
+        dList = approvalService.approvalDenyList(e_no);
+        Gson g = new Gson();
+        String temp = g.toJson(dList);
+        return temp;
+    }
+
+    @GetMapping("approvalProgressList")
+    public String approvalProgressList(String e_no){
+        log.info("approvalProgressList");
+        List<Map<String, Object>> dList = null;
+        dList = approvalService.approvalProgressList(e_no);
+        Gson g = new Gson();
+        String temp = g.toJson(dList);
+        return temp;
+    }
+    @GetMapping("approvalTempList")
+    public String approvalTempList(String e_no){
+        log.info("approvalTempList");
+        List<Map<String, Object>> dList = null;
+        dList = approvalService.approvalTempList(e_no);
+        Gson g = new Gson();
+        String temp = g.toJson(dList);
+        return temp;
+    }
+
     @GetMapping("getDeptData")
     public String getDeptDate(){
         log.info("getDeptData");
@@ -51,6 +90,15 @@ public class ApprovalController {
         dList = approvalService.getDeptData();
         Gson g = new Gson();
         String temp = g.toJson(dList);
+        return temp;
+    }
+    @GetMapping("getApprovalDocCount")
+    public String getApprovalDocCount(String e_no) {
+        log.info("ApprovalController: getApprovalDocCount");
+        Map<String, Object> rmap = null;
+        rmap = approvalService.getApprovalDocCount(e_no);
+        Gson g = new Gson();
+        String temp = g.toJson(rmap);
         return temp;
     }
 
@@ -87,6 +135,7 @@ public class ApprovalController {
             }
             pmap.put("fileList", fileList);//맵에 파일리스트를 추가해줌
         }
+        log.info(pmap.toString());
         result = approvalService.approvalInsert(pmap);
         return result == 0 || result == -1 ?"error":"ok";//결과값이 -1 혹은 0이면 에러를 반환
     }
@@ -97,6 +146,15 @@ public class ApprovalController {
         log.info(pmap.toString());
         int result = -1;
         result=approvalService.passOrDeny(pmap);
+        log.info(String.valueOf(result));
+        return result == 0 || result == -1 ?"error":"ok";
+    }
+
+    @DeleteMapping("approvalDelete")
+    public String approvalDelete(int d_no){
+        log.info("approvalDelete");
+        int result = -1;
+        result=approvalService.approvalDelete(d_no);
         log.info(String.valueOf(result));
         return result == 0 || result == -1 ?"error":"ok";
     }

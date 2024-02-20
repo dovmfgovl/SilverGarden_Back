@@ -26,6 +26,12 @@ public class ApprovalDao {
         dList = sqlSessionTemplate.selectList("getDeptData");
         return dList;
     }
+    public Map<String, Object> getApprovalDocCount(String e_no) {
+        log.info("ApprovalDao: getApprovalDocCount");
+        Map<String, Object> rmap = null;
+        rmap = sqlSessionTemplate.selectOne("getApprovalDocCount", e_no);
+        return rmap;
+    }
 
     public List<Map<String, Object>> getApprovalDetail(int d_no) {
         List<Map<String, Object>> dList = null;
@@ -74,5 +80,35 @@ public class ApprovalDao {
         int result = -1;
         result =sqlSessionTemplate.update("statusUpdate", pmap);
         return result;
+    }
+
+    public int approvalDelete(int d_no){
+        int result = -1;
+        result =sqlSessionTemplate.delete("approvalDelete", d_no);
+        return result;
+    }
+
+    public List<Map<String, Object>> approvalCompleteList(String e_no) {
+        List<Map<String, Object>> dList = null;
+        dList = sqlSessionTemplate.selectList("approvalCompleteList",e_no);
+        return dList;
+    }
+
+    public List<Map<String, Object>> approvalDenyList(String e_no) {
+        List<Map<String, Object>> dList = null;
+        dList = sqlSessionTemplate.selectList("approvalDenyList",e_no);
+        return dList;
+    }
+
+    public List<Map<String, Object>> approvalProgressList(String e_no) {
+        List<Map<String, Object>> dList = null;
+        dList = sqlSessionTemplate.selectList("approvalProgressList",e_no);
+        return dList;
+    }
+
+    public List<Map<String, Object>> approvalTempList(String e_no) {
+        List<Map<String, Object>> dList = null;
+        dList = sqlSessionTemplate.selectList("approvalTempList",e_no);
+        return dList;
     }
 }

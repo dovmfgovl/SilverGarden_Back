@@ -34,7 +34,7 @@
                            on ad.e_no = e.e_no
                  join APPROVAL_HISTORY ah
                            on ah.d_no = ad.D_NO
-        where ah.ap_id = #{value} and ap_result = '대기중'
+        where ah.ap_id = #{value} and ap_result = '대기중' and ad.d_status in('진행중', '상신')
         order by ad.d_no desc
     </select>
 
@@ -60,9 +60,34 @@
                       on ad.e_no = e.e_no
                  join APPROVAL_HISTORY ah
                       on ah.d_no = ad.D_NO
-        where #{e_no} in(e.e_no, ah.ap_id) and ad.D_STATUS = '반려'
+        where #{value} in(e.e_no, ah.ap_id) and ad.D_STATUS = '반려'
         order by ad.d_no desc
     </select>
+
+    <select id="approvalCompleteList" parameterType="String" resultType="map">
+        select distinct ad.d_no as "d_no", ad.d_title as "d_title", ad.d_content as "d_content", ad.d_status as "d_status",
+                        ad.e_no as "e_no", ad.d_category as "d_category",
+                        to_char(ad.reg_date, 'YYYY-MM-DD') as "reg_date", e.e_name as "e_name", e.dept_name "dept_name"
+        from approval_doc ad
+                 join employee e
+                      on ad.e_no = e.e_no
+                 join APPROVAL_HISTORY ah
+                      on ah.d_no = ad.D_NO
+        where #{value} in(e.e_no, ah.ap_id) and ad.D_STATUS = '종결'
+        order by ad.d_no desc
+    </select>
+
+    <select id="approvalTempList" parameterType="String" resultType="map">
+        select distinct ad.d_no as "d_no", ad.d_title as "d_title", ad.d_content as "d_content", ad.d_status as "d_status",
+                        ad.e_no as "e_no", ad.d_category as "d_category",
+                        to_char(ad.reg_date, 'YYYY-MM-DD') as "reg_date", e.e_name as "e_name", e.dept_name "dept_name"
+        from approval_doc ad
+                 join employee e
+                      on ad.e_no = e.e_no
+        where ad.E_NO = #{value} and ad.D_STATUS = '임시저장'
+        order by ad.d_no desc
+    </select>
+
 
     <select id="getDeptData" resultMap="deptDataMap">
         select dept.dept_name as "dept_name", e.e_no as "e_no", e.e_name "e_name", e.e_rank "e_rank"
@@ -73,6 +98,20 @@
                        having dept_name is not null) dept
                       on e.dept_name = dept.dept_name
         order by e.dept_name
+    </select>
+
+    <select id="getApprovalDocCount" parameterType="String" resultType="map">
+        select
+            (select count(distinct ad.d_no)
+             from APPROVAL_DOC ad join APPROVAL_HISTORY ah on ad.d_no = ah.d_no
+             where ah.ap_id = #{value} and ap_result = '대기중' and ad.d_status in('진행중', '상신')) as "wait_cnt"
+             ,(select count(distinct ad.d_no)
+               from APPROVAL_DOC ad join APPROVAL_HISTORY ah on ad.d_no = ah.d_no
+               where ah.ap_id = #{value} and ah.ap_result = '승인' and ad.D_STATUS = '진행중') as "progress_cnt"
+             ,(select count(distinct ad.d_no)
+               from APPROVAL_DOC ad join APPROVAL_HISTORY ah on ad.d_no = ah.d_no
+               where #{value} in(ad.E_NO, ah.AP_ID) and ad.D_STATUS = '반려')as "deny_cnt"
+        from dual
     </select>
 
     <insert id="approvalInsert" useGeneratedKeys="true" parameterType="map" keyColumn="d_no" keyProperty ="d_no">
@@ -110,15 +149,15 @@
              select
                  #{item.ap_lev, jdbcType=NUMERIC} as ap_lev,
                  '대기중' as ap_result,
-                 #{item.e_no} as ap_id,
+                 #{item.ap_id} as ap_id,
                  null as ap_cdate,
                  #{item.ap_category} as ap_category,
                  #{item.d_no, jdbcType=NUMERIC} as d_no,
                  null as ap_comment,
                  sysdate as reg_date,
                  sysdate as mod_date,
-                 #{item.e_no} as reg_id,
-                 #{item.e_no} as mod_id
+                 #{item.ap_id} as reg_id,
+                 #{item.ap_id} as mod_id
              from dual
          </foreach>
          ) A
@@ -188,6 +227,10 @@
             d_status=#{d_status}
         where d_no =#{d_no}
     </update>
+
+    <delete id="approvalDelete" parameterType="int">
+        delete from APPROVAL_DOC where d_no = #{value}
+    </delete>
 
 
 </mapper>
