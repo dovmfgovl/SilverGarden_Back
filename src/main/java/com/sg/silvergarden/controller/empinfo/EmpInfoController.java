@@ -52,7 +52,6 @@ public class EmpInfoController {
     }
 
     // 직원 수정
-    @CrossOrigin(origins = "http://localhost:3000")
     @PutMapping("empUpdate")
     public String empUpdate(@RequestBody Map<String, Object> eMap) {
         logger.info("empUpdate");
@@ -74,7 +73,6 @@ public class EmpInfoController {
     }
 
     // 직원 학력 수정
-    @CrossOrigin(origins = "http://localhost:3000")
     @PutMapping("empEduUpdate")
     public String empEduUpdate(@RequestBody Map<String, Object> eMap) {
         logger.info("empEduUpdate");
@@ -95,7 +93,6 @@ public class EmpInfoController {
     }
 
     // 직원 경력 delete
-    @CrossOrigin(origins = "http://localhost:3000")
     @DeleteMapping("experienceDelete")
     public String experienceDelete(int exp_no) {
         logger.info("experienceDelete");

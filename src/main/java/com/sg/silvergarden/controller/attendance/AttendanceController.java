@@ -41,7 +41,6 @@ public class AttendanceController {
     }
 
     // 근태 퇴근 update
-    @CrossOrigin(origins = "http://localhost:3000")
     @PutMapping("atUpdate")
     public String atUpdate(@RequestBody Map<String, Object> atMap) {
         logger.info("atUpdate");
@@ -52,7 +51,6 @@ public class AttendanceController {
     }
 
     // 관리자 - 근태 상태 update (시간은 변경되지 않고 AT_STATUS만 변경)
-    @CrossOrigin(origins = "http://localhost:3000")
     @PutMapping("adminAtUpdate")
     public String adminAtUpdate(@RequestBody Map<String, Object> atMap) {
         logger.info("adminAtUpdate");
