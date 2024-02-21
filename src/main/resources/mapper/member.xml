@@ -10,18 +10,6 @@
         , CLIENT_PAGEID, CLIENT_PW
         , REG_ID, MOD_ID, TO_CHAR(REG_DATE,'YYYY-MM-DD')AS REG_DATE, MOD_DATE
         FROM CLIENT
-        <where>
-            <if test="gubun!=null">
-                <choose>
-                    <when test='gubun.equals("client_name")'>
-                        AND CLIENT_NAME LIKE '%'||#{keyword}||'%'
-                    </when>
-                    <when test='gubun.equals("client_manager")'>
-                        AND CLIENT_MANAGER LIKE '%'||#{keyword}||'%'
-                    </when>
-                </choose>
-            </if>
-        </where>
     </select>
     <delete id="memberDelete" parameterType="map">
         delete from CLIENT where CLIENT_ID =  #{CLIENT_ID}
