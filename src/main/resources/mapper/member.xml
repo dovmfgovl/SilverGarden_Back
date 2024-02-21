@@ -33,6 +33,7 @@
             CLIENT_BIRTH=#{CLIENT_BIRTH},
             CLIENT_GENDER=#{CLIENT_GENDER},
             CLIENT_TEL=#{CLIENT_TEL},
+            CLIENT_AGE=#{CLIENT_AGE},
             CLIENT_ADDRESS=#{CLIENT_ADDRESS},
             CLIENT_MANAGER=#{CLIENT_MANAGER},
             MOD_DATE=sysdate,
@@ -41,9 +42,9 @@
     </update>
     <insert id="memberInsert" useGeneratedKeys="true" parameterType="map" keyColumn="CLIENT_ID" keyProperty ="CLIENT_ID">
         INSERT INTO CLIENT
-        (CLIENT_ID, CLIENT_NAME, CLIENT_BIRTH, CLIENT_GENDER, CLIENT_TEL, CLIENT_ADDRESS, CLIENT_MANAGER, REG_ID, MOD_ID, REG_DATE, MOD_DATE)
+        (CLIENT_ID, CLIENT_NAME, CLIENT_BIRTH, CLIENT_GENDER, CLIENT_TEL, CLIENT_ADDRESS, CLIENT_MANAGER,CLIENT_AGE,REG_ID, MOD_ID, REG_DATE, MOD_DATE)
         VALUES
-            ((TO_CHAR(SYSDATE, 'YYMM_') || LPAD(SEQ_CLIENT_NO.nextval, 8, '0')),#{CLIENT_NAME},#{CLIENT_BIRTH},#{CLIENT_GENDER},#{CLIENT_TEL},#{CLIENT_ADDRESS},#{CLIENT_MANAGER},#{REG_ID},#{MOD_ID},SYSDATE,SYSDATE)
+            ((TO_CHAR(SYSDATE, 'YYMM_') || LPAD(SEQ_CLIENT_NO.nextval, 8, '0')),#{CLIENT_NAME},#{CLIENT_BIRTH},#{CLIENT_GENDER},#{CLIENT_TEL},#{CLIENT_ADDRESS},#{CLIENT_MANAGER},#{CLIENT_AGE},#{REG_ID},#{MOD_ID},SYSDATE,SYSDATE)
     </insert>
 <!--  상담관련   -->
     <select id="counselList" parameterType="map" resultType="map">
