@@ -105,6 +105,7 @@ public class ApprovalController {
     @GetMapping("getApprovalDetail")
     public String getApprovalDetail(int d_no){
         log.info("getApprovalDetail");
+        log.info(String.valueOf(d_no));
         List<Map<String, Object>> dList = null;
         dList = approvalService.getApprovalDetail(d_no);
         Gson g = new Gson();
@@ -155,6 +156,15 @@ public class ApprovalController {
         log.info("approvalDelete");
         int result = -1;
         result=approvalService.approvalDelete(d_no);
+        log.info(String.valueOf(result));
+        return result == 0 || result == -1 ?"error":"ok";
+    }
+
+    @GetMapping("approvalWithdrawal")
+    public String approvalWithdrawal(int d_no){
+        log.info("approvalWithdrawal");
+        int result = -1;
+        result=approvalService.approvalWithdrawal(d_no);
         log.info(String.valueOf(result));
         return result == 0 || result == -1 ?"error":"ok";
     }

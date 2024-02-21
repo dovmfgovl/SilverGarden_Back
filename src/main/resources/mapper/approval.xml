@@ -15,7 +15,7 @@
     </resultMap>
 
     <select id="allApprovalList" parameterType="String" resultType="map">
-        select ad.d_no as "d_no", ad.d_title as "d_title", ad.d_content as "d_content", ad.d_status as "d_status",
+        select ad.d_no as "d_no", ad.d_title as "d_title", DBMS_LOB.SUBSTR(ad.d_content, 4000, 1) AS "d_content", ad.d_status as "d_status",
                ad.e_no as "e_no", ad.d_category as "d_category",
                to_char(ad.reg_date, 'YYYY-MM-DD') as "reg_date", e.e_name as "e_name", e.dept_name "dept_name"
         from approval_doc ad
@@ -26,7 +26,7 @@
     </select>
 
     <select id="approvalWaitList" parameterType="String" resultType="map">
-        select distinct ad.d_no as "d_no", ad.d_title as "d_title", ad.d_content as "d_content", ad.d_status as "d_status",
+        select distinct ad.d_no as "d_no", ad.d_title as "d_title", DBMS_LOB.SUBSTR(ad.d_content, 4000, 1) AS "d_content", ad.d_status as "d_status",
                ad.e_no as "e_no", ad.d_category as "d_category",
                to_char(ad.reg_date, 'YYYY-MM-DD') as "reg_date", e.e_name as "e_name", e.dept_name "dept_name"
         from approval_doc ad
@@ -39,7 +39,7 @@
     </select>
 
     <select id="approvalProgressList" parameterType="String" resultType="map">
-        select distinct ad.d_no as "d_no", ad.d_title as "d_title", ad.d_content as "d_content", ad.d_status as "d_status",
+        select distinct ad.d_no as "d_no", ad.d_title as "d_title", DBMS_LOB.SUBSTR(ad.d_content, 4000, 1) AS "d_content", ad.d_status as "d_status",
                ad.e_no as "e_no", ad.d_category as "d_category",
                to_char(ad.reg_date, 'YYYY-MM-DD') as "reg_date", e.e_name as "e_name", e.dept_name "dept_name"
         from approval_doc ad
@@ -52,7 +52,7 @@
     </select>
 
     <select id="approvalDenyList" parameterType="String" resultType="map">
-        select distinct ad.d_no as "d_no", ad.d_title as "d_title", ad.d_content as "d_content", ad.d_status as "d_status",
+        select distinct ad.d_no as "d_no", ad.d_title as "d_title", DBMS_LOB.SUBSTR(ad.d_content, 4000, 1) AS "d_content", ad.d_status as "d_status",
                         ad.e_no as "e_no", ad.d_category as "d_category",
                         to_char(ad.reg_date, 'YYYY-MM-DD') as "reg_date", e.e_name as "e_name", e.dept_name "dept_name"
         from approval_doc ad
@@ -65,7 +65,7 @@
     </select>
 
     <select id="approvalCompleteList" parameterType="String" resultType="map">
-        select distinct ad.d_no as "d_no", ad.d_title as "d_title", ad.d_content as "d_content", ad.d_status as "d_status",
+        select distinct ad.d_no as "d_no", ad.d_title as "d_title", DBMS_LOB.SUBSTR(ad.d_content, 4000, 1) AS "d_content", ad.d_status as "d_status",
                         ad.e_no as "e_no", ad.d_category as "d_category",
                         to_char(ad.reg_date, 'YYYY-MM-DD') as "reg_date", e.e_name as "e_name", e.dept_name "dept_name"
         from approval_doc ad
@@ -78,7 +78,7 @@
     </select>
 
     <select id="approvalTempList" parameterType="String" resultType="map">
-        select distinct ad.d_no as "d_no", ad.d_title as "d_title", ad.d_content as "d_content", ad.d_status as "d_status",
+        select distinct ad.d_no as "d_no", ad.d_title as "d_title", DBMS_LOB.SUBSTR(ad.d_content, 4000, 1) AS "d_content", ad.d_status as "d_status",
                         ad.e_no as "e_no", ad.d_category as "d_category",
                         to_char(ad.reg_date, 'YYYY-MM-DD') as "reg_date", e.e_name as "e_name", e.dept_name "dept_name"
         from approval_doc ad
@@ -192,7 +192,7 @@
     </resultMap>
 
     <select id="getApprovalDetail" parameterType="int" resultMap="approvalDocDataMap">
-        select ad.d_no, ad.d_content, ad.d_title, ad.d_status, ad.e_no, e.e_name, e.e_rank, ad.D_CATEGORY, to_char(ad.reg_date,'YYYY-MM-DD hh:mm:ss') as reg_date
+        select ad.d_no, DBMS_LOB.SUBSTR(ad.d_content, 4000, 1) AS d_content, ad.d_title, ad.d_status, ad.e_no, e.e_name, e.e_rank, ad.D_CATEGORY, to_char(ad.reg_date,'YYYY-MM-DD hh:mm:ss') as reg_date
                 ,e.dept_name, af.ap_file_no, af.ap_filename,
                ah.ap_no, ah.ap_lev, ah.ap_result, ah.ap_id,(select e_name from EMPLOYEE  where e_no = ah.ap_id) as ap_name
                ,(select e_rank from EMPLOYEE  where e_no = ah.ap_id) as ap_rank, ah.ap_cdate, ah.ap_category, ah.ap_comment
@@ -207,7 +207,7 @@
     <select id="getFinalApprovalLevel" resultType="int" parameterType="int">
         SELECT MAX(AP_LEV)
         FROM APPROVAL_HISTORY
-        WHERE D_NO = #{d_no}
+        WHERE D_NO = #{d_no} and AP_CATEGORY = '결재'
     </select>
 
     <update id="passOrDeny" parameterType="map">

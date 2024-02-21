@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -143,6 +144,15 @@ public class ApprovalService {
     public int approvalDelete(int d_no) {
         int result = -1;
         result =approvalDao.approvalDelete(d_no);
+        return result;
+    }
+
+    public int approvalWithdrawal(int d_no) {
+        int result = -1;
+        Map<String, Object> map = new HashMap<>();
+        map.put("d_no", d_no);
+        map.put("d_status", "임시저장");
+        result =approvalDao.statusUpdate(map);
         return result;
     }
 }
