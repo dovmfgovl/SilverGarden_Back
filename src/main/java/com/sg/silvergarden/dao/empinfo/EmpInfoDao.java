@@ -23,6 +23,13 @@ public class EmpInfoDao {
         return eList;
     }
 
+    public List<Map<String, Object>> experienceList(Map<String, Object> eMap) {
+        logger.info("experienceList");
+        List<Map<String, Object>> eList = sqlSessionTemplate.selectList("experienceList", eMap);
+        logger.info(eList.toString());
+        return eList;
+    }
+
     public int empUpdate(Map<String, Object> eMap) {
         logger.info("empUpdate");
         int result = 0;
@@ -126,4 +133,30 @@ public class EmpInfoDao {
         return result;
     }
 
+    public int experienceInsert(Map<String, Object> eMap) {
+        logger.info("experienceInsert");
+        logger.info(eMap.toString());
+        int result = 0;
+        result = sqlSessionTemplate.insert("experienceInsert", eMap);
+        return result;
+    }
+
+    public int experienceDelete(int exp_no) {
+        logger.info("experienceDelete");
+        int result = 0;
+        try {
+            result = sqlSessionTemplate.delete("experienceDelete", exp_no);
+        } catch (Exception e) {
+            logger.info(e.toString());
+        }
+        return result;
+    }
+
+    public int certiInsert(Map<String, Object> eMap) {
+        logger.info("certiInsert");
+        logger.info(eMap.toString());
+        int result = 0;
+        result = sqlSessionTemplate.insert("certiInsert", eMap);
+        return result;
+    }
 }

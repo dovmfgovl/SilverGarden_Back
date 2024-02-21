@@ -3,7 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.mybatis.mapper.EmpInfoMapper">
-    <select id="empList" parameterType="map" resultType="map">
+    <!--<select id="empList" parameterType="map" resultType="map">
         SELECT
             emp.E_NO,
             emp.E_NAME,
@@ -98,7 +98,197 @@
             emp.E_NO, emp.E_NAME, emp.E_ADDRESS, emp.E_AUTH, emp.E_STATUS, emp.E_EMAIL, emp.E_GENDER, emp.E_HIREDATE, emp.E_ENDDATE, emp.E_PASSWORD, emp.E_PHONE, emp.E_RANK, emp.E_BIRTH, emp.DEPT_NAME, emp.E_OCCUP, emp.E_PROFILE
         ORDER BY
             emp.E_NO
+    </select>-->
+
+<!--    <select id="empList" parameterType="map" resultType="map">
+        SELECT
+            emp.E_NO,
+            emp.E_NAME,
+            emp.E_ADDRESS,
+            emp.E_AUTH,
+            emp.E_STATUS,
+            emp.E_EMAIL,
+            emp.E_GENDER,
+            emp.E_HIREDATE,
+            emp.E_ENDDATE,
+            emp.E_PASSWORD,
+            emp.E_PHONE,
+            emp.E_RANK,
+            emp.E_BIRTH,
+            emp.DEPT_NAME,
+            emp.E_OCCUP,
+            emp.E_PROFILE,
+            TO_CHAR(emp.REG_DATE, 'YYYY-MM-DD') as REG_DATE,
+            edu.HIGH_SCHOOL_PERIOD,
+            edu.HIGH_SCHOOL_NAME,
+            edu.HIGH_SCHOOL_MAJOR,
+            edu.HIGH_SCHOOL_STATUS,
+            edu.UNIVERSITY_PERIOD,
+            edu.UNIVERSITY_NAME,
+            edu.UNIVERSITY_MAJOR,
+            edu.UNIVERSITY_STATUS,
+            edu.GRADUATE_SCHOOL_PERIOD,
+            edu.GRADUATE_SCHOOL_NAME,
+            edu.GRADUATE_SCHOOL_MAJOR,
+            edu.GRADUATE_SCHOOL_STATUS,
+            exp.EXP_NO,
+            exp.EXP_NAME,
+            exp.EXP_DEPT,
+            exp.EXP_RANK,
+            exp.EXP_DUTY,
+            exp.EXP_PERIOD,
+            cer.CERTI_NO,
+            cer.CERTI_CATE,
+            cer.CERTI_CODE,
+            cer.CERTI_ISSUER,
+            cer.CERTI_ACQUIRE
+        FROM
+            EMPLOYEE emp
+                LEFT JOIN (
+                SELECT
+                    E_NO,
+                    MAX(CASE WHEN EDU_ORDER = '1' THEN EDU_PERIOD END) AS HIGH_SCHOOL_PERIOD,
+                    MAX(CASE WHEN EDU_ORDER = '1' THEN EDU_NAME END) AS HIGH_SCHOOL_NAME,
+                    MAX(CASE WHEN EDU_ORDER = '1' THEN EDU_MAJOR END) AS HIGH_SCHOOL_MAJOR,
+                    MAX(CASE WHEN EDU_ORDER = '1' THEN EDU_STATUS END) AS HIGH_SCHOOL_STATUS,
+                    MAX(CASE WHEN EDU_ORDER = '2' THEN EDU_PERIOD END) AS UNIVERSITY_PERIOD,
+                    MAX(CASE WHEN EDU_ORDER = '2' THEN EDU_NAME END) AS UNIVERSITY_NAME,
+                    MAX(CASE WHEN EDU_ORDER = '2' THEN EDU_MAJOR END) AS UNIVERSITY_MAJOR,
+                    MAX(CASE WHEN EDU_ORDER = '2' THEN EDU_STATUS END) AS UNIVERSITY_STATUS,
+                    MAX(CASE WHEN EDU_ORDER = '3' THEN EDU_PERIOD END) AS GRADUATE_SCHOOL_PERIOD,
+                    MAX(CASE WHEN EDU_ORDER = '3' THEN EDU_NAME END) AS GRADUATE_SCHOOL_NAME,
+                    MAX(CASE WHEN EDU_ORDER = '3' THEN EDU_MAJOR END) AS GRADUATE_SCHOOL_MAJOR,
+                    MAX(CASE WHEN EDU_ORDER = '3' THEN EDU_STATUS END) AS GRADUATE_SCHOOL_STATUS
+                FROM
+                    EDUCATION
+                GROUP BY
+                    E_NO
+            ) edu ON emp.E_NO = edu.E_NO
+                LEFT JOIN (
+                SELECT
+                    E_NO,
+                    EXP_NO,
+                    EXP_NAME,
+                    EXP_DEPT,
+                    EXP_RANK,
+                    EXP_DUTY,
+                    EXP_PERIOD
+                FROM
+                    EXPERIENCE
+            ) exp ON emp.E_NO = exp.E_NO
+                LEFT JOIN (
+                SELECT
+                    E_NO,
+                    CERTI_NO,
+                    CERTI_CATE,
+                    CERTI_CODE,
+                    CERTI_ISSUER,
+                    CERTI_ACQUIRE
+                FROM
+                    CERTIFICATION
+            ) cer ON emp.E_NO = cer.E_NO
+        ORDER BY
+            emp.E_NO
+    </select>-->
+
+    <select id="empList" parameterType="map" resultType="map">
+        SELECT
+            emp.E_NO,
+            emp.E_NAME,
+            emp.E_ADDRESS,
+            emp.E_AUTH,
+            emp.E_STATUS,
+            emp.E_EMAIL,
+            emp.E_GENDER,
+            emp.E_HIREDATE,
+            emp.E_ENDDATE,
+            emp.E_PASSWORD,
+            emp.E_PHONE,
+            emp.E_RANK,
+            emp.E_BIRTH,
+            emp.DEPT_NAME,
+            emp.E_OCCUP,
+            emp.E_PROFILE,
+            MAX(edu.HIGH_SCHOOL_PERIOD) AS HIGH_SCHOOL_PERIOD,
+            MAX(edu.HIGH_SCHOOL_NAME) AS HIGH_SCHOOL_NAME,
+            MAX(edu.HIGH_SCHOOL_MAJOR) AS HIGH_SCHOOL_MAJOR,
+            MAX(edu.HIGH_SCHOOL_STATUS) AS HIGH_SCHOOL_STATUS,
+            MAX(edu.UNIVERSITY_PERIOD) AS UNIVERSITY_PERIOD,
+            MAX(edu.UNIVERSITY_NAME) AS UNIVERSITY_NAME,
+            MAX(edu.UNIVERSITY_MAJOR) AS UNIVERSITY_MAJOR,
+            MAX(edu.UNIVERSITY_STATUS) AS UNIVERSITY_STATUS,
+            MAX(edu.GRADUATE_SCHOOL_PERIOD) AS GRADUATE_SCHOOL_PERIOD,
+            MAX(edu.GRADUATE_SCHOOL_NAME) AS GRADUATE_SCHOOL_NAME,
+            MAX(edu.GRADUATE_SCHOOL_MAJOR) AS GRADUATE_SCHOOL_MAJOR,
+            MAX(edu.GRADUATE_SCHOOL_STATUS) AS GRADUATE_SCHOOL_STATUS
+        FROM
+            EMPLOYEE emp
+                LEFT JOIN (
+                SELECT
+                    E_NO,
+                    MAX(CASE WHEN EDU_ORDER = '1' THEN EDU_PERIOD END) AS HIGH_SCHOOL_PERIOD,
+                    MAX(CASE WHEN EDU_ORDER = '1' THEN EDU_NAME END) AS HIGH_SCHOOL_NAME,
+                    MAX(CASE WHEN EDU_ORDER = '1' THEN EDU_MAJOR END) AS HIGH_SCHOOL_MAJOR,
+                    MAX(CASE WHEN EDU_ORDER = '1' THEN EDU_STATUS END) AS HIGH_SCHOOL_STATUS,
+                    MAX(CASE WHEN EDU_ORDER = '2' THEN EDU_PERIOD END) AS UNIVERSITY_PERIOD,
+                    MAX(CASE WHEN EDU_ORDER = '2' THEN EDU_NAME END) AS UNIVERSITY_NAME,
+                    MAX(CASE WHEN EDU_ORDER = '2' THEN EDU_MAJOR END) AS UNIVERSITY_MAJOR,
+                    MAX(CASE WHEN EDU_ORDER = '2' THEN EDU_STATUS END) AS UNIVERSITY_STATUS,
+                    MAX(CASE WHEN EDU_ORDER = '3' THEN EDU_PERIOD END) AS GRADUATE_SCHOOL_PERIOD,
+                    MAX(CASE WHEN EDU_ORDER = '3' THEN EDU_NAME END) AS GRADUATE_SCHOOL_NAME,
+                    MAX(CASE WHEN EDU_ORDER = '3' THEN EDU_MAJOR END) AS GRADUATE_SCHOOL_MAJOR,
+                    MAX(CASE WHEN EDU_ORDER = '3' THEN EDU_STATUS END) AS GRADUATE_SCHOOL_STATUS
+                FROM
+                    EDUCATION
+                GROUP BY
+                    E_NO
+            ) edu ON emp.E_NO = edu.E_NO
+        GROUP BY
+            emp.E_NO,
+            emp.E_NAME,
+            emp.E_ADDRESS,
+            emp.E_AUTH,
+            emp.E_STATUS,
+            emp.E_EMAIL,
+            emp.E_GENDER,
+            emp.E_HIREDATE,
+            emp.E_ENDDATE,
+            emp.E_PASSWORD,
+            emp.E_PHONE,
+            emp.E_RANK,
+            emp.E_BIRTH,
+            emp.DEPT_NAME,
+            emp.E_OCCUP,
+            emp.E_PROFILE
+        ORDER BY emp.E_NO
     </select>
+
+    <select id="experienceList" parameterType="map" resultType="map">
+        SELECT
+            emp.E_NO,
+            exp.EXP_NO,
+            exp.EXP_NAME,
+            exp.EXP_DEPT,
+            exp.EXP_RANK,
+            exp.EXP_DUTY,
+            exp.EXP_PERIOD
+        FROM EMPLOYEE emp
+                 RIGHT JOIN EXPERIENCE exp ON emp.E_NO = exp.E_NO
+        ORDER BY exp.EXP_PERIOD
+    </select>
+
+    <select id="certificationList" parameterType="map" resultType="map">
+        SELECT
+            emp.E_NO,
+            cer.CERTI_NO,
+            cer.CERTI_CATE,
+            cer.CERTI_CODE,
+            cer.CERTI_ISSUER,
+            cer.CERTI_ACQUIRE
+        FROM EMPLOYEE emp
+                 RIGHT JOIN CERTIFICATION cer ON emp.E_NO = cer.E_NO
+    </select>
+
     <update id="empInfoUpdate" parameterType="map">
         update EMPLOYEE
         <set>
@@ -120,512 +310,6 @@
         </set>
         where E_NO = #{E_NO}
     </update>
-<!--    <update id="empEduUpdate" parameterType="map">
-        UPDATE EDUCATION
-        SET
-            EDU_PERIOD = CASE
-                             WHEN EDU_NAME LIKE '%고등학교%' THEN COALESCE(#{EDU_PERIOD}, NULLIF(EDU_PERIOD, ''))
-                             WHEN EDU_NAME LIKE '%대학교%' THEN COALESCE(#{EDU_PERIOD}, NULLIF(EDU_PERIOD, ''))
-                             WHEN EDU_NAME LIKE '%대학원%' THEN COALESCE(#{EDU_PERIOD}, NULLIF(EDU_PERIOD, ''))
-                             ELSE NULL
-                END,
-            EDU_NAME = CASE
-                           WHEN EDU_NAME LIKE '%고등학교%' THEN COALESCE(#{EDU_NAME}, NULLIF(EDU_NAME, ''))
-                           WHEN EDU_NAME LIKE '%대학교%' THEN COALESCE(#{EDU_NAME}, NULLIF(EDU_NAME, ''))
-                           WHEN EDU_NAME LIKE '%대학원%' THEN COALESCE(#{EDU_NAME}, NULLIF(EDU_NAME, ''))
-                           ELSE NULL
-                END,
-            EDU_MAJOR = CASE
-                            WHEN EDU_NAME LIKE '%고등학교%' THEN COALESCE(#{EDU_MAJOR}, NULLIF(EDU_MAJOR, ''))
-                            WHEN EDU_NAME LIKE '%대학교%' THEN COALESCE(#{EDU_MAJOR}, NULLIF(EDU_MAJOR, ''))
-                            WHEN EDU_NAME LIKE '%대학원%' THEN COALESCE(#{EDU_MAJOR}, NULLIF(EDU_MAJOR, ''))
-                            ELSE NULL
-                END,
-            EDU_STATUS = CASE
-                             WHEN EDU_NAME LIKE '%고등학교%' THEN COALESCE(#{EDU_STATUS}, NULLIF(EDU_STATUS, ''))
-                             WHEN EDU_NAME LIKE '%대학교%' THEN COALESCE(#{EDU_STATUS}, NULLIF(EDU_STATUS, ''))
-                             WHEN EDU_NAME LIKE '%대학원%' THEN COALESCE(#{EDU_STATUS}, NULLIF(EDU_STATUS, ''))
-                             ELSE NULL
-                END
-        WHERE E_NO = #{E_NO}
-    </update>-->
-<!--    <update id="empEduUpdate" parameterType="map">
-        UPDATE EDUCATION
-        SET
-            #{EDU_PERIOD} = CASE
-                                WHEN EDU_NAME LIKE '%고등학교%' THEN COALESCE(EDU_PERIOD, NULLIF(EDU_PERIOD, ''))
-                                WHEN EDU_NAME LIKE '%대학교%' THEN COALESCE(EDU_PERIOD, NULLIF(EDU_PERIOD, ''))
-                                WHEN EDU_NAME LIKE '%대학원%' THEN COALESCE(EDU_PERIOD, NULLIF(EDU_PERIOD, ''))
-                                ELSE NULL
-                END,
-            #{EDU_NAME} = CASE
-                              WHEN EDU_NAME LIKE '%고등학교%' THEN COALESCE(EDU_NAME, NULLIF(EDU_NAME, ''))
-                              WHEN EDU_NAME LIKE '%대학교%' THEN COALESCE(EDU_NAME, NULLIF(EDU_NAME, ''))
-                              WHEN EDU_NAME LIKE '%대학원%' THEN COALESCE(EDU_NAME, NULLIF(EDU_NAME, ''))
-                              ELSE NULL
-                END,
-            #{EDU_MAJOR} = CASE
-                               WHEN EDU_NAME LIKE '%고등학교%' THEN COALESCE(EDU_MAJOR, NULLIF(EDU_MAJOR, ''))
-                               WHEN EDU_NAME LIKE '%대학교%' THEN COALESCE(EDU_MAJOR, NULLIF(EDU_MAJOR, ''))
-                               WHEN EDU_NAME LIKE '%대학원%' THEN COALESCE(EDU_MAJOR, NULLIF(EDU_MAJOR, ''))
-                               ELSE NULL
-                END,
-            #{EDU_STATUS} = CASE
-                                WHEN EDU_NAME LIKE '%고등학교%' THEN COALESCE(EDU_STATUS, NULLIF(EDU_STATUS, ''))
-                                WHEN EDU_NAME LIKE '%대학교%' THEN COALESCE(EDU_STATUS, NULLIF(EDU_STATUS, ''))
-                                WHEN EDU_NAME LIKE '%대학원%' THEN COALESCE(EDU_STATUS, NULLIF(EDU_STATUS, ''))
-                                ELSE NULL
-                END
-        WHERE E_NO = #{E_NO}
-    </update>-->
-
-<!--    <update id="empEduUpdate" parameterType="map">
-        UPDATE EDUCATION
-        SET
-            #{EDU_PERIOD} = CASE
-                                   WHEN EDU_NAME LIKE '%고등학교%' THEN COALESCE(HIGH_SCHOOL_PERIOD, NULLIF(HIGH_SCHOOL_PERIOD, ''))
-                                   ELSE NULL
-                END,
-            #{EDU_PERIOD} = CASE
-                                  WHEN EDU_NAME LIKE '%대학교%' THEN COALESCE(UNIVERSITY_PERIOD, NULLIF(UNIVERSITY_PERIOD, ''))
-                                  ELSE NULL
-                END,
-            #{EDU_PERIOD} = CASE
-                                   WHEN EDU_NAME LIKE '%대학원%' THEN COALESCE(GRADUATE_SCHOOL_PERIOD, NULLIF(GRADUATE_SCHOOL_PERIOD, ''))
-                                   ELSE NULL
-                END,
-            #{EDU_NAME} = CASE
-                               WHEN EDU_NAME LIKE '%고등학교%' THEN COALESCE(HIGH_SCHOOL_NAME, NULLIF(HIGH_SCHOOL_NAME, ''))
-                                ELSE NULL
-                END,
-            #{EDU_NAME} = CASE
-                                   WHEN EDU_NAME LIKE '%대학교%' THEN COALESCE(UNIVERSITY_NAME, NULLIF(UNIVERSITY_NAME, ''))
-                            ELSE NULL
-                END,
-            #{EDU_NAME} = CASE
-                                  WHEN EDU_NAME LIKE '%대학원%' THEN COALESCE(GRADUATE_SCHOOL_NAME, NULLIF(GRADUATE_SCHOOL_NAME, ''))
-                            ELSE NULL
-                END,
-            #{EDU_MAJOR} = CASE
-                               WHEN EDU_NAME LIKE '%고등학교%' THEN COALESCE(HIGH_SCHOOL_MAJOR, NULLIF(HIGH_SCHOOL_MAJOR, ''))
-                               ELSE NULL
-                END,
-            #{EDU_MAJOR} = CASE
-                                  WHEN EDU_NAME LIKE '%대학교%' THEN COALESCE(UNIVERSITY_MAJOR, NULLIF(UNIVERSITY_MAJOR, ''))
-                                  ELSE NULL
-                END,
-            #{EDU_MAJOR} = CASE
-                                   WHEN EDU_NAME LIKE '%대학원%' THEN COALESCE(GRADUATE_SCHOOL_MAJOR, NULLIF(GRADUATE_SCHOOL_MAJOR, ''))
-                                   ELSE NULL
-                END,
-            #{EDU_STATUS} = CASE
-                                    WHEN EDU_NAME LIKE '%고등학교%' THEN COALESCE(HIGH_SCHOOL_STATUS, NULLIF(HIGH_SCHOOL_STATUS, ''))
-                                    ELSE NULL
-                END,
-            #{EDU_STATUS} = CASE
-                                   WHEN EDU_NAME LIKE '%대학교%' THEN COALESCE(UNIVERSITY_STATUS, NULLIF(UNIVERSITY_STATUS, ''))
-                                   ELSE NULL
-                END,
-            #{EDU_STATUS} = CASE
-                                    WHEN EDU_NAME LIKE '%대학원%' THEN COALESCE(GRADUATE_SCHOOL_STATUS, NULLIF(GRADUATE_SCHOOL_STATUS, ''))
-                                    ELSE NULL
-                END
-        WHERE E_NO = #{E_NO}
-    </update>-->
-
-<!--    <update id="empEduUpdate" parameterType="map">
-        update EDUCATION
-        <set>
-            <if test="EDU_PERIOD != null">HIGH_SCHOOL_PERIOD = #{EDU_PERIOD},</if>
-            <if test="EDU_PERIOD != null">UNIVERSITY_PERIOD = #{EDU_PERIOD},</if>
-            <if test="EDU_PERIOD != null">GRADUATE_SCHOOL_PERIOD = #{EDU_PERIOD},</if>
-            <if test="EDU_NAME != null">HIGH_SCHOOL_NAME = #{EDU_NAME},</if>
-            <if test="EDU_NAME != null">UNIVERSITY_NAME = #{EDU_NAME},</if>
-            <if test="EDU_NAME != null">GRADUATE_SCHOOL_NAME = #{EDU_NAME},</if>
-            <if test="EDU_MAJOR != null">HIGH_SCHOOL_MAJOR = #{EDU_MAJOR},</if>
-            <if test="EDU_MAJOR != null">UNIVERSITY_MAJOR = #{EDU_MAJOR},</if>
-            <if test="EDU_MAJOR != null">GRADUATE_SCHOOL_MAJOR = #{EDU_MAJOR},</if>
-            <if test="EDU_STATUS != null">HIGH_SCHOOL_STATUS = #{EDU_STATUS},</if>
-            <if test="EDU_STATUS != null">UNIVERSITY_STATUS = #{EDU_STATUS},</if>
-            <if test="EDU_STATUS != null">GRADUATE_SCHOOL_STATUS = #{EDU_STATUS},</if>
-        </set>
-        where E_NO = #{E_NO}
-    </update>-->
-
-<!--    <update id="empEduUpdate" parameterType="map">
-        update EDUCATION
-        <set>
-            <if test="HIGH_SCHOOL_PERIOD != null">HIGH_SCHOOL_PERIOD = #{EDU_PERIOD},</if>
-            <if test="UNIVERSITY_PERIOD != null">UNIVERSITY_PERIOD = #{EDU_PERIOD},</if>
-            <if test="GRADUATE_SCHOOL_PERIOD != null">GRADUATE_SCHOOL_PERIOD = #{EDU_PERIOD},</if>
-            <if test="HIGH_SCHOOL_NAME != null">HIGH_SCHOOL_NAME = #{EDU_NAME},</if>
-            <if test="UNIVERSITY_NAME != null">UNIVERSITY_NAME = #{EDU_NAME},</if>
-            <if test="GRADUATE_SCHOOL_NAME != null">GRADUATE_SCHOOL_NAME = #{EDU_NAME},</if>
-            <if test="HIGH_SCHOOL_MAJOR != null">HIGH_SCHOOL_MAJOR = #{EDU_MAJOR},</if>
-            <if test="UNIVERSITY_MAJOR != null">UNIVERSITY_MAJOR = #{EDU_MAJOR},</if>
-            <if test="GRADUATE_SCHOOL_MAJOR != null">GRADUATE_SCHOOL_MAJOR = #{EDU_MAJOR},</if>
-            <if test="HIGH_SCHOOL_STATUS != null">HIGH_SCHOOL_STATUS = #{EDU_STATUS},</if>
-            <if test="UNIVERSITY_STATUS != null">UNIVERSITY_STATUS = #{EDU_STATUS},</if>
-            <if test="GRADUATE_SCHOOL_STATUS != null">GRADUATE_SCHOOL_STATUS = #{EDU_STATUS},</if>
-        </set>
-        where E_NO = #{E_NO}
-    </update>-->
-
-<!--    <update id="empEduUpdate" parameterType="map">
-        update EDUCATION
-        <set>
-            <if test="EDU_PERIOD != null">EDU_PERIOD = #{EDU_PERIOD},</if>
-            <if test="EDU_NAME != null">EDU_NAME = #{EDU_NAME},</if>
-            <if test="EDU_MAJOR != null">EDU_MAJOR = #{EDU_MAJOR},</if>
-            <if test="EDU_STATUS != null">EDU_STATUS = #{EDU_STATUS},</if>
-        </set>
-        where E_NO = #{E_NO}
-    </update>-->
-
-<!--    <update id="empEduUpdate" parameterType="map">
-        update EDUCATION
-        <set>
-            &lt;!&ndash; EDU_NAME 업데이트 &ndash;&gt;
-            <if test="VALUE != null">
-                EDU_NAME =
-                <choose>
-                    <when test="ORDER == 1">#{VALUE}</when>
-                    <when test="ORDER == 2">#{VALUE}</when>
-                    <when test="ORDER == 3">#{VALUE}</when>
-                    <otherwise>EDU_NAME</otherwise>
-                </choose>,
-            </if>
-
-            &lt;!&ndash; EDU_MAJOR 업데이트 &ndash;&gt;
-            <if test="VALUE != null">
-                EDU_MAJOR =
-                <choose>
-                    <when test="ORDER == 1">#{VALUE}</when>
-                    <when test="ORDER == 2">#{VALUE}</when>
-                    <when test="ORDER == 3">#{VALUE}</when>
-                    <otherwise>EDU_MAJOR</otherwise>
-                </choose>,
-            </if>
-
-            &lt;!&ndash; EDU_STATUS 업데이트 &ndash;&gt;
-            <if test="VALUE != null">
-                EDU_STATUS =
-                <choose>
-                    <when test="ORDER == 1">#{VALUE}</when>
-                    <when test="ORDER == 2">#{VALUE}</when>
-                    <when test="ORDER == 3">#{VALUE}</when>
-                    <otherwise>EDU_STATUS</otherwise>
-                </choose>,
-            </if>
-        </set>
-        where E_NO = #{E_NO}
-    </update>-->
-
-<!--****************************************************************************-->
-    <!--<update id="empEduUpdate" parameterType="map">
-        update EDUCATION
-        <set>
-            <if test="VALUE != null and EDU_ORDER == 1">
-                <if test="key != null and key.startsWith('HIGH_SCHOOL_NAME')">
-                    EDU_NAME = #{VALUE},
-                </if>
-                <if test="key != null and key.startsWith('HIGH_SCHOOL_PERIOD')">
-                    EDU_PERIOD = #{VALUE},
-                </if>
-                <if test="key != null and key.startsWith('HIGH_SCHOOL_MAJOR')">
-                    EDU_MAJOR = #{VALUE},
-                </if>
-                <if test="key != null and key.startsWith('HIGH_SCHOOL_STATUS')">
-                    EDU_STATUS = #{VALUE},
-                </if>
-            </if>
-
-            <if test="VALUE != null and EDU_ORDER == 2">
-                <if test="key != null and key.startsWith('UNIVERSITY_NAME')">
-                    EDU_NAME = #{VALUE},
-                </if>
-                <if test="key != null and key.startsWith('UNIVERSITY_PERIOD')">
-                    EDU_PERIOD = #{VALUE},
-                </if>
-                <if test="key != null and key.startsWith('UNIVERSITY_MAJOR')">
-                    EDU_MAJOR = #{VALUE},
-                </if>
-                <if test="key != null and key.startsWith('UNIVERSITY_STATUS')">
-                    EDU_STATUS = #{VALUE},
-                </if>
-            </if>
-
-            <if test="VALUE != null and EDU_ORDER == 3">
-                <if test="key != null and key.startsWith('GRADUATE_SCHOOL_NAME')">
-                    EDU_NAME = #{VALUE},
-                </if>
-                <if test="key != null and key.startsWith('GRADUATE_SCHOOL_PERIOD')">
-                    EDU_PERIOD = #{VALUE},
-                </if>
-                <if test="key != null and key.startsWith('GRADUATE_SCHOOL_MAJOR')">
-                    EDU_MAJOR = #{VALUE},
-                </if>
-                <if test="key != null and key.startsWith('GRADUATE_SCHOOL_STATUS')">
-                    EDU_STATUS = #{VALUE},
-                </if>
-            </if>
-        </set>
-        where E_NO = #{E_NO}
-    </update>-->
-
-<!--    <update id="empEduUpdate" parameterType="map">
-        update EDUCATION
-        <set>
-            <if test="VALUE != null">
-                <if test="EDU_ORDER == 1">
-                    <if test="key != null and key.startsWith('HIGH_SCHOOL_NAME')">
-                        EDU_NAME = #{VALUE},
-                    </if>
-                    <if test="key != null and key.startsWith('HIGH_SCHOOL_PERIOD')">
-                        EDU_PERIOD = #{VALUE},
-                    </if>
-                    <if test="key != null and key.startsWith('HIGH_SCHOOL_MAJOR')">
-                        EDU_MAJOR = #{VALUE},
-                    </if>
-                    <if test="key != null and key.startsWith('HIGH_SCHOOL_STATUS')">
-                        EDU_STATUS = #{VALUE},
-                    </if>
-                </if>
-
-                <if test="EDU_ORDER == 2">
-                    <if test="key != null and key.startsWith('UNIVERSITY_NAME')">
-                        EDU_NAME = #{VALUE},
-                    </if>
-                    <if test="key != null and key.startsWith('UNIVERSITY_PERIOD')">
-                        EDU_PERIOD = #{VALUE},
-                    </if>
-                    <if test="key != null and key.startsWith('UNIVERSITY_MAJOR')">
-                        EDU_MAJOR = #{VALUE},
-                    </if>
-                    <if test="key != null and key.startsWith('UNIVERSITY_STATUS')">
-                        EDU_STATUS = #{VALUE},
-                    </if>
-                </if>
-
-                <if test="EDU_ORDER == 3">
-                    <if test="key != null and key.startsWith('GRADUATE_SCHOOL_NAME')">
-                        EDU_NAME = #{VALUE},
-                    </if>
-                    <if test="key != null and key.startsWith('GRADUATE_SCHOOL_PERIOD')">
-                        EDU_PERIOD = #{VALUE},
-                    </if>
-                    <if test="key != null and key.startsWith('GRADUATE_SCHOOL_MAJOR')">
-                        EDU_MAJOR = #{VALUE},
-                    </if>
-                    <if test="key != null and key.startsWith('GRADUATE_SCHOOL_STATUS')">
-                        EDU_STATUS = #{VALUE},
-                    </if>
-                </if>
-            </if>
-        </set>
-        where E_NO = #{E_NO}
-    </update>-->
-
-
-
-    <!--    <update id="empEduUpdate" parameterType="map">
-            update EDUCATION
-            <set>
-                <if test="VALUE != null and EDU_ORDER == 1 and KEY != null and KEY.startsWith('HIGH_SCHOOL_NAME')">
-                    EDU_NAME = #{VALUE},
-                </if>
-                <if test="VALUE != null and EDU_ORDER == 2 and KEY != null and KEY.startsWith('UNIVERSITY_NAME')">
-                    EDU_NAME = #{VALUE},
-                </if>
-                <if test="VALUE != null and EDU_ORDER == 3 and KEY != null and KEY.startsWith('GRADUATE_NAME')">
-                    EDU_NAME = #{VALUE},
-                </if>
-
-                <if test="VALUE != null and EDU_ORDER == 1 and KEY != null and KEY.startsWith('HIGH_SCHOOL_MAJOR')">
-                    EDU_MAJOR = #{VALUE},
-                </if>
-                <if test="VALUE != null and EDU_ORDER == 2 and KEY != null and KEY.startsWith('UNIVERSITY_MAJOR')">
-                    EDU_MAJOR = #{VALUE},
-                </if>
-                <if test="VALUE != null and EDU_ORDER == 3 and KEY != null and KEY.startsWith('GRADUATE_MAJOR')">
-                    EDU_MAJOR = #{VALUE},
-                </if>
-
-                <if test="VALUE != null and EDU_ORDER == 1 and KEY != null and KEY.startsWith('HIGH_SCHOOL_STATUS')">
-                    EDU_STATUS = #{VALUE},
-                </if>
-                <if test="VALUE != null and EDU_ORDER == 2 and KEY != null and KEY.startsWith('UNIVERSITY_STATUS')">
-                    EDU_STATUS = #{VALUE},
-                </if>
-                <if test="VALUE != null and EDU_ORDER == 3 and KEY != null and KEY.startsWith('GRADUATE_STATUS')">
-                    EDU_STATUS = #{VALUE},
-                </if>
-
-                <if test="VALUE != null and EDU_ORDER == 1 and KEY != null and KEY.startsWith('HIGH_SCHOOL_PERIOD')">
-                    EDU_PERIOD = #{VALUE},
-                </if>
-                <if test="VALUE != null and EDU_ORDER == 2 and KEY != null and KEY.startsWith('UNIVERSITY_PERIOD')">
-                    EDU_PERIOD = #{VALUE},
-                </if>
-                <if test="VALUE != null and EDU_ORDER == 3 and KEY != null and KEY.startsWith('GRADUATE_PERIOD')">
-                    EDU_PERIOD = #{VALUE},
-                </if>
-            </set>
-            where E_NO = #{E_NO}
-        </update>-->
-
-<!--    <update id="empEduUpdate" parameterType="map">
-        update EDUCATION
-        <set>
-            <if test="VALUE != null and EDU_ORDER == 1">
-                <if test="key != null and key.startsWith('HIGH_SCHOOL_NAME')">
-                    <if test="VALUE != null">
-                        EDU_NAME = #{VALUE},
-                    </if>
-                </if>
-                <if test="key != null and key.startsWith('HIGH_SCHOOL_PERIOD')">
-                    <if test="VALUE != null">
-                        EDU_PERIOD = #{VALUE},
-                    </if>
-                </if>
-                <if test="key != null and key.startsWith('HIGH_SCHOOL_MAJOR')">
-                    <if test="VALUE != null">
-                        EDU_MAJOR = #{VALUE},
-                    </if>
-                </if>
-                <if test="key != null and key.startsWith('HIGH_SCHOOL_STATUS')">
-                    <if test="VALUE != null">
-                        EDU_STATUS = #{VALUE},
-                    </if>
-                </if>
-            </if>
-
-            <if test="VALUE != null and EDU_ORDER == 2">
-                <if test="key != null and key.startsWith('UNIVERSITY_NAME')">
-                    <if test="VALUE != null">
-                        EDU_NAME = #{VALUE},
-                    </if>
-                </if>
-                <if test="key != null and key.startsWith('UNIVERSITY_PERIOD')">
-                    <if test="VALUE != null">
-                        EDU_PERIOD = #{VALUE},
-                    </if>
-                </if>
-                <if test="key != null and key.startsWith('UNIVERSITY_MAJOR')">
-                    <if test="VALUE != null">
-                        EDU_MAJOR = #{VALUE},
-                    </if>
-                </if>
-                <if test="key != null and key.startsWith('UNIVERSITY_STATUS')">
-                    <if test="VALUE != null">
-                        EDU_STATUS = #{VALUE},
-                    </if>
-                </if>
-            </if>
-
-            <if test="VALUE != null and EDU_ORDER == 3">
-                <if test="key != null and key.startsWith('GRADUATE_NAME')">
-                    <if test="VALUE != null">
-                        EDU_NAME = #{VALUE},
-                    </if>
-                </if>
-                <if test="key != null and key.startsWith('GRADUATE_PERIOD')">
-                    <if test="VALUE != null">
-                        EDU_PERIOD = #{VALUE},
-                    </if>
-                </if>
-                <if test="key != null and key.startsWith('GRADUATE_MAJOR')">
-                    <if test="VALUE != null">
-                        EDU_MAJOR = #{VALUE},
-                    </if>
-                </if>
-                <if test="key != null and key.startsWith('GRADUATE_STATUS')">
-                    <if test="VALUE != null">
-                        EDU_STATUS = #{VALUE},
-                    </if>
-                </if>
-            </if>
-        </set>
-        where E_NO = #{E_NO}
-    </update>-->
-
-<!--    <update id="empEduUpdate" parameterType="map">
-    <![CDATA[
-        DECLARE
-            v_value VARCHAR2(100);
-        BEGIN
-            IF #{VALUE} IS NOT NULL THEN
-                IF #{EDU_ORDER} = 1 THEN
-                    IF #{key} LIKE 'HIGH_SCHOOL_NAME%' THEN
-                        v_value := #{VALUE};
-                        UPDATE EDUCATION
-                        SET EDU_NAME = v_value
-                        WHERE E_NO = #{E_NO};
-                    ELSIF #{key} LIKE 'HIGH_SCHOOL_PERIOD%' THEN
-                        v_value := #{VALUE};
-                        UPDATE EDUCATION
-                        SET EDU_PERIOD = v_value
-                        WHERE E_NO = #{E_NO};
-                    ELSIF #{key} LIKE 'HIGH_SCHOOL_MAJOR%' THEN
-                        v_value := #{VALUE};
-                        UPDATE EDUCATION
-                        SET EDU_MAJOR = v_value
-                        WHERE E_NO = #{E_NO};
-                    ELSIF #{key} LIKE 'HIGH_SCHOOL_STATUS%' THEN
-                        v_value := #{VALUE};
-                        UPDATE EDUCATION
-                        SET EDU_STATUS = v_value
-                        WHERE E_NO = #{E_NO};
-                    END IF;
-                    ELSIF #{EDU_ORDER} = 2 THEN
-                        IF #{key} LIKE 'UNIVERSITY_NAME%' THEN
-                        v_value := #{VALUE};
-                        UPDATE EDUCATION
-                        SET EDU_NAME = v_value
-                        WHERE E_NO = #{E_NO};
-                    ELSIF #{key} LIKE 'UNIVERSITY_PERIOD%' THEN
-                        v_value := #{VALUE};
-                        UPDATE EDUCATION
-                        SET EDU_PERIOD = v_value
-                        WHERE E_NO = #{E_NO};
-                    ELSIF #{key} LIKE 'UNIVERSITY_MAJOR%' THEN
-                        v_value := #{VALUE};
-                        UPDATE EDUCATION
-                        SET EDU_MAJOR = v_value
-                        WHERE E_NO = #{E_NO};
-                    ELSIF #{key} LIKE 'UNIVERSITY_STATUS%' THEN
-                        v_value := #{VALUE};
-                        UPDATE EDUCATION
-                        SET EDU_STATUS = v_value
-                        WHERE E_NO = #{E_NO};
-                    END IF;
-                    ELSIF #{EDU_ORDER} = 3 THEN
-                        IF #{key} LIKE 'GRADUATE_SCHOOL_NAME%' THEN
-                        v_value := #{VALUE};
-                        UPDATE EDUCATION
-                        SET EDU_NAME = v_value
-                        WHERE E_NO = #{E_NO};
-                    ELSIF #{key} LIKE 'GRADUATE_SCHOOL_PERIOD%' THEN
-                        v_value := #{VALUE};
-                        UPDATE EDUCATION
-                        SET EDU_PERIOD = v_value
-                        WHERE E_NO = #{E_NO};
-                    ELSIF #{key} LIKE 'GRADUATE_SCHOOL_MAJOR%' THEN
-                        v_value := #{VALUE};
-                        UPDATE EDUCATION
-                        SET EDU_MAJOR = v_value
-                        WHERE E_NO = #{E_NO};
-                    ELSIF #{key} LIKE 'GRADUATE_SCHOOL_STATUS%' THEN
-                        v_value := #{VALUE};
-                        UPDATE EDUCATION
-                        SET EDU_STATUS = v_value
-                        WHERE E_NO = #{E_NO};
-                    END IF;
-                END IF;
-            END IF;
-        END;
-        ]]>
-</update>-->
 
     <update id="empEduUpdate" parameterType="map">
         UPDATE EDUCATION
@@ -683,7 +367,17 @@
         WHERE E_NO = #{E_NO} AND EDU_ORDER = #{EDU_ORDER}
     </update>
 
-    <delete id="empDelete" parameterType="int">
-        delete from employee where e_no = #{value}
+    <insert id="experienceInsert" parameterType="map">
+        INSERT INTO experience (EXP_NO, EXP_NAME, EXP_DEPT, EXP_RANK, EXP_DUTY, EXP_PERIOD, E_NO, REG_DATE, REG_ID)
+        VALUES (seq_experience_no.NEXTVAL, #{EXP_NAME}, #{EXP_DEPT}, #{EXP_RANK}, #{EXP_DUTY}, #{EXP_PERIOD}, #{E_NO}, sysdate, #{REG_ID})
+    </insert>
+    <delete id="experienceDelete" parameterType="int">
+        DELETE FROM experience
+        WHERE EXP_NO = #{exp_no}
     </delete>
+
+    <insert id="certiInsert" parameterType="map">
+        INSERT INTO certification (certi_no, certi_cate, certi_code, certi_issuer, certi_acquire, e_no, reg_date, reg_id)
+        VALUES (seq_certification_no.NEXTVAL,#{certi_cate}, #{certi_code}, #{certi_issuer}, #{certi_acquire}, #{e_no}, sysdate, #{reg_id})
+    </insert>
 </mapper>

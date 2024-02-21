@@ -26,6 +26,13 @@ public class EmpInfoService {
         return eList;
     }
 
+    public List<Map<String, Object>> experienceList(Map<String, Object> eMap) {
+        logger.info("experienceList");
+        List<Map<String, Object>> eList = null;
+        eList = empInfoDao.experienceList(eMap);
+        return eList;
+    }
+
     public List<Map<String, Object>> empDetail(Map<String, Object> eMap) {
         logger.info("empDetail");
         List<Map<String, Object>> eList = null;
@@ -52,6 +59,27 @@ public class EmpInfoService {
         logger.info(eMap.toString());
         int result = 0;
         result = empInfoDao.empEduUpdate(eMap);
+        return result;
+    }
+
+    public int experienceInsert(Map<String, Object> eMap) {
+        logger.info("experienceInsert");
+        int result = 0;
+        result = empInfoDao.experienceInsert(eMap);
+        return result;
+    }
+
+    public int experienceDelete(int exp_no) {
+        logger.info("experienceDelete");
+        int result = 0;
+        result = empInfoDao.experienceDelete(exp_no);
+        return result;
+    }
+
+    public int certiInsert(Map<String, Object> eMap) {
+        logger.info("certiInset");
+        int result = 0;
+        result = empInfoDao.certiInsert(eMap);
         return result;
     }
 }
