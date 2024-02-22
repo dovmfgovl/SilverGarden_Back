@@ -17,30 +17,30 @@ public class ProgramScheduleController {
     ProgramScheduleService programScheduleService;
 
     @GetMapping("list")
-    public List<Map<String, Object>> getProgramSchedules(@RequestParam Map<String, Object> pmap) {
-        logger.info("getProgramSchedules");
-        List<Map<String, Object>> result = programScheduleService.getProgramSchedule(pmap);
+    public List<Map<String, Object>> pgCalendarList(@RequestParam Map<String, Object> pmap) {
+        logger.info("pgCalendarList");
+        List<Map<String, Object>> result = programScheduleService.pgCalendarList(pmap);
         logger.info(pmap.toString());
         return result;
     }
 
     @PostMapping("add")
-    public String addProgramSchedule(@RequestBody Map<String, Object> pmap) {
-        logger.info("addProgramSchedule", pmap);
+    public String pgCalendarAdd(@RequestBody Map<String, Object> pmap) {
+        logger.info("pgCalendarAdd", pmap);
         int result = 0;
-        result = programScheduleService.addProgramSchedule(pmap);
+        result = programScheduleService.pgCalendarAdd(pmap);
         return String.valueOf(result);
     }
     @CrossOrigin(origins = "http://localhost:3000")
     @PutMapping("update")
-    public void updateProgramSchedule(@RequestBody Map<String, Object> pmap) {
-        logger.info("updateProgramSchedule", pmap);
-        programScheduleService.updateProgramSchedule(pmap);
+    public void pgCalendarUpdate(@RequestBody Map<String, Object> pmap) {
+        logger.info("pgCalendarUpdate", pmap);
+        programScheduleService.pgCalendarUpdate(pmap);
     }
     @CrossOrigin(origins = "http://localhost:3000")
     @DeleteMapping("delete")
-    public void deleteProgramSchedule(@RequestParam Map<String, Object> psNo2) {
-        logger.info("deleteProgramSchedule", psNo2);
-        programScheduleService.deleteProgramSchedule(psNo2);
+    public void pgCalendarDelete(@RequestParam Map<String, Object> psNo2) {
+        logger.info("pgCalendarDelete", psNo2);
+        programScheduleService.pgCalendarDelete(psNo2);
     }
 }

@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
@@ -25,9 +26,9 @@ public class ProgramDao2 {
 
     public int pgInsert(Map<String, Object> pmap) {
         logger.info("ProgramDao2-pgInsert");
-        logger.info(pmap.toString());
         int result = 0;
         result = sqlSessionTemplate.insert("pgInsert",pmap);
+        logger.info(pmap.toString());
         return result;
     }
 
@@ -52,11 +53,26 @@ public class ProgramDao2 {
         return result;
     }
 
-    public int pgCalInsert(Map<String, Object> pmap) {
-        logger.info("ProgramDao2-pgCalInsert");
-        logger.info(pmap.toString());
+    public int pgCalendarInsert(BigDecimal pg_no) {
+        logger.info("ProgramDao2-pgCalendarInsert");
         int result = 0;
-        result = sqlSessionTemplate.insert("pgCalInsert",pmap);
+        // 두 번째 쿼리 실행 로직을 여기에 추가
+        result = sqlSessionTemplate.insert("pgCalendarInsert", pg_no);
+        return result;
+    }
+    public int pgCalendarUpdate(BigDecimal pg_no) {
+        logger.info("ProgramDao2-pgCalendarUpdate");
+        int result = 0;
+        // 두 번째 쿼리 실행 로직을 여기에 추가
+        result = sqlSessionTemplate.update("pgCalendarAllUpdate", pg_no);
+        return result;
+    }
+
+    public int pgCalendarAllDelete(BigDecimal pg_no) {
+        logger.info("ProgramDao2-pgCalendarAllDelete");
+        int result = 0;
+        // 두 번째 쿼리 실행 로직을 여기에 추가
+        result = sqlSessionTemplate.update("pgCalendarAllDelete", pg_no);
         return result;
     }
 }
