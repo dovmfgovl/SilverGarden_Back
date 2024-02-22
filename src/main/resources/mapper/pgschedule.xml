@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sg.silvergarden.dao.programcal.PgScheduleMapper">
+    <insert id="pgCalendarAdd" parameterType="java.util.Map">
+        INSERT INTO PROGRAM_SCHEDULE (
+            PS_NO, PS_NAME, PS_START, PS_END, PS_INFO, REG_DATE, REG_ID, MOD_DATE,PS_DAYSOFWEEK,PS_CATEGORY)
+        VALUES (
+            PS_NO_SEQUENCE.nextval,
+            #{PS_NAME, jdbcType=VARCHAR},
+            TO_DATE(#{PS_START},'YYYY-MM-DD"T"HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'),
+            TO_DATE(#{PS_END},'YYYY-MM-DD"T"HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'),
+            #{PS_INFO, jdbcType=VARCHAR},
+            sysdate,
+            #{REG_ID, jdbcType=VARCHAR},
+            sysdate,
+            #{PS_DAYSOFWEEK, jdbcType=VARCHAR},
+            #{PS_CATEGORY, jdbcType=VARCHAR}
+        )
+    </insert>
+    <select id="pgCalendarList" resultType="java.util.Map">
+        SELECT
+            PS_NO,--CRUD를 하는 PK키로 넣기
+            PS_NAME,
+            TO_CHAR(PS_START, 'YYYY-MM-DD"T"HH24:MI:SS') AS PS_START,
+            TO_CHAR(PS_END, 'YYYY-MM-DD"T"HH24:MI:SS') AS PS_END,
+            PS_INFO,
+            PS_CATEGORY,
+            REG_ID,
+            TO_CHAR(MOD_DATE, 'YYYY-MM-DD"T"HH24:MI:SS') AS MOD_DATE,
+            TO_CHAR(REG_DATE, 'YYYY-MM-DD"T"HH24:MI:SS') AS REG_DATE,
+            --종류별로 컬러를 넣고 싶은 것으로 아래 case문 작성(색상 취향에 따라 선택)
+                CASE
+                    --연보라/연핑크/연민트/기본 : 연초록 '신체', '교양', '문화', '교육', '여가'
+                    WHEN PS_CATEGORY = '교육' THEN 'lightgreen'
+                    WHEN PS_CATEGORY = '문화' THEN 'yellow'
+                    WHEN PS_CATEGORY = '신체' THEN 'lightblue'
+                    WHEN PS_CATEGORY = '교양' THEN 'lightgrey'
+                    WHEN PS_CATEGORY = '여가' THEN 'lightorange'
+                    ELSE '#6495ED'
+                    --#FFFFCC / #6495ED / #F0F8FF
+                END AS COLOR
+/*            CASE
+                --연보라/연핑크/연민트/기본 : 연초록 '신체', '교양', '문화', '교육', '여가'
+                WHEN PS_CATEGORY = '교육' THEN '#E0FFFF'
+                WHEN PS_CATEGORY = '문화' THEN '#E6E6FA'
+                WHEN PS_CATEGORY = '신체' THEN '#FFF0F5'
+                WHEN PS_CATEGORY = '교양' THEN '#FFFFCC'
+                WHEN PS_CATEGORY = '여가' THEN '#6495ED'
+                ELSE '#6495ED'
+                --#FFFFCC / #6495ED / #F0F8FF
+                END AS COLOR*/
+        FROM PROGRAM_SCHEDULE
+    </select>
+    <update id="pgCalendarUpdate" parameterType="java.util.Map">
+        UPDATE PROGRAM_SCHEDULE
+        <set>
+            <if test="PS_NAME != null">PS_NAME = #{PS_NAME},</if>
+            <if test="PS_START != null">PS_START = TO_DATE(#{PS_START}, 'YYYY-MM-DD"T"HH24:MI:SS'),</if>
+            <if test="PS_END != null">PS_END = TO_DATE(#{PS_END}, 'YYYY-MM-DD"T"HH24:MI:SS'),</if>
+            <if test="PS_INFO != null">PS_INFO = #{PS_INFO},</if>
+            <if test="MOD_ID != null">MOD_ID = #{MOD_ID},</if>
+            <if test="REG_ID != null">REG_ID = #{REG_ID},</if>
+            MOD_DATE = TO_DATE(sysdate, 'YYYY-MM-DD"T"HH24:MI:SS'),
+            <if test="REG_DATE != null">REG_DATE = TO_DATE(#{REG_DATE}, 'YYYY-MM-DD"T"HH24:MI:SS'),</if>
+            <if test="PS_DAYSOFWEEK != null">PS_DAYSOFWEEK = #{PS_DAYSOFWEEK},</if>
+            <if test="PS_CATEGORY != null">PS_CATEGORY = #{PS_CATEGORY}</if>
+        </set>
+        WHERE PS_NO = #{PS_NO}
+    </update>
+    <delete id="pgCalendarDelete" parameterType="java.util.Map">
+        DELETE FROM PROGRAM_SCHEDULE WHERE PS_NO = #{PS_NO}
+    </delete>
+
+    <!--프로그램 등록, 수정에 따른 쿼리문-->
+    <insert id="pgCalendarInsert" parameterType="java.math.BigDecimal">
+        INSERT INTO PROGRAM_SCHEDULE (PS_NO, PS_START, PS_END, PS_NAME, PS_DAYSOFWEEK, PG_NO, PS_CATEGORY, PS_INFO, REG_ID, REG_DATE, MOD_DATE,MOD_ID)
+        SELECT
+            PS_NO_SEQUENCE.nextval,
+            (PG_START + (LEVEL - 1)*
+                        CASE
+                            WHEN PG_REPEAT_TYPE = '하루' THEN 1
+                            WHEN PG_REPEAT_TYPE = '매주' THEN 7
+                            WHEN PG_REPEAT_TYPE = '격주' THEN 14
+                            ELSE 7
+                            END
+                ) AS PS_START,
+            TO_DATE(TO_CHAR((PG_START + (LEVEL - 1) *
+                        CASE
+                            WHEN PG_REPEAT_TYPE = '하루' THEN 1
+                            WHEN PG_REPEAT_TYPE = '매주' THEN 7
+                            WHEN PG_REPEAT_TYPE = '격주' THEN 14
+                            ELSE 7
+                        END
+                        ), 'YYYY-MM-DD') || TO_CHAR(PG_END, 'HH24:MI:SS'), 'YYYY-MM-DD HH24:MI:SS') AS PS_END,
+            PG_NAME AS PS_NAME,
+            PG_DAYSOFWEEK AS PS_DAYSOFWEEK,
+            #{pg_no} AS PG_NO,
+            PG_CATEGORY AS PS_CATEGORY,
+            PG_CONTENT AS PS_INFO,
+            #{REG_ID},
+            SYSDATE AS REG_DATE,
+            SYSDATE AS MOD_DATE,
+            #{MOD_ID}
+        FROM
+            PROGRAM
+            CONNECT BY PRIOR PG_NO = PG_NO
+            AND PRIOR DBMS_RANDOM.VALUE IS NOT NULL
+            <![CDATA[ AND LEVEL <= (PG_END - PG_START + 1) /
+                        CASE
+                            WHEN PG_REPEAT_TYPE = '하루' THEN 1
+                            WHEN PG_REPEAT_TYPE = '매주' THEN 7
+                            WHEN PG_REPEAT_TYPE = '격주' THEN 14
+                            ELSE 7
+        END
+            ]]>
+        START WITH
+            PG_NO = #{pg_no}
+    </insert>
+
+    <delete id="pgCalendarAllDelete" parameterType="java.util.Map">
+        DELETE FROM PROGRAM_SCHEDULE
+        WHERE PG_NO = #{pg_no}
+            AND PS_START >= (SELECT MOD_DATE FROM PROGRAM WHERE PG_NO = #{pg_no})
+    </delete>
+
+    <insert id="pgCalendarAllUpdate" parameterType="java.math.BigDecimal">
+        INSERT INTO PROGRAM_SCHEDULE (PS_NO, PS_START, PS_END, PS_NAME, PS_DAYSOFWEEK, PG_NO, PS_CATEGORY, PS_INFO, REG_ID, REG_DATE, MOD_DATE,MOD_ID)
+        SELECT
+            PS_NO_SEQUENCE.nextval,
+                (PG_START + (LEVEL - 1)*
+                    CASE
+                        WHEN PG_REPEAT_TYPE = '하루' THEN 1
+                        WHEN PG_REPEAT_TYPE = '매주' THEN 7
+                        WHEN PG_REPEAT_TYPE = '격주' THEN 14
+                        ELSE 7
+                    END
+                ) AS PS_START,
+            TO_DATE(TO_CHAR(
+                (PG_START + (LEVEL - 1)*
+                    CASE
+                        WHEN PG_REPEAT_TYPE = '하루' THEN 1
+                        WHEN PG_REPEAT_TYPE = '매주' THEN 7
+                        WHEN PG_REPEAT_TYPE = '격주' THEN 14
+                        ELSE 7
+                    END
+                ), 'YYYY-MM-DD') || TO_CHAR(PG_END, 'HH24:MI:SS'), 'YYYY-MM-DD HH24:MI:SS') AS PS_END,
+            PG_NAME AS PS_NAME,
+            PG_DAYSOFWEEK AS PS_DAYSOFWEEK,
+            #{pg_no} AS PG_NO,
+            PG_CATEGORY AS PS_CATEGORY,
+            PG_CONTENT AS PS_INFO,
+            #{REG_ID},
+            SYSDATE AS REG_DATE,
+            SYSDATE AS MOD_DATE,
+            #{MOD_ID}
+        FROM
+            PROGRAM
+            CONNECT BY PRIOR PG_NO = PG_NO
+            AND PRIOR DBMS_RANDOM.VALUE IS NOT NULL
+            <![CDATA[ AND LEVEL <= (PG_END - PG_START + 1) /
+                    CASE
+                        WHEN PG_REPEAT_TYPE = '하루' THEN 1
+                        WHEN PG_REPEAT_TYPE = '매주' THEN 7
+                        WHEN PG_REPEAT_TYPE = '격주' THEN 14
+                        ELSE 7
+                    END
+            ]]>
+        START WITH
+            PG_NO = #{pg_no}
+    </insert>
+
+</mapper>
