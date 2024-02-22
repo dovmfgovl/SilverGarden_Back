@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
@@ -51,10 +52,20 @@ public class ProgramService2 {
         return result;
     }
 
-    public int pgCalInsert(Map<String, Object> pmap) {
-        logger.info("ProgramService2-pgCalInsert");
-        int result = 0;
-        result = programDao.pgCalInsert(pmap);
+    public int pgCalendarInsert(BigDecimal pgNo) {
+        logger.info("ProgramService2-pgCalendarInsert");
+        int result = programDao.pgCalendarInsert(pgNo);
+        return result;
+    }
+    public int pgCalendarUpdate(BigDecimal pgNo) {
+        logger.info("ProgramService2-executeSecondQuery");
+        int result = programDao.pgCalendarUpdate(pgNo);
+        return result;
+    }
+
+    public int pgCalendarAllDelete(BigDecimal pgNo) {
+        logger.info("ProgramService2-pgCalendarAllDelete");
+        int result = programDao.pgCalendarAllDelete(pgNo);
         return result;
     }
 }
