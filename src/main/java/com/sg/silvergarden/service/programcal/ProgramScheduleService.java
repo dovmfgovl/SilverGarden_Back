@@ -15,19 +15,23 @@ public class ProgramScheduleService {
     @Autowired
     ProgramScheduleDao programScheduleDao;
 
-    public List<Map<String, Object>> getProgramSchedule(Map<String, Object> pmap) {
-        return programScheduleDao.getProgramSchedule(pmap);
+    public List<Map<String, Object>> pgCalendarList(Map<String, Object> pmap) {
+        logger.info("ProgramScheduleService - pgCalendarList");
+        return programScheduleDao.pgCalendarList(pmap);
     }
 
-    public int addProgramSchedule(Map<String, Object> pmap) {
-        return programScheduleDao.addProgramSchedule(pmap);
+    public int pgCalendarAdd(Map<String, Object> pmap) {
+        logger.info("ProgramScheduleService - pgCalendarAdd");
+        return programScheduleDao.pgCalendarAdd(pmap);
     }
 
-    public int deleteProgramSchedule(Map<String, Object> psNo2) {
-        return programScheduleDao.deleteProgramSchedule(psNo2);
+    public int pgCalendarDelete(Map<String, Object> psNo) {
+        logger.info("ProgramScheduleService - pgCalendarDelete");
+        return programScheduleDao.pgCalendarDelete(psNo);
     }
 
-    public int updateProgramSchedule(Map<String, Object> pmap) {
-        return programScheduleDao.updateProgramSchedule(pmap);
+    public int pgCalendarUpdate(Map<String, Object> pmap) {
+        logger.info("ProgramScheduleService - pgCalendarUpdate");
+        return programScheduleDao.pgCalendarUpdate(pmap);
     }
 }
