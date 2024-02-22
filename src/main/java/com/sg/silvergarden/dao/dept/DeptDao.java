@@ -15,15 +15,15 @@ public class DeptDao {
     @Autowired
     SqlSessionTemplate sqlSessionTemplate = null;
 
-    public List<Map<String, Object>> deptList(Map<String, Object> pmap){
+    public List<Map<String, Object>> deptList(Map<String, Object> pmap) {
         log.info("deptList-dao 호출");
-        List<Map<String, Object>> list =sqlSessionTemplate.selectList("deptMapper.deptList", pmap);
+        List<Map<String, Object>> list = sqlSessionTemplate.selectList("deptMapper.deptList", pmap);
         log.info(list);
 
         return list;
     }
 
-    public List<Map<String, Object>> deptCheck(Map<String, Object> pmap){
+    public List<Map<String, Object>> deptCheck(Map<String, Object> pmap) {
         log.info("deptCheck-dao 호출");
         List<Map<String, Object>> list = sqlSessionTemplate.selectList("deptMapper.deptCheck", pmap);
         log.info(list);
@@ -31,24 +31,24 @@ public class DeptDao {
         return list;
     }
 
-    public void deptInsert(Map<String, Object> pmap){
+    public void deptInsert(Map<String, Object> pmap) {
         log.info("deptinset-dao호출");
         sqlSessionTemplate.insert("deptMapper.deptInsert", pmap);
     }
 
-    public void deptUpdate(Map<String, Object> pmap){
+    public void deptUpdate(Map<String, Object> pmap) {
         log.info("deptUpdate-dao호출");
         sqlSessionTemplate.update("deptMapper.deptUpdate", pmap);
     }
 
-    public void deptDelete(Map<String, Object> pmap){
+    public void deptDelete(Map<String, Object> pmap) {
         log.info("deptDelete-dao호출");
         sqlSessionTemplate.update("deptMapper.deptDelete", pmap);
     }
 
     public List<Map<String, Object>> jobList(Map<String, Object> pmap) {
         log.info("jobList-dao 호출");
-        List<Map<String, Object>> list =sqlSessionTemplate.selectList("deptMapper.jobList", pmap);
+        List<Map<String, Object>> list = sqlSessionTemplate.selectList("deptMapper.jobList", pmap);
         log.info(list);
 
         return list;
@@ -66,7 +66,7 @@ public class DeptDao {
 
     public List<Map<String, Object>> empList(Map<String, Object> pmap) {
         log.info("empList-dao 호출");
-        List<Map<String, Object>> list =sqlSessionTemplate.selectList("deptMapper.empList", pmap);
+        List<Map<String, Object>> list = sqlSessionTemplate.selectList("deptMapper.deptemplist", pmap);
         log.info(list);
 
         return list;

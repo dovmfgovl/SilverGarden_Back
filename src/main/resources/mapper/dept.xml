@@ -85,7 +85,7 @@
     <update id="jobDelete" parameterType="map">
         UPDATE COMMON_CD SET USE_YN='N' WHERE GRP_CD = 'ocp01' AND CD = #{CD}
     </update>
-    <select id="empList" parameterType="map" resultType="map">
+    <select id="deptemplist" parameterType="map" resultType="map">
         SELECT E_NO, E_NAME, E_PHONE, E_EMAIL, E_AUTH FROM EMPLOYEE WHERE DEPT_NAME = #{CD_VALUE}
     </select>
 </mapper>
