@@ -4,7 +4,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-
 import java.util.List;
 import java.util.Map;
 
@@ -38,5 +37,41 @@ public class MessageDao {
         List<Map<String, Object>> mList = null;
         mList = sqlSessionTemplate.selectList("messageReceiveList", e_no);
         return mList;
+    }
+
+    public List<Map<String, Object>> messageSendList(String e_no) {
+        List<Map<String, Object>> mList = null;
+        mList = sqlSessionTemplate.selectList("messageSendList", e_no);
+        return mList;
+    }
+
+    public List<Map<String, Object>> messageStoredList(String e_no) {
+        List<Map<String, Object>> mList = null;
+        mList = sqlSessionTemplate.selectList("messageStoredList", e_no);
+        return mList;
+    }
+
+    public List<Map<String, Object>> messageDeletedList(String e_no) {
+        List<Map<String, Object>> mList = null;
+        mList = sqlSessionTemplate.selectList("messageDeletedList", e_no);
+        return mList;
+    }
+
+    public Map<String, Object> messageDetail(int me_no) {
+        Map<String, Object> meMap = null;
+        meMap = sqlSessionTemplate.selectOne("messageDetail",me_no);
+        return meMap;
+    }
+
+    public int messageRead(Map<String, Object> rmap) {
+        int result = -1;
+        result = sqlSessionTemplate.update("messageRead",rmap);
+        return result;
+    }
+
+    public int messageStatusChange(Map<String, Object> rmap) {
+        int result = -1;
+        result = sqlSessionTemplate.update("messageStatusChange",rmap);
+        return result;
     }
 }

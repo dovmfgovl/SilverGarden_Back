@@ -47,4 +47,46 @@ public class MessageService {
         mList = messageDao.messageReceiveList(e_no);
         return mList;
     }
+    public List<Map<String, Object>> messageSendList(String e_no) {
+        List<Map<String, Object>> mList = null;
+        mList = messageDao.messageSendList(e_no);
+        return mList;
+    }
+
+    public List<Map<String, Object>> messageDeletedList(String e_no) {
+        List<Map<String, Object>> mList = null;
+        mList = messageDao.messageDeletedList(e_no);
+        return mList;
+    }
+
+    public List<Map<String, Object>> messageStoredList(String e_no) {
+        List<Map<String, Object>> mList = null;
+        mList = messageDao.messageStoredList(e_no);
+        return mList;
+    }
+
+    public Map<String, Object> messageDetail(int me_no) {
+        Map<String, Object> meMap = null;
+        meMap = messageDao.messageDetail(me_no);
+        return meMap;
+    }
+    public int messageRead(Map<String, Object> rmap) {
+        int result = -1;
+        result = messageDao.messageRead(rmap);
+        return result;
+    }
+    public int messageStore(Map<String, Object> rmap) {
+        int result = -1;
+        rmap.put("me_status","S");
+        result = messageDao.messageStatusChange(rmap);
+        return result;
+    }
+
+    public int messageDelete(Map<String, Object> rmap) {
+        int result = -1;
+        rmap.put("me_status","N");
+        result = messageDao.messageStatusChange(rmap);
+        return result;
+    }
+
 }

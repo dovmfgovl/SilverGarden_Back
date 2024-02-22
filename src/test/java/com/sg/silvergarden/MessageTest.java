@@ -39,4 +39,9 @@ public class MessageTest {
         String e_no = "202402_00000036";
         assertEquals(messageDao.messageReceiveList(e_no).size(), 5);
     }
+    @Test
+    public void messageSendList(){
+        String e_no = "202402_00000036";
+        assertEquals(messageDao.messageSendList(e_no).size(), 5);
+    }
 }

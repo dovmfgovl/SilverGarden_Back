@@ -6,11 +6,21 @@ import com.sg.silvergarden.service.approval.ApprovalService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -139,6 +149,37 @@ public class ApprovalController {
         log.info(pmap.toString());
         result = approvalService.approvalInsert(pmap);
         return result == 0 || result == -1 ?"error":"ok";//결과값이 -1 혹은 0이면 에러를 반환
+    }
+
+    @GetMapping("approvalFileDownload")
+    public ResponseEntity<Object> fileDownload(@RequestParam(value="filename") String filename) {
+        log.info("fileDownload 호출 성공");
+        log.info(filename);
+        try {
+            String encodedFilename = URLEncoder.encode(filename, "UTF-8").replace("+", "%20");
+            File file = new File(config.getUploadPath(), URLDecoder.decode(encodedFilename, "UTF-8"));
+
+            HttpHeaders header = new HttpHeaders();
+            header.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename="+encodedFilename);
+            header.add("Cache-Control", "no-cache, no-store, must-revalidate");
+            header.add("Pragma", "no-cache");
+            header.add("Expires", "0");
+
+            Path path = Paths.get(file.getAbsolutePath());
+            ByteArrayResource resource = null;
+            resource = new ByteArrayResource(Files.readAllBytes(path));
+
+            return ResponseEntity.ok()
+                    .headers(header)
+                    .contentLength(file.length())
+                    .contentType(MediaType.parseMediaType("application/octet-stream"))
+                    .body(resource);
+
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("파일 다운로드 오류");
+        }
     }
 
     @PutMapping("passOrDeny")

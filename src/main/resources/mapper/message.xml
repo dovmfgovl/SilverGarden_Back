@@ -33,7 +33,7 @@
     <insert id="messageRecipientInsert" parameterType="list">
         INSERT ALL
         <foreach collection="list" item="item" index="index" separator=" ">
-            INTO message_recipient(r_id, me_no, read_status, read_time, me_stuatus)
+            INTO message_recipient(r_id, me_no, read_status, read_time, me_status)
             VALUES(
                 #{item.r_id},
                 #{item.me_no},
@@ -44,26 +44,91 @@
         SELECT * FROM DUAL
     </insert>
 
-    <!--02-22부터 이어서 할 것-->
-    <resultMap id="messageDataMap" type="map">
+
+    <resultMap id="messageListMap" type="map">
         <id column="ME_NO" property="me_no" jdbcType="NUMERIC"/>
         <result column="ME_WRITER" property="me_writer" jdbcType="VARCHAR"/>
+        <result column="WRITER_NAME" property="writer_name" jdbcType="VARCHAR"/>
+        <result column="READ_STATUS" property="read_status" jdbcType="VARCHAR"/>
         <result column="ME_TITLE" property="me_title" jdbcType="VARCHAR"/>
         <result column="ME_CONTENT" property="me_content" jdbcType="VARCHAR"/>
+        <result column="REG_DATE" property="reg_date" jdbcType="VARCHAR"/>
         <collection property="file" javaType="list" ofType="map">
             <id column="ME_FILE_NO" property="me_file_no" jdbcType="NUMERIC"/>
             <result column="ME_FILENAME" property="me_filename" jdbcType="VARCHAR"/>
         </collection>
-        <collection property="receiverList" javaType="list" ofType="map">
-            <id column="AP_NO" property="ap_no" jdbcType="NUMERIC"/>
-            <id column="AP_NO" property="ap_no" jdbcType="NUMERIC"/>
-            <result column="AP_LEV" property="ap_lev" jdbcType="NUMERIC"/>
+    </resultMap>
+
+    <select id="messageReceiveList" parameterType="String" resultMap="messageListMap">
+        select m.me_no, m.me_writer, (select e_name from EMPLOYEE where m.ME_WRITER = E_NO) as writer_name, mr.read_status,
+               m.me_title, m.me_content, to_char(m.reg_date, 'YYYY-MM-DD hh:mm:ss') as reg_date, mf.ME_FILE_NO, mf.ME_FILENAME
+        from MESSAGE m
+                 join MESSAGE_RECIPIENT mr
+                      on m.me_no = mr.me_no
+                 left join MESSAGE_FILE mf
+                           on mf.me_no = m.me_no
+        where mr.r_id = #{e_no} and mr.me_status = 'Y'
+        order by m.me_no desc
+    </select>
+
+    <select id="messageDeletedList" parameterType="String" resultMap="messageListMap">
+        select m.me_no, m.me_writer, (select e_name from EMPLOYEE where m.ME_WRITER = E_NO) as writer_name, mr.read_status,
+               m.me_title, m.me_content, to_char(m.reg_date, 'YYYY-MM-DD hh:mm:ss') as reg_date, mf.ME_FILE_NO, mf.ME_FILENAME
+        from MESSAGE m
+                 join MESSAGE_RECIPIENT mr
+                      on m.me_no = mr.me_no
+                 left join MESSAGE_FILE mf
+                           on mf.me_no = m.me_no
+        where mr.r_id = #{e_no} and mr.me_status = 'N'
+        order by m.me_no desc
+    </select>
+
+    <select id="messageStoredList" parameterType="String" resultMap="messageListMap">
+        select m.me_no, m.me_writer, (select e_name from EMPLOYEE where m.ME_WRITER = E_NO) as writer_name, mr.read_status,
+               m.me_title, m.me_content, to_char(m.reg_date, 'YYYY-MM-DD hh:mm:ss') as reg_date, mf.ME_FILE_NO, mf.ME_FILENAME
+        from MESSAGE m
+                 join MESSAGE_RECIPIENT mr
+                      on m.me_no = mr.me_no
+                 left join MESSAGE_FILE mf
+                           on mf.me_no = m.me_no
+        where mr.r_id = #{e_no} and mr.me_status = 'S'
+        order by m.me_no desc
+    </select>
+
+    <update id="messageRead" parameterType="map">
+        update MESSAGE_RECIPIENT
+        set read_status = 'Y'
+        where r_id = #{r_id} and me_no = #{me_no}
+    </update>
+
+    <update id="messageStatusChange" parameterType="map">
+        update MESSAGE_RECIPIENT
+        set me_status = #{me_status}
+        where r_id = #{r_id} and me_no = #{me_no}
+    </update>
+
+    <resultMap id="messageSendMap" type="map">
+        <id column="ME_NO" property="me_no" jdbcType="NUMERIC"/>
+        <result column="ME_WRITER" property="me_writer" jdbcType="VARCHAR"/>
+        <result column="ME_TITLE" property="me_title" jdbcType="VARCHAR"/>
+        <result column="ME_CONTENT" property="me_content" jdbcType="VARCHAR"/>
+        <result column="REG_DATE" property="reg_date" jdbcType="VARCHAR"/>
+        <collection property="file" javaType="list" ofType="map">
+            <id column="ME_FILE_NO" property="me_file_no" jdbcType="NUMERIC"/>
+            <result column="ME_FILENAME" property="me_filename" jdbcType="VARCHAR"/>
+        </collection>
+        <collection property="recipient" javaType="list" ofType="map">
+            <id column="R_NAME" property="r_name" jdbcType="VARCHAR"/>
+            <result column="READ_STATUS" property="read_status" jdbcType="VARCHAR"/>
         </collection>
     </resultMap>
 
-    <select id="messageReceiveList" parameterType="String" resultMap="messageDataMap">
-        select me_no, me_writer, me_title, me_content from MESSAGE
-        where ME_WRITER = #{e_no}
-          and USE_YN = 'Y'
+    <select id="messageSendList" parameterType="String" resultMap="messageSendMap">
+        select m.me_no, m.me_writer, m.me_title, m.me_content, to_char(m.reg_date, 'YYYY-MM-DD hh:mm:ss') as reg_date,
+               mf.ME_FILE_NO, mf.ME_FILENAME, (select e_name from EMPLOYEE where mr.r_id = e_no) as r_name, mr.READ_STATUS
+        from MESSAGE m
+                 left join MESSAGE_RECIPIENT mr on mr.me_no = m.me_no
+                 left join MESSAGE_FILE mf on mf.me_no = m.me_no
+        where m.me_writer = #{e_no} and m.use_yn = 'Y'
     </select>
 </mapper>
