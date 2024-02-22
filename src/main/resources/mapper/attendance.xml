@@ -3,15 +3,27 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.mybatis.mapper.AttendanceMapper">
-    <select id="atList" parameterType="map" resultType="map">
+    <select id="atList" resultType="map">
         select
             TO_CHAR(A.AT_DATE, 'YYYY-MM-DD') AS AT_DATE,
             A.E_NO,
             TO_CHAR(A.AT_START, 'YYYY-MM-DD HH24:MI:SS') AS AT_START,
             TO_CHAR(A.AT_END, 'YYYY-MM-DD HH24:MI:SS') AS AT_END,
             A.AT_STATUS,
+            TO_CHAR(A.REG_DATE, 'YYYY-MM-DD HH24:MI:SS') AS REG_DATE,
             TO_CHAR(A.MOD_DATE, 'YYYY-MM-DD HH24:MI:SS') AS MOD_DATE,
-            A.MOD_ID
+            A.REG_ID,
+            A.MOD_ID,
+            E.E_NAME,
+            E.DEPT_NAME,
+            E.E_OCCUP,
+            CASE
+                WHEN A.AT_STATUS = '정상출근' THEN '#ADFF2F'
+                WHEN A.AT_STATUS = '조퇴' THEN '#FFD700'
+                WHEN A.AT_STATUS = '결근' THEN '#FF00FF'
+                WHEN A.AT_STATUS = '지각' THEN '#00FFFF'
+                ELSE '#C0C0C0'
+            END AS COLOR
         from ATTENDANCE A inner join EMPLOYEE E
             on A.E_NO = E.E_NO
     </select>
@@ -43,7 +55,7 @@
                         WHEN TO_CHAR(SYSDATE, 'HH24:MI') BETWEEN '18:00' AND '09:00' AND(SYSDATE - AT_START) * 24 >= 4 AND (SYSDATE - AT_START) * 24 &lt; 9 THEN '조퇴'  -- 근무 시간이 4시간 이상 9시간 미만인 경우 조퇴
                         ELSE '결근'
                     END
-        WHERE AT_DATE = TRUNC(SYSDATE)
+        WHERE AT_DATE = #{AT_DATE}
         AND E_NO = #{E_NO}
     </update>
 
@@ -67,10 +79,24 @@
 
     <update id="adminAtUpdate" parameterType="map">
         UPDATE ATTENDANCE
-        set MOD_DATE = sysdate,
-            MOD_ID = #{ADMIN_NO},
-            AT_STATUS = #{AT_STATUS}
-        WHERE AT_DATE = trunc(sysdate)
+        <set>
+            MOD_DATE = sysdate,
+            AT_STATUS = #{AT_STATUS},
+            <if test="MOD_ID != null">MOD_ID = #{MOD_ID},</if>
+            <!--<if test="AT_STATUS">AT_STATUS = #{AT_STATUS}</if>-->
+        </set>
+        WHERE AT_DATE = #{AT_DATE}
           AND E_NO = #{E_NO}
     </update>
+    <insert id="noneAtInsert">
+        INSERT INTO ATTENDANCE (AT_DATE, E_NO, AT_START, AT_STATUS, REG_DATE, REG_ID)
+        SELECT TRUNC(SYSDATE), E.E_NO, SYSDATE, '결근', SYSDATE, '일괄처리'
+            FROM EMPLOYEE E
+        WHERE NOT EXISTS(
+            SELECT 1
+            FROM ATTENDANCE
+            WHERE AT_DATE = TRUNC(SYSDATE)
+            AND E_NO = E.E_NO
+        )
+    </insert>
 </mapper>

@@ -17,30 +17,36 @@ public class AttendanceDao {
 
     public List<Map<String, Object>> atList(Map<String, Object> atMap) {
         logger.info("atList");
-        List<Map<String, Object>> aList = sqlSessionTemplate.selectList("atList", atMap);
-        logger.info(aList.toString());
-        return aList;
+        return sqlSessionTemplate.selectList("atList", atMap);
     }
 
     public int atInsert(Map<String, Object> atMap) {
         logger.info("atInsert");
-        logger.info(atMap.toString());
-        int result = 0;
-        result = sqlSessionTemplate.insert("atInsert", atMap);
-        return result;
+        return sqlSessionTemplate.insert("atInsert", atMap);
     }
 
     public int atUpdate(Map<String, Object> atMap) {
         logger.info("atUpdate");
-        logger.info(atMap.toString());
-        int result = sqlSessionTemplate.update("atUpdate", atMap);
-        return result;
+        return sqlSessionTemplate.update("atUpdate", atMap);
     }
 
     public int adminAtUpdate(Map<String, Object> atMap) {
         logger.info("adminAtUpdate");
         logger.info(atMap.toString());
-        int result = sqlSessionTemplate.update("adminAtUpdate", atMap);
+        int result = 0;
+        try {
+            result = sqlSessionTemplate.update("adminAtUpdate", atMap);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return result;
+    }
+
+    public void noneAtInsert() {
+        String sql = "INSERT INTO ATTENDANCE (AT_DATE, E_NO, AT_START, AT_STATUS, REG_DATE, REG_ID)" +
+                "SELECT E_E.NO, TRUNC(SYSDATE), SYSDATE, '결근', SYSDATE, '일괄처리'" +
+                "FROM EMPLOYEE E" +
+                "WHERE NOT EXISTS (SELECT 1 FROM ATTENDANCE WHERE AT_DATE = TRUNC(SYSDATE) AND E_NO = E.E_NO)";
+        sqlSessionTemplate.insert("noneAtInsert", sql);
     }
 }

@@ -20,29 +20,22 @@ public class AttendanceService {
     private AttendanceDao attendanceDao;
 
     public List<Map<String, Object>> atList(Map<String, Object> atMap) {
-        logger.info("atList");
-        List<Map<String, Object>> aList = null;
-        aList = attendanceDao.atList(atMap);
-        return aList;
+        return attendanceDao.atList(atMap);
     }
 
     public int atInsert(Map<String, Object> atMap) {
-        logger.info("atInsert");
-        int result = 0;
-        result = attendanceDao.atInsert(atMap);
-        return result;
+        return attendanceDao.atInsert(atMap);
     }
 
     public int atUpdate(Map<String, Object> atMap) {
-        logger.info("atUpdate");
-        int result = 0;
-        result = attendanceDao.atUpdate(atMap);
-        return result;
+        return attendanceDao.atUpdate(atMap);
     }
 
     public int adminAtUpdate(Map<String, Object> atMap) {
-        logger.info("adminAtUpdate");
-        int result = attendanceDao.adminAtUpdate(atMap);
-        return result;
+        return attendanceDao.adminAtUpdate(atMap);
+    }
+
+    public void noneAtInsert() {
+        attendanceDao.noneAtInsert();
     }
 }
