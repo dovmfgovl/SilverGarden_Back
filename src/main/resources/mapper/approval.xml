@@ -232,7 +232,4 @@
         delete from APPROVAL_DOC where d_no = #{value}
     </delete>
 
-
-
-
 </mapper>
