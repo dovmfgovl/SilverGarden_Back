@@ -45,7 +45,6 @@ public class MessageTest {
     }
     @Test
     public void messageSendList(){
-        String e_no = "202402_00000036";
         Map<String, Object> rmap = new HashMap<>();
         assertEquals(messageDao.messageSendList(rmap).size(), 5);
     }

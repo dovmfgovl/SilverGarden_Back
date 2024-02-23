@@ -43,7 +43,6 @@ public class JWTServiceImpl implements JWTService {
                 .signWith(getSignKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
-
     @Override
     public String extractUserName(String token) {
         return extractClaim(token, Claims::getSubject);

@@ -80,7 +80,7 @@
                     <when test = 'gubun.equals("writer")'>
                         AND me.me_writer IN (select e_no from EMPLOYEE where e_name LIKE '%'||#{keyword}||'%')
                     </when>
-                    <when test = 'period.equals("period")'>
+                    <when test = 'gubun.equals("period")'>
                         AND m.reg_date between #{start_date} and TO_DATE(#{end_date}, 'YYYY-MM-DD')+1
                     </when>
                 </choose>
