@@ -12,7 +12,7 @@ import java.util.Map;
 
 
 @RestController
-@RequestMapping("/program2/*")
+@RequestMapping("/program3/*")
 public class ProgramController {
     Logger logger = LoggerFactory.getLogger(ProgramController.class);
     @Autowired
