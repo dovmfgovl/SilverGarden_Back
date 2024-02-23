@@ -311,6 +311,25 @@
         where E_NO = #{E_NO}
     </update>
 
+    <insert id="fileUpload" parameterType="java.util.List">
+        INSERT INTO emp_file(e_file_no, e_no, e_filename, e_fileorigin, e_filepath, reg_date, mod_date, reg_id, mod_id)
+        SELECT seq_noticefile_no.nextval, A.* from
+        (
+        <foreach collection="list" item="item" index="index" separator="UNION ALL">
+            SELECT
+            #{item.e_no} as e_no,
+            #{item.e_filename} as e_filename,
+            #{item.e_fileorigin} as e_fileorigin,
+            #{item.e_filepath} as e_filepath,
+            sysdate as reg_date,
+            sysdate as mod_date,
+            #{item.e_no} as reg_id,
+            #{item.e_no} as mod_id
+            from dual
+        </foreach>
+        ) A
+    </insert>
+
     <update id="empEduUpdate" parameterType="map">
         UPDATE EDUCATION
         <set>
