@@ -36,12 +36,17 @@ public class MessageTest {
     }
     @Test
     public void messsageReceiveList(){
-        String e_no = "202402_00000036";
-        assertEquals(messageDao.messageReceiveList(e_no).size(), 5);
+        Map<String, Object> rmap = new HashMap<>();
+        rmap.put("e_no","202402_00000030");
+        rmap.put("gubun", "period");
+        rmap.put("start_date", "2024-02-21");
+        rmap.put("end_date", "2024-02-22");
+        assertEquals(messageDao.messageReceiveList(rmap).size(), 4);
     }
     @Test
     public void messageSendList(){
         String e_no = "202402_00000036";
-        assertEquals(messageDao.messageSendList(e_no).size(), 5);
+        Map<String, Object> rmap = new HashMap<>();
+        assertEquals(messageDao.messageSendList(rmap).size(), 5);
     }
 }
