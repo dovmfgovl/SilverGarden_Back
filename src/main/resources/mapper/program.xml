@@ -98,10 +98,10 @@
     <!--캘린더 조회-->
     <select id="scheduleList" parameterType="java.util.Map" resultType="java.util.Map">
         SELECT PG_NO, PG_NAME,
-               PG_DAYSOFWEEK, PG_CATEGORY, PG_TEACHER, PG_CONTENT,
-               TO_CHAR(CAST(PG_START AS TIMESTAMP), 'YYYY-MM-DD"T"HH24:MI') AS PG_START,
-               TO_CHAR(CAST(PG_END AS TIMESTAMP), 'YYYY-MM-DD"T"HH24:MI') AS PG_END,
-               PG_REPEAT_TYPE
+                PG_DAYSOFWEEK, PG_CATEGORY, PG_TEACHER, PG_CONTENT,
+                TO_CHAR(CAST(PG_START AS TIMESTAMP), 'YYYY-MM-DD"T"HH24:MI') AS PG_START,
+                TO_CHAR(CAST(PG_END AS TIMESTAMP), 'YYYY-MM-DD"T"HH24:MI') AS PG_END,
+                PG_REPEAT_TYPE
         FROM PROGRAM
     </select>
 
