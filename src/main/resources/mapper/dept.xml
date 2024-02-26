@@ -44,8 +44,8 @@
                         </where>
     </select>
     <insert id="deptInsert" parameterType="map">
-        INSERT ALL INTO COMMON_CD(CD, GRP_CD, CD_VALUE, USE_YN, REG_DATE, MOD_DATE, REG_ID, MOD_ID, HIGH_CD) VALUES (#{CD}, 'dept01', #{CD_VALUE}, 'Y', SYSDATE, SYSDATE, '', '', '')
-        INTO COMMON_CD(CD, GRP_CD, CD_VALUE, USE_YN, REG_DATE, MOD_DATE, REG_ID, MOD_ID, HIGH_CD) VALUES (to_char('ext01')||lpad(SEQ_EXT_NO.nextval,2,0), 'ext01', #{EXT_VALUE}, 'Y', SYSDATE, SYSDATE, '', '', #{CD})
+        INSERT ALL INTO COMMON_CD(CD, GRP_CD, CD_VALUE, USE_YN, REG_DATE, MOD_DATE, REG_ID, MOD_ID, HIGH_CD) VALUES (#{CD}, 'dept01', #{CD_VALUE}, 'Y', SYSDATE, SYSDATE, #{REG_ID}, #{MOD_ID}, '')
+        INTO COMMON_CD(CD, GRP_CD, CD_VALUE, USE_YN, REG_DATE, MOD_DATE, REG_ID, MOD_ID, HIGH_CD) VALUES (to_char('ext01')||lpad(SEQ_EXT_NO.nextval,2,0), 'ext01', #{EXT_VALUE}, 'Y', SYSDATE, SYSDATE, #{REG_ID}, #{MOD_ID}, #{CD})
         SELECT * FROM DUAL
     </insert>
     <update id="deptUpdate" parameterType="map">
@@ -63,7 +63,8 @@
                             WHEN HIGH_CD = #{B_CD} THEN #{CD}
                             ELSE HIGH_CD
                                 END,
-            MOD_DATE = SYSDATE
+            MOD_DATE = SYSDATE,
+            MOD_ID = #{MOD_ID}
         WHERE (GRP_CD = 'dept01' AND CD = #{B_CD})
            OR (GRP_CD = 'ext01' AND CD = #{EXT}) OR (GRP_CD = 'ocp01')
     </update>
@@ -75,7 +76,9 @@
         SET USE_YN = CASE
                          WHEN (GRP_CD = 'dept01' AND CD = #{CD}) OR (GRP_CD = 'ext01' AND CD = #{EXT}) THEN 'N'
                          ELSE USE_YN
-            END
+            END,
+            MOD_DATE = SYSDATE,
+            MOD_ID = #{MOD_ID}
         WHERE (GRP_CD = 'dept01' AND CD = #{CD})
            OR (GRP_CD = 'ext01' AND CD = #{EXT})
     </update>
@@ -83,10 +86,10 @@
         SELECT CD, CD_VALUE FROM COMMON_CD WHERE GRP_CD = 'ocp01' AND HIGH_CD = #{CD} AND USE_YN = 'Y'
     </select>
     <insert id="jobInsert" parameterType="map">
-        INSERT INTO COMMON_CD(CD, GRP_CD, CD_VALUE, USE_YN, REG_DATE, MOD_DATE, REG_ID, MOD_ID, HIGH_CD) VALUES (to_char('ocp02')||lpad(SEQ_OCP_NO.nextval,2,0), 'ocp01', #{CD_VALUE}, 'Y', SYSDATE, SYSDATE, '', '', #{CD})
+        INSERT INTO COMMON_CD(CD, GRP_CD, CD_VALUE, USE_YN, REG_DATE, MOD_DATE, REG_ID, MOD_ID, HIGH_CD) VALUES (to_char('ocp02')||lpad(SEQ_OCP_NO.nextval,2,0), 'ocp01', #{CD_VALUE}, 'Y', SYSDATE, SYSDATE, #{REG_ID}, #{MOD_ID}, #{CD})
     </insert>
     <update id="jobDelete" parameterType="map">
-        UPDATE COMMON_CD SET USE_YN='N' WHERE GRP_CD = 'ocp01' AND CD = #{CD}
+        UPDATE COMMON_CD SET USE_YN='N', MOD_DATE = SYSDATE, MOD_ID = #{MOD_ID} WHERE GRP_CD = 'ocp01' AND CD = #{CD}
     </update>
     <select id="deptemplist" parameterType="map" resultType="map">
         SELECT E_NO, E_NAME, E_PHONE, E_EMAIL, E_AUTH FROM EMPLOYEE WHERE DEPT_NAME = #{CD_VALUE}

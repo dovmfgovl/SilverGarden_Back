@@ -43,7 +43,23 @@ public class SecurityConfiguration {
         http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(request -> request.requestMatchers("/api/v1/auth/**").permitAll()
                         .requestMatchers(HttpMethod.OPTIONS, "/api/v1/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/**").permitAll()
+                        .requestMatchers(HttpMethod.GET,
+                                "/approval/**",
+                                "/at/**",
+                                "/dept/**",
+                                "/program/**",
+                                "/calendar/**",
+                                "/program/**",
+                                "/program3/**",
+                                "/notice/**",
+                                "/my/**",
+                                "/message/**",
+                                "/member/**",
+                                "/emplist/**",
+                                "/emp/**",
+                                "/empcreate/**",
+                                "/schedule/**")
+                        .permitAll()
                         .requestMatchers(HttpMethod.POST, "/**").permitAll()
                         .requestMatchers(HttpMethod.PUT, "/**").permitAll()
                         .requestMatchers(HttpMethod.DELETE, "/**").permitAll()
