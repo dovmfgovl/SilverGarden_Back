@@ -5,9 +5,10 @@
 <mapper namespace="com.sg.silvergarden.dao.programcal.PgScheduleMapper">
     <insert id="pgCalendarAdd" parameterType="java.util.Map">
         INSERT INTO PROGRAM_SCHEDULE (
-            PS_NO, PS_NAME, PS_START, PS_END, PS_INFO, REG_DATE, REG_ID, MOD_DATE,PS_DAYSOFWEEK,PS_CATEGORY)
+            PS_NO, PS_TEACHER, PS_NAME, PS_START, PS_END, PS_INFO, REG_DATE, REG_ID, MOD_DATE,PS_DAYSOFWEEK,PS_CATEGORY)
         VALUES (
             PS_NO_SEQUENCE.nextval,
+            #{PG_TEACHER},
             #{PS_NAME, jdbcType=VARCHAR},
             TO_DATE(#{PS_START},'YYYY-MM-DD"T"HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'),
             TO_DATE(#{PS_END},'YYYY-MM-DD"T"HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'),
@@ -21,6 +22,8 @@
     </insert>
     <select id="pgCalendarList" resultType="java.util.Map">
         SELECT
+            PG_NO,
+            PS_TEACHER,
             PS_NO,--CRUD를 하는 PK키로 넣기
             PS_NAME,
             TO_CHAR(PS_START, 'YYYY-MM-DD"T"HH24:MI:SS') AS PS_START,
@@ -62,6 +65,7 @@
             <if test="PS_INFO != null">PS_INFO = #{PS_INFO},</if>
             <if test="MOD_ID != null">MOD_ID = #{MOD_ID},</if>
             <if test="REG_ID != null">REG_ID = #{REG_ID},</if>
+            <if test="PG_NO != null">PG_NO = #{PG_NO},</if>
             MOD_DATE = TO_DATE(sysdate, 'YYYY-MM-DD"T"HH24:MI:SS'),
             <if test="REG_DATE != null">REG_DATE = TO_DATE(#{REG_DATE}, 'YYYY-MM-DD"T"HH24:MI:SS'),</if>
             <if test="PS_DAYSOFWEEK != null">PS_DAYSOFWEEK = #{PS_DAYSOFWEEK},</if>
