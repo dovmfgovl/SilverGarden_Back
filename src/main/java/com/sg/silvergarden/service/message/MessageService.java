@@ -88,5 +88,11 @@ public class MessageService {
         result = messageDao.messageStatusChange(rmap);
         return result;
     }
+    public int messageCompleteDelete(Map<String, Object> rmap) {
+        int result = -1;
+        rmap.put("me_status","D");
+        result = messageDao.messageStatusChange(rmap);
+        return result;
+    }
 
 }

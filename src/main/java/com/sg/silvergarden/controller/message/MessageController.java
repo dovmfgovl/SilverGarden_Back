@@ -169,6 +169,13 @@ public class MessageController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("파일 다운로드 오류");
         }
     }
+
+    @GetMapping("messageCompleteDelete")
+    public String messageCompleteDelete(@RequestParam Map<String, Object> rmap) {
+        int result = -1;
+        result = messageService.messageCompleteDelete(rmap);
+        return result == 0?"error":"ok";
+    }
     private String getCurrentTimeMillisFormat() {
         long currentTime = System.currentTimeMillis();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmssSSS");

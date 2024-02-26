@@ -77,8 +77,8 @@
                     <when test = 'gubun.equals("me_content")'>
                         AND me_content LIKE '%'||#{keyword}||'%'
                     </when>
-                    <when test = 'gubun.equals("writer")'>
-                        AND me.me_writer IN (select e_no from EMPLOYEE where e_name LIKE '%'||#{keyword}||'%')
+                    <when test = 'gubun.equals("me_writer")'>
+                        AND m.me_writer IN (select e_no from EMPLOYEE where e_name LIKE '%'||#{keyword}||'%')
                     </when>
                     <when test = 'gubun.equals("period")'>
                         AND m.reg_date between #{start_date} and TO_DATE(#{end_date}, 'YYYY-MM-DD')+1
@@ -97,7 +97,25 @@
                       on m.me_no = mr.me_no
                  left join MESSAGE_FILE mf
                            on mf.me_no = m.me_no
-        where mr.r_id = #{e_no} and mr.me_status = 'N'
+        <where>
+            mr.r_id = #{e_no} and mr.me_status = 'N'
+            <if test = 'gubun!=null'>
+                <choose>
+                    <when test = 'gubun.equals("me_title")'>
+                        AND me_title LIKE '%'||#{keyword}||'%'
+                    </when>
+                    <when test = 'gubun.equals("me_content")'>
+                        AND me_content LIKE '%'||#{keyword}||'%'
+                    </when>
+                    <when test = 'gubun.equals("me_writer")'>
+                        AND me_writer IN (select e_no from EMPLOYEE where e_name LIKE '%'||#{keyword}||'%')
+                    </when>
+                    <when test = 'gubun.equals("period")'>
+                        AND m.reg_date between #{start_date} and TO_DATE(#{end_date}, 'YYYY-MM-DD')+1
+                    </when>
+                </choose>
+            </if>
+        </where>
         order by m.me_no desc
     </select>
 
@@ -109,7 +127,25 @@
                       on m.me_no = mr.me_no
                  left join MESSAGE_FILE mf
                            on mf.me_no = m.me_no
-        where mr.r_id = #{e_no} and mr.me_status = 'S'
+        <where>
+            mr.r_id = #{e_no} and mr.me_status = 'S'
+            <if test = 'gubun!=null'>
+                <choose>
+                    <when test = 'gubun.equals("me_title")'>
+                        AND me_title LIKE '%'||#{keyword}||'%'
+                    </when>
+                    <when test = 'gubun.equals("me_content")'>
+                        AND me_content LIKE '%'||#{keyword}||'%'
+                    </when>
+                    <when test = 'gubun.equals("me_writer")'>
+                        AND me_writer IN (select e_no from EMPLOYEE where e_name LIKE '%'||#{keyword}||'%')
+                    </when>
+                    <when test = 'gubun.equals("period")'>
+                        AND m.reg_date between #{start_date} and TO_DATE(#{end_date}, 'YYYY-MM-DD')+1
+                    </when>
+                </choose>
+            </if>
+        </where>
         order by m.me_no desc
     </select>
 
@@ -147,7 +183,30 @@
         from MESSAGE m
                  left join MESSAGE_RECIPIENT mr on mr.me_no = m.me_no
                  left join MESSAGE_FILE mf on mf.me_no = m.me_no
-        where m.me_writer = #{e_no} and m.use_yn = 'Y'
+        <where>
+            m.me_writer = #{e_no} and m.use_yn = 'Y'
+            <if test = 'gubun!=null'>
+                <choose>
+                    <when test = 'gubun.equals("me_title")'>
+                        AND me_title LIKE '%'||#{keyword}||'%'
+                    </when>
+                    <when test = 'gubun.equals("me_content")'>
+                        AND me_content LIKE '%'||#{keyword}||'%'
+                    </when>
+                    <when test = 'gubun.equals("me_writer")'>
+                        AND mr.r_id IN (select e_no from EMPLOYEE where e_name LIKE '%'||#{keyword}||'%')
+                    </when>
+                    <when test = 'gubun.equals("period")'>
+                        AND m.reg_date between #{start_date} and TO_DATE(#{end_date}, 'YYYY-MM-DD')+1
+                    </when>
+                </choose>
+            </if>
+        </where>
         order by me_no desc
     </select>
+
+    <delete id="messageCompleteDelete" parameterType="map">
+        delete from approval_recipient
+        where r_id = #{r_id} and me_no = #{me_no}
+    </delete>
 </mapper>
