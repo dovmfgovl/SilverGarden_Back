@@ -21,6 +21,7 @@ public class SignupDaoImpl implements SignupDao{
     public EmpVO save(EmpVO empVO) {
 
         log.info("save호출");
+        log.info(empVO);
         sqlSessionTemplate.insert("empcreateMapper.save", empVO);
         return empVO;
 
