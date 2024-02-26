@@ -18,4 +18,11 @@ public class MypageDao {
         return mlist;
 
     }
+
+    public int changePassword(Map<String, Object> pMap) {
+        log.info("changPw-dao");
+        int result = 0;
+        result =sqlSessionTemplate.update("changePw",pMap);
+        return result;
+    }
 }

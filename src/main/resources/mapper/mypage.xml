@@ -11,5 +11,10 @@
                AT_STATUS
         FROM ATTENDANCE
     </select>
+    <update id="changePw" parameterType="map">
+        update EMPLOYEE
+        set E_PASSWORD = #{E_PASSWORD}
+        where E_NO = #{E_NO}
+    </update>
 </mapper>
 
