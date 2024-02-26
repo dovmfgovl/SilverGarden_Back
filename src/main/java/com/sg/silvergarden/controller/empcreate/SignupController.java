@@ -14,19 +14,20 @@ import java.util.Map;
 
 @Log4j2
 @RestController
-@RequestMapping("/api/v1/auth")
+@RequestMapping("/empcreate")
 @RequiredArgsConstructor
 public class SignupController {
 
     private final SignupService signupService;
+
     @PostMapping("/signup")
-    public ResponseEntity<EmpVO> signup(@RequestBody SignupRequest signUpRequest){
+    public ResponseEntity<EmpVO> signup(@RequestBody SignupRequest signUpRequest) {
         log.info("signup-controller");
         return ResponseEntity.ok(signupService.signup(signUpRequest));
     }
 
     @GetMapping("/deptname")
-    public String deptName(Map<String, Object> pmap){
+    public String deptName(Map<String, Object> pmap) {
         log.info("empcreate -> deptname-controller");
         List<Map<String, Object>> list = null;
         list = signupService.deptName(pmap);
@@ -35,8 +36,6 @@ public class SignupController {
         log.info(temp);
         return temp;
 
-
     }
-
 
 }

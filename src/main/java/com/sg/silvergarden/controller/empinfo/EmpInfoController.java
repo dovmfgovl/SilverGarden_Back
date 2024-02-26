@@ -1,14 +1,20 @@
 package com.sg.silvergarden.controller.empinfo;
 
 import com.google.gson.Gson;
+import com.sg.silvergarden.config.YAMLConfiguration;
 import com.sg.silvergarden.service.empinfo.EmpInfoService;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import java.util.List;
-import java.util.Map;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @RestController
 @RequestMapping("/emp/*")
@@ -17,6 +23,9 @@ public class EmpInfoController {
     Logger logger = LoggerFactory.getLogger(EmpInfoController.class);
     @Autowired
     private EmpInfoService empInfoService;
+
+    @Autowired
+    YAMLConfiguration config;
 
     // 직원 조회(인적사항, 학력)
     @GetMapping("empList")
@@ -53,12 +62,46 @@ public class EmpInfoController {
 
     // 직원 수정
     @PutMapping("empUpdate")
-    public String empUpdate(@RequestBody Map<String, Object> eMap) {
+    public String empUpdate(@RequestParam Map<String, Object> eMap, @RequestParam(name="files", required=false) MultipartFile[] files) {
         logger.info("empUpdate");
+        logger.info(eMap.toString());
+        List<Map<String, Object>> list = new ArrayList<>();
+        if (files != null) {
+            for (MultipartFile file : files) {
+                logger.info("Received file: " + file.getOriginalFilename() + ", size: " + file.getSize());
+            }
+        } else {
+            logger.info("No files received");
+        }
+        if (files != null) {
+            for (MultipartFile file : files) {
+                Map<String, Object> nmap = new HashMap<>();
+                String originalFilename = file.getOriginalFilename();
+                String uploadFilename = getCurrentTimeMillisFormat() + "_" + FilenameUtils.getName(originalFilename);
+                File upFile = new File(config.getUploadPath(), uploadFilename);//지정된 경로에 파일저장
+                try {
+                    file.transferTo(upFile);
+                    nmap.put("e_no", eMap.get("e_no"));
+                    nmap.put("n_filepath", config.getUploadPath());
+                    nmap.put("n_fileorigin", originalFilename);
+                    nmap.put("n_filename", uploadFilename);
+                    list.add(nmap);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            eMap.put("list", list); // 맵에 파일리스트 추가
+        }
         logger.info(eMap.toString());
         int result = 0;
         result = empInfoService.empUpdate(eMap);
         return String.valueOf(result);
+    }
+
+    private String getCurrentTimeMillisFormat() {
+        long currentTime = System.currentTimeMillis();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmssSSS");
+        return dateFormat.format(new Date(currentTime));
     }
 
     // 직원 삭제

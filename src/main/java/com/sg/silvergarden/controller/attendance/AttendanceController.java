@@ -61,7 +61,7 @@ public class AttendanceController {
     }
 
     // 매주 월-금요일 오후 11시 59분 59초에 실행
-    @Scheduled(cron = "59 59 23 ? * 1-5")
+    @Scheduled(cron = "58 11 23 ? * 1-5")
     public void noneAtInsert() {
         attendanceService.noneAtInsert();
     }

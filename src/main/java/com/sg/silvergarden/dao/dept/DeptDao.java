@@ -39,6 +39,7 @@ public class DeptDao {
     public void deptUpdate(Map<String, Object> pmap) {
         log.info("deptUpdate-dao호출");
         sqlSessionTemplate.update("deptMapper.deptUpdate", pmap);
+        sqlSessionTemplate.update("deptMapper.empDeptUpdate", pmap);
     }
 
     public void deptDelete(Map<String, Object> pmap) {

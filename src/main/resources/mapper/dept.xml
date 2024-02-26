@@ -67,6 +67,9 @@
         WHERE (GRP_CD = 'dept01' AND CD = #{B_CD})
            OR (GRP_CD = 'ext01' AND CD = #{EXT}) OR (GRP_CD = 'ocp01')
     </update>
+    <update id="empDeptUpdate" parameterType="map">
+    UPDATE EMPLOYEE SET DEPT_NAME = CASE WHEN DEPT_NAME = #{B_CD_VALUE} THEN #{CD_VALUE} ELSE DEPT_NAME END
+    </update>
     <update id="deptDelete" parameterType="map">
         UPDATE COMMON_CD
         SET USE_YN = CASE
