@@ -37,7 +37,7 @@ public class EmpInfoDao {
             result = sqlSessionTemplate.update("empInfoUpdate", eMap);
             logger.info("시퀀스값" + eMap.get("E_NO".toString()));
         } catch (Exception e) {
-            logger.info(e.toString());
+            e.printStackTrace();
         }
         return result;
     }
@@ -45,7 +45,11 @@ public class EmpInfoDao {
     public int fileUpload(List<Map<String, Object>> list) {
         int result = 0;
         logger.info("fileUpload"+list.toString());
-        result = sqlSessionTemplate.insert("fileUpload", list);
+        try {
+            result = sqlSessionTemplate.update("fileUpload", list);
+        } catch (Exception e) {
+            logger.error("사진 업로드 실패: " + e.getMessage());
+        }
         return result;
     }
 

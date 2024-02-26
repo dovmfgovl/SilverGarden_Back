@@ -62,10 +62,17 @@ public class EmpInfoController {
 
     // 직원 수정
     @PutMapping("empUpdate")
-    public String empUpdate(@RequestBody Map<String, Object> eMap, @RequestParam(name="files", required=false) MultipartFile[] files) {
+    public String empUpdate(@RequestParam Map<String, Object> eMap, @RequestParam(name="files", required=false) MultipartFile[] files) {
         logger.info("empUpdate");
         logger.info(eMap.toString());
         List<Map<String, Object>> list = new ArrayList<>();
+        if (files != null) {
+            for (MultipartFile file : files) {
+                logger.info("Received file: " + file.getOriginalFilename() + ", size: " + file.getSize());
+            }
+        } else {
+            logger.info("No files received");
+        }
         if (files != null) {
             for (MultipartFile file : files) {
                 Map<String, Object> nmap = new HashMap<>();
