@@ -32,14 +32,14 @@ public class ScheduleController {
     }
 
     @PostMapping("scheduleinsert")
-    public void scheduleInsert(@RequestParam Map<String, Object> pmap){
+    public void scheduleInsert(@RequestBody Map<String, Object> pmap){
         log.info("scheduleInsert-controller 호출");
         log.info(pmap);
         scheduleService.scheduleInsert(pmap);
     }
 
     @PutMapping("scheduleupdate")
-    public void scheduleUpdate(@RequestParam Map<String, Object> pmap){
+    public void scheduleUpdate(@RequestBody Map<String, Object> pmap){
         log.info("scheduleUpdate-controller 호출");
         log.info(pmap);
         scheduleService.scheduleUpdate(pmap);
