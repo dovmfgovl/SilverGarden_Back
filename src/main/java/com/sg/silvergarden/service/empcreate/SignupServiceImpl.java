@@ -31,7 +31,10 @@ public class SignupServiceImpl implements SignupService {
         emp.setDept_name(signupRequest.getDept_name());
         emp.setE_email(signupRequest.getE_email());
         emp.setE_auth(signupRequest.getE_auth());
+        emp.setE_rank(signupRequest.getE_rank());
         emp.setE_password(passwordEncoder.encode(signupRequest.getE_password()));
+        emp.setReg_id(signupRequest.getReg_id());
+        emp.setMod_id(signupRequest.getMod_id());
         return signupDao.save(emp);
     }
 

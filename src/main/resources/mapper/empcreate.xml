@@ -3,10 +3,10 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="empcreateMapper">
-   <insert id="save">
-       INSERT INTO EMPLOYEE(e_no, e_birth, e_name, e_phone, dept_name, e_email, e_password, e_auth) VALUES (to_char(sysdate,'YYYYMM_')||lpad(SEQ_EMPLOYEE_NO.nextval, 8, 0), #{e_birth}, #{e_name}, #{e_phone}, #{dept_name}, #{e_email}, #{e_password}, #{e_auth})
+   <insert id="save" parameterType="map">
+       INSERT INTO EMPLOYEE(e_no, e_birth, e_name, e_phone, dept_name, e_email, e_password, e_auth, e_rank, reg_date, mod_date, reg_id, mod_id) VALUES (to_char(sysdate,'YYYYMM_')||lpad(SEQ_EMPLOYEE_NO.nextval, 8, 0), #{e_birth}, #{e_name}, #{e_phone}, #{dept_name}, #{e_email}, #{e_password}, #{e_auth}, #{e_rank}, sysdate, sysdate, #{reg_id}, #{mod_id})
    </insert>
     <select id="deptname" resultType="map" parameterType="map">
-        SELECT CD_VALUE FROM COMMON_CD WHERE GRP_CD = 'dept01'
+        SELECT CD_VALUE FROM COMMON_CD WHERE GRP_CD = 'dept01' AND USE_YN = 'Y'
     </select>
 </mapper>
