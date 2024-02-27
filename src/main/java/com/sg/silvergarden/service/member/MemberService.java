@@ -92,7 +92,22 @@ public class MemberService{
     public int shuttleInsert(Map<String, Object> sMap) {
         int result = 0;
         result = memberDao.shuttleInsert(sMap);
-        //  }
         return result;
+    }
+
+    public int ShuttleCalAdd(Map<String, Object> sMap) {
+        return memberDao.ShuttleCalAdd(sMap);
+    }
+
+    public List<Map<String, Object>> shuttleCalList(Map<String, Object> sMap) {
+        return memberDao.shttleCalList(sMap);
+    }
+
+    public int shuttleCalUpdate(Map<String, Object> sMap) {
+        return memberDao.shttleCalUpdate(sMap);
+    }
+
+    public int shuttleCalDelete(Map<String, Object> sMap) {
+        return memberDao.shttleCalDelete(sMap);
     }
 }

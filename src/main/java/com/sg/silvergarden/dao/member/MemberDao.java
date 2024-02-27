@@ -85,4 +85,24 @@ public class MemberDao {
         result = sqlSessionTemplate.insert("shuttleInsert", sMap);
         return result;
     }
+
+    public List<Map<String, Object>> shttleCalList(Map<String, Object> sMap) {
+        log.info("shuttleCalList-dao");
+        return sqlSessionTemplate.selectList("shuttleCalList",sMap);
+    }
+
+    public int ShuttleCalAdd(Map<String, Object> sMap) {
+        log.info("shuttleCalAdd-dao");
+        return sqlSessionTemplate.insert("shuttleCalAdd",sMap);
+    }
+
+    public int shttleCalUpdate(Map<String, Object> sMap) {
+        log.info("shuttleCalUpdate-dao");
+        return sqlSessionTemplate.update("shuttleCalUpdate",sMap);
+    }
+
+    public int shttleCalDelete(Map<String, Object> sMap) {
+        log.info("shuttleCalDelete-dao");
+        return sqlSessionTemplate.delete("shuttleCalDelete",sMap);
+    }
 }
