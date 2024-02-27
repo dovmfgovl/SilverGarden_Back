@@ -98,4 +98,39 @@ public class MemberController {
         log.info(String.valueOf(result));
         return String.valueOf(result);
     }
+    @GetMapping("shuttleList")
+    public String shuttleList(@RequestParam Map<String,Object> sMap){
+        log.info("shuttleList");
+        log.info(sMap.toString());
+        List<Map<String, Object>> sList = null;
+        sList=memberService.shuttleList(sMap);
+        Gson g = new Gson();
+        String temp = g.toJson(sList);
+        return temp;
+    }
+    @GetMapping("shuttleDelete")
+    public String shuttleDelete(@RequestParam Map<String, Object> sMap){
+        log.info(sMap.toString());
+        int result = 0;
+        result = memberService.shuttleDelete(sMap);
+        log.info(String.valueOf(result));
+        return String.valueOf(result);
+    }
+
+    @GetMapping("shuttleUpdate")
+    public String shuttleUpdate(@RequestParam Map<String, Object> sMap){
+        log.info(sMap.toString());
+        int result = 0;
+        result = memberService.shuttleUpdate(sMap);
+        log.info(String.valueOf(result));
+        return String.valueOf(result);
+    }
+    @PostMapping("shuttleInsert")
+    public String shuttleInsert(@RequestBody Map<String, Object> sMap){
+        log.info(sMap.toString());
+        int result = 0;
+        result = memberService.shuttleInsert(sMap);
+        log.info(String.valueOf(result));
+        return String.valueOf(result);
+    }
 }

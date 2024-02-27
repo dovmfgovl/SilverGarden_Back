@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.mybatis.mapper.ShuttleMapper">
     <select id="shuttleList" resultType="java.util.Map">
-        SELECT SHUTTLE_NO,SHUTTLE_TYPE,SHUTTLE_DRIVER,SHUTTLE_CAPACITY
+        SELECT SHUTTLE_NO,SHUTTLE_TYPE,SHUTTLE_DRIVER,SHUTTLE_CARNUM
         , REG_ID, MOD_ID,REG_DATE, MOD_DATE
         FROM SHUTTLE
     </select>
@@ -16,16 +16,15 @@
         set
             SHUTTLE_TYPE=#{SHUTTLE_TYPE},
             SHUTTLE_DRIVER=#{SHUTTLE_DRIVER},
-            SHUTTLE_CAPACITY=#{SHUTTLE_CAPACITY},
             MOD_DATE=sysdate,
             MOD_ID=#{MOD_ID}
         where SHUTTLE_NO = #{SHUTTLE_NO}
     </update>
-    <insert id="shuttleInsert" useGeneratedKeys="true" parameterType="map" keyColumn="SHUTTLE_NO" keyProperty ="SHUTTLE_NO">
-        INSERT INTO CLIENT
-        (SHUTTLE_NO,SHUTTLE_TYPE,SHUTTLE_DRIVER,SHUTTLE_CAPACITY,REG_ID, MOD_ID, REG_DATE, MOD_DATE)
+    <insert id="shuttleInsert" useGeneratedKeys="true" parameterType="map" >
+        INSERT INTO SHUTTLE
+        (SHUTTLE_NO,SHUTTLE_TYPE,SHUTTLE_DRIVER,SHUTTLE_CARNUM,REG_ID, MOD_ID, REG_DATE, MOD_DATE)
         VALUES
-            SEQ_SHUTTLE_NO.nextval,#{SHUTTLE_TYPE},#{SHUTTLE_DRIVER},#{SHUTTLE_CAPACITY},#{REG_ID},#{MOD_ID},SYSDATE,SYSDATE)
+        (SEQ_SHUTTLE_NO.nextval,#{SHUTTLE_TYPE},#{SHUTTLE_DRIVER},#{SHUTTLE_CARNUM},#{REG_ID},#{MOD_ID},SYSDATE,SYSDATE)
     </insert>
 </mapper>
 

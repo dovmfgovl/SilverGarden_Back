@@ -61,4 +61,28 @@ public class MemberDao {
         clist = sqlSessionTemplate.selectList("counselList",cMap);
         return clist;
     }
+
+    public List<Map<String, Object>> shuttleList(Map<String, Object> sMap) {
+        List<Map<String, Object>> sList = null;
+        sList = sqlSessionTemplate.selectList("shuttleList",sMap);
+        return sList;
+    }
+
+    public int shuttleDelete(Map<String, Object> sMap) {
+        int result = 0;
+        result = sqlSessionTemplate.delete("shuttleDelete", sMap);
+        return result;
+    }
+
+    public int shuttleUpdate(Map<String, Object> sMap) {
+        int result = 0;
+        result = sqlSessionTemplate.update("shuttleUpdate", sMap);
+        return result;
+    }
+
+    public int shuttleInsert(Map<String, Object> sMap) {
+        int result = 0;
+        result = sqlSessionTemplate.insert("shuttleInsert", sMap);
+        return result;
+    }
 }
