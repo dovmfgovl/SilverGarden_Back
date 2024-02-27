@@ -43,10 +43,7 @@ public class AttendanceDao {
     }
 
     public void noneAtInsert() {
-        String sql = "INSERT INTO ATTENDANCE (AT_DATE, E_NO, AT_START, AT_STATUS, REG_DATE, REG_ID)" +
-                "SELECT E_E.NO, TRUNC(SYSDATE), SYSDATE, '결근', SYSDATE, '일괄처리'" +
-                "FROM EMPLOYEE E" +
-                "WHERE NOT EXISTS (SELECT 1 FROM ATTENDANCE WHERE AT_DATE = TRUNC(SYSDATE) AND E_NO = E.E_NO)";
+        String sql = "";
         sqlSessionTemplate.insert("noneAtInsert", sql);
     }
 }
