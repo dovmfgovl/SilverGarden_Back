@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ShuttleScheduleMapper">
+    <insert id="shuttleCalAdd" parameterType="java.util.Map">
+        INSERT INTO SHUTTLE_SERVICE(
+            SERV_NO, SERV_TITLE, SERV_START, SERV_END
+            ,SERV_INFO, REG_DATE,MOD_DATE,SERV_CARTYPE
+        ,SERV_CAR_NO,REG_ID,MOD_ID,SERV_USERNO,SERV_USER)
+        VALUES (
+            SEQ_SERV_NO.nextval,
+            #{SERV_TITLE, jdbcType=VARCHAR},
+            TO_DATE(#{SERV_START},'YYYY-MM-DD"T"HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'),
+            TO_DATE(#{SERV_END},'YYYY-MM-DD"T"HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'),
+            #{SERV_INFO, jdbcType=VARCHAR},
+            sysdate,
+            sysdate,
+            #{SERV_CARTYPE, jdbcType=VARCHAR},
+            #{SERV_CAR_NO},
+            #{REG_ID, jdbcType=VARCHAR},
+            #{MOD_ID, jdbcType=VARCHAR},
+            #{SERV_USERNO, jdbcType=VARCHAR},
+            #{SERV_USER, jdbcType=VARCHAR}
+            )
+    </insert>
+    <select id="shuttleCalList" resultType="java.util.Map">
+        SELECT
+            SERV_NO,
+            SERV_TITLE,
+            TO_CHAR(SERV_START, 'YYYY-MM-DD"T"HH24:MI:SS') AS SERV_START,
+            TO_CHAR(SERV_END, 'YYYY-MM-DD"T"HH24:MI:SS') AS SERV_END,
+            SERV_INFO,
+            SERV_CARTYPE,
+            REG_ID,
+            MOD_ID,
+            TO_CHAR(MOD_DATE, 'YYYY-MM-DD"T"HH24:MI:SS') AS MOD_DATE,
+            TO_CHAR(REG_DATE, 'YYYY-MM-DD"T"HH24:MI:SS') AS REG_DATE,
+            --종류별로 컬러를 넣고 싶은 것으로 아래 case문 작성(색상 취향에 따라 선택)
+                CASE
+                    --연보라/연핑크/연민트/기본 : 연초록 '신체', '교양', '문화', '교육', '여가'
+                    WHEN SERV_CARTYPE = '스타렉스' THEN '#0dcaf0'
+                    WHEN SERV_CARTYPE = '모닝' THEN '#20c997'
+                     WHEN SERV_CARTYPE = '목욕용 포터트럭' THEN '#ffc107'
+--                     WHEN SERV_CARTYPE = '교양' THEN '#fd7e14'
+--                     WHEN SERV_CARTYPE = '여가' THEN '#4a6bff96'
+                    ELSE '#d63384'
+                    --#FFFFCC / #6495ED / #F0F8FF
+                END AS COLOR,
+/*            CASE
+                --연보라/연핑크/연민트/기본 : 연초록 '신체', '교양', '문화', '교육', '여가'
+                WHEN PS_CATEGORY = '교육' THEN '#E0FFFF'
+                WHEN PS_CATEGORY = '문화' THEN '#E6E6FA'
+                WHEN PS_CATEGORY = '신체' THEN '#FFF0F5'
+                WHEN PS_CATEGORY = '교양' THEN '#FFFFCC'
+                WHEN PS_CATEGORY = '여가' THEN '#6495ED'
+                ELSE '#6495ED'
+                --#FFFFCC / #6495ED / #F0F8FF
+                END AS COLOR*/
+                SERV_USERNO,
+                SERV_USER,
+                SERV_CAR_NO
+        FROM SHUTTLE_SERVICE
+    </select>
+    <update id="shuttleCalUpdate" parameterType="java.util.Map">
+        UPDATE SHUTTLE_SERVICE
+        <set>
+            <if test="SERV_NAME != null">SERV_NAME = #{SERV_NAME},</if>
+            <if test="SERV_START != null">SERV_START = TO_DATE(#{SERV_START}, 'YYYY-MM-DD"T"HH24:MI:SS'),</if>
+            <if test="SERV_END != null">SERV_END = TO_DATE(#{SERV_END}, 'YYYY-MM-DD"T"HH24:MI:SS'),</if>
+            <if test="SERV_INFO != null">SERV_INFO = #{SERV_INFO},</if>
+            <if test="MOD_ID != null">MOD_ID = #{MOD_ID},</if>
+            <if test="SERV_CARTYPE != null">SERV_CARTYPE = #{SERV_CARTYPE},</if>
+            <if test="SERV_TITLE != null">SERV_TITLE = #{SERV_TITLE},</if>
+            <if test="SERV_USERNO != null">SERV_USERNO = #{SERV_USERNO},</if>
+            <if test="SERV_CAR_NO= null">SERV_CAR_NO = #{SERV_CAR_NO},</if>
+            MOD_DATE = sysdate,
+        </set>
+        WHERE SERV_NO = #{SERV_NO}
+    </update>
+    <delete id="shuttleCalDelete" parameterType="java.util.Map">
+        DELETE FROM SHUTTLE_SERVICE WHERE SERV_NO = #{SERV_NO}
+    </delete>
+</mapper>

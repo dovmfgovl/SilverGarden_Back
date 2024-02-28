@@ -70,4 +70,48 @@ public class MemberService{
         result = memberDao.counselInsert(cMap);
         return result;
     }
+
+    public List<Map<String, Object>> shuttleList(Map<String, Object> sMap) {
+        List<Map<String,Object>> sList = null;
+        sList=memberDao.shuttleList(sMap);
+        return sList;
+    }
+
+    public int shuttleDelete(Map<String, Object> sMap) {
+        int result = 0;
+        result = memberDao.shuttleDelete(sMap);
+        return result;
+
+    }
+    public int shuttleUpdate(Map<String, Object> sMap) {
+        int result = 0;
+        result = memberDao.shuttleUpdate(sMap);
+        return result;
+
+    }
+    public int shuttleInsert(Map<String, Object> sMap) {
+        int result = 0;
+        result = memberDao.shuttleInsert(sMap);
+        return result;
+    }
+
+    public int ShuttleCalAdd(Map<String, Object> scMap) {
+        log.info("shuttleCalAdd-service",scMap);
+        return memberDao.ShuttleCalAdd(scMap);
+    }
+
+    public List<Map<String, Object>> shuttleCalList(Map<String, Object> scMap) {
+        log.info("shuttleCalList-service",scMap);
+        return memberDao.shttleCalList(scMap);
+    }
+
+    public int shuttleCalUpdate(Map<String, Object> scMap) {
+        log.info("shuttleCalUpdate-service",scMap);
+        return memberDao.shttleCalUpdate(scMap);
+    }
+
+    public int shuttleCalDelete(Map<String, Object> scMap) {
+        log.info("shuttleCalDelete-service", scMap);
+        return memberDao.shttleCalDelete(scMap);
+    }
 }

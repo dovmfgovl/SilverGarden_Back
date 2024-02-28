@@ -98,4 +98,71 @@ public class MemberController {
         log.info(String.valueOf(result));
         return String.valueOf(result);
     }
+    @GetMapping("shuttleList")
+    public String shuttleList(@RequestParam Map<String,Object> sMap){
+        log.info("shuttleList");
+        log.info(sMap.toString());
+        List<Map<String, Object>> sList = null;
+        sList=memberService.shuttleList(sMap);
+        Gson g = new Gson();
+        String temp = g.toJson(sList);
+        return temp;
+    }
+    @GetMapping("shuttleDelete")
+    public String shuttleDelete(@RequestParam Map<String, Object> sMap){
+        log.info(sMap.toString());
+        int result = 0;
+        result = memberService.shuttleDelete(sMap);
+        log.info(String.valueOf(result));
+        return String.valueOf(result);
+    }
+
+    @GetMapping("shuttleUpdate")
+    public String shuttleUpdate(@RequestParam Map<String, Object> sMap){
+        log.info(sMap.toString());
+        int result = 0;
+        result = memberService.shuttleUpdate(sMap);
+        log.info(String.valueOf(result));
+        return String.valueOf(result);
+    }
+    @PostMapping("shuttleInsert")
+    public String shuttleInsert(@RequestBody Map<String, Object> sMap){
+        log.info(sMap.toString());
+        int result = 0;
+        result = memberService.shuttleInsert(sMap);
+        log.info(String.valueOf(result));
+        return String.valueOf(result);
+    }
+
+    @GetMapping("shuttleCalList")
+    public List<Map<String, Object>> shuttleCalList(@RequestParam Map<String, Object> scMap) {
+        log.info("shuttleCalList");
+        log.info(scMap.toString());
+        List<Map<String, Object>> result = memberService.shuttleCalList(scMap);
+        log.info(scMap.toString());
+        return result;
+    }
+
+    @PostMapping("shuttleCalAdd")
+    public String ShuttleCalAdd(@RequestBody Map<String, Object> scMap) {
+        log.info("ShuttleCalAdd");
+        log.info(scMap.toString());
+        int result = 0;
+        result = memberService.ShuttleCalAdd(scMap);
+        return String.valueOf(result);
+    }
+    @CrossOrigin(origins = "http://localhost:3000")
+    @PutMapping("shuttleCalUpdate")
+    public void shuttleCalUpdate(@RequestBody Map<String, Object> scMap) {
+        log.info("shuttleCalUpdate");
+        log.info(scMap.toString());
+        memberService.shuttleCalUpdate(scMap);
+    }
+    @CrossOrigin(origins = "http://localhost:3000")
+    @DeleteMapping("shuttleCalDelete")
+    public void shuttleCalDelete(@RequestParam Map<String, Object> scMap) {
+        log.info("shuttleCalDelete");
+        log.info(scMap.toString());
+        memberService.shuttleCalDelete(scMap);
+    }
 }
