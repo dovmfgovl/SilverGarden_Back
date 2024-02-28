@@ -35,59 +35,59 @@ public class ApprovalController {
     @Autowired
     ApprovalService approvalService;
     @GetMapping("allApprovalList")
-    public String allApprovalList(String e_no){
+    public String allApprovalList(@RequestParam Map<String, Object> pmap){
         log.info("allApprovalList");
         List<Map<String, Object>> dList = null;
-        dList = approvalService.allApprovalList(e_no);
+        dList = approvalService.allApprovalList(pmap);
         Gson g = new Gson();
         String temp = g.toJson(dList);
         return temp;
     }
 
     @GetMapping("approvalWaitList")
-    public String approvalWaitList(String e_no){
+    public String approvalWaitList(@RequestParam Map<String, Object> pmap){
         log.info("approvalWaitList");
         List<Map<String, Object>> dList = null;
-        dList = approvalService.approvalWaitList(e_no);
+        dList = approvalService.approvalWaitList(pmap);
         Gson g = new Gson();
         String temp = g.toJson(dList);
         return temp;
     }
 
     @GetMapping("approvalCompleteList")
-    public String approvalCompleteList(String e_no){
+    public String approvalCompleteList(@RequestParam Map<String, Object> pmap){
         log.info("approvalCompleteList");
         List<Map<String, Object>> dList = null;
-        dList = approvalService.approvalCompleteList(e_no);
+        dList = approvalService.approvalCompleteList(pmap);
         Gson g = new Gson();
         String temp = g.toJson(dList);
         return temp;
     }
 
     @GetMapping("approvalDenyList")
-    public String approvalDenyList(String e_no){
+    public String approvalDenyList(@RequestParam Map<String, Object> pmap){
         log.info("approvalDenyList");
         List<Map<String, Object>> dList = null;
-        dList = approvalService.approvalDenyList(e_no);
+        dList = approvalService.approvalDenyList(pmap);
         Gson g = new Gson();
         String temp = g.toJson(dList);
         return temp;
     }
 
     @GetMapping("approvalProgressList")
-    public String approvalProgressList(String e_no){
+    public String approvalProgressList(@RequestParam Map<String, Object> pmap){
         log.info("approvalProgressList");
         List<Map<String, Object>> dList = null;
-        dList = approvalService.approvalProgressList(e_no);
+        dList = approvalService.approvalProgressList(pmap);
         Gson g = new Gson();
         String temp = g.toJson(dList);
         return temp;
     }
     @GetMapping("approvalTempList")
-    public String approvalTempList(String e_no){
+    public String approvalTempList(@RequestParam Map<String, Object> pmap){
         log.info("approvalTempList");
         List<Map<String, Object>> dList = null;
-        dList = approvalService.approvalTempList(e_no);
+        dList = approvalService.approvalTempList(pmap);
         Gson g = new Gson();
         String temp = g.toJson(dList);
         return temp;

@@ -14,7 +14,7 @@ import java.util.Map;
 @RestController
 @Slf4j
 public class ErrorPageHandler{
-    @GetMapping("/error")
+    //@GetMapping("/error")
     public ResponseEntity<Map<String, Object>> handleError(HttpServletRequest request) {
         log.info("ErrorPageHandler");
         Object status = request.getAttribute(RequestDispatcher.ERROR_STATUS_CODE);

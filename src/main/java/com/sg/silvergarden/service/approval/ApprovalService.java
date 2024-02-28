@@ -18,10 +18,10 @@ import java.util.Map;
 public class ApprovalService {
     @Autowired
     ApprovalDao approvalDao;
-    public List<Map<String, Object>> allApprovalList(String e_no) {
+    public List<Map<String, Object>> allApprovalList(Map<String, Object> pmap) {
         log.info("approvalService: allApprovalList");
         List<Map<String, Object>> dList = null;
-        dList = approvalDao.allApprovalList(e_no);
+        dList = approvalDao.allApprovalList(pmap);
         log.info(dList.toString());
         return dList;
     }
@@ -135,37 +135,37 @@ public class ApprovalService {
         return result;
     }
 
-    public List<Map<String, Object>> approvalWaitList(String e_no) {
+    public List<Map<String, Object>> approvalWaitList(Map<String, Object> pmap) {
         log.info("approvalService: approvalWaitList");
         List<Map<String, Object>> dList = null;
-        dList = approvalDao.approvalWaitList(e_no);
+        dList = approvalDao.approvalWaitList(pmap);
         return dList;
     }
 
-    public List<Map<String, Object>> approvalCompleteList(String e_no) {
+    public List<Map<String, Object>> approvalCompleteList(Map<String, Object> pmap) {
         List<Map<String, Object>> dList = null;
-        dList = approvalDao.approvalCompleteList(e_no);
+        dList = approvalDao.approvalCompleteList(pmap);
         log.info(dList.toString());
         return dList;
     }
 
-    public List<Map<String, Object>> approvalDenyList(String e_no) {
+    public List<Map<String, Object>> approvalDenyList(Map<String, Object> pmap) {
         List<Map<String, Object>> dList = null;
-        dList = approvalDao.approvalDenyList(e_no);
+        dList = approvalDao.approvalDenyList(pmap);
         log.info(dList.toString());
         return dList;
     }
 
-    public List<Map<String, Object>> approvalProgressList(String e_no) {
+    public List<Map<String, Object>> approvalProgressList(Map<String, Object> pmap) {
         List<Map<String, Object>> dList = null;
-        dList = approvalDao.approvalProgressList(e_no);
+        dList = approvalDao.approvalProgressList(pmap);
         log.info(dList.toString());
         return dList;
     }
 
-    public List<Map<String, Object>> approvalTempList(String e_no) {
+    public List<Map<String, Object>> approvalTempList(Map<String, Object> pmap) {
         List<Map<String, Object>> dList = null;
-        dList = approvalDao.approvalTempList(e_no);
+        dList = approvalDao.approvalTempList(pmap);
         log.info(dList.toString());
         return dList;
     }
