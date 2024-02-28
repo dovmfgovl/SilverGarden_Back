@@ -5,7 +5,9 @@
 <mapper namespace="ShuttleScheduleMapper">
     <insert id="shuttleCalAdd" parameterType="java.util.Map">
         INSERT INTO SHUTTLE_SERVICE(
-            SERV_NO, SERV_TITLE, SERV_START, SERV_END, SERV_INFO, REG_DATE,MOD_DATE,SERV_CARTYPE)
+            SERV_NO, SERV_TITLE, SERV_START, SERV_END
+            ,SERV_INFO, REG_DATE,MOD_DATE,SERV_CARTYPE
+        ,SERV_CAR_NO,REG_ID,MOD_ID,SERV_USERNO,SERV_USER)
         VALUES (
             SEQ_SERV_NO.nextval,
             #{SERV_TITLE, jdbcType=VARCHAR},
@@ -14,8 +16,13 @@
             #{SERV_INFO, jdbcType=VARCHAR},
             sysdate,
             sysdate,
-            #{SERV_CARTYPE, jdbcType=VARCHAR}
-        )
+            #{SERV_CARTYPE, jdbcType=VARCHAR},
+            #{SERV_CAR_NO},
+            #{REG_ID, jdbcType=VARCHAR},
+            #{MOD_ID, jdbcType=VARCHAR},
+            #{SERV_USERNO, jdbcType=VARCHAR},
+            #{SERV_USER, jdbcType=VARCHAR}
+            )
     </insert>
     <select id="shuttleCalList" resultType="java.util.Map">
         SELECT
@@ -33,12 +40,12 @@
                     --연보라/연핑크/연민트/기본 : 연초록 '신체', '교양', '문화', '교육', '여가'
                     WHEN SERV_CARTYPE = '스타렉스' THEN '#0dcaf0'
                     WHEN SERV_CARTYPE = '모닝' THEN '#20c997'
---                     WHEN PS_CATEGORY = '신체' THEN '#ffc107'
---                     WHEN PS_CATEGORY = '교양' THEN '#fd7e14'
---                     WHEN PS_CATEGORY = '여가' THEN '#4a6bff96'
+--                     WHEN SERV_CARTYPE = '신체' THEN '#ffc107'
+--                     WHEN SERV_CARTYPE = '교양' THEN '#fd7e14'
+--                     WHEN SERV_CARTYPE = '여가' THEN '#4a6bff96'
                     ELSE '#d63384'
                     --#FFFFCC / #6495ED / #F0F8FF
-                END AS COLOR
+                END AS COLOR,
 /*            CASE
                 --연보라/연핑크/연민트/기본 : 연초록 '신체', '교양', '문화', '교육', '여가'
                 WHEN PS_CATEGORY = '교육' THEN '#E0FFFF'
@@ -49,6 +56,9 @@
                 ELSE '#6495ED'
                 --#FFFFCC / #6495ED / #F0F8FF
                 END AS COLOR*/
+                SERV_USERNO,
+                SERV_USER,
+                SERV_CAR_NO
         FROM SHUTTLE_SERVICE
     </select>
     <update id="shuttleCalUpdate" parameterType="java.util.Map">
@@ -59,8 +69,11 @@
             <if test="SERV_END != null">SERV_END = TO_DATE(#{SERV_END}, 'YYYY-MM-DD"T"HH24:MI:SS'),</if>
             <if test="SERV_INFO != null">SERV_INFO = #{SERV_INFO},</if>
             <if test="MOD_ID != null">MOD_ID = #{MOD_ID},</if>
-            <if test="REG_DATE != null">REG_DATE = TO_DATE(#{REG_DATE}, 'YYYY-MM-DD"T"HH24:MI:SS'),</if>
             <if test="SERV_CARTYPE != null">SERV_CARTYPE = #{SERV_CARTYPE}</if>
+            <if test="SERV_TITLE != null">SERV_TITLE = #{SERV_TITLE}</if>
+            <if test="SERV_USERNO != null">SERV_USERNO = #{SERV_USERNO}</if>
+            <if test="SERV_CAR_NO= null">SERV_CAR_NO = #{SERV_CAR_NO}</if>
+            MOD_DATE = sysdate,
         </set>
         WHERE SERV_NO = #{SERV_NO}
     </update>

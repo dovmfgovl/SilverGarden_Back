@@ -13,11 +13,13 @@
     </delete>
     <update id="shuttleUpdate" parameterType="map">
         update SHUTTLE
-        set
-            SHUTTLE_TYPE=#{SHUTTLE_TYPE},
-            SHUTTLE_DRIVER=#{SHUTTLE_DRIVER},
+        <set>
+            <if test="SHUTTLE_TYPE != null">SHUTTLE_TYPE=#{SHUTTLE_TYPE},</if>
+            <if test="SHUTTLE_DRIVER != null">SHUTTLE_DRIVER=#{SHUTTLE_DRIVER},</if>
+            <if test="SHUTTLE_CARNUM != null">SHUTTLE_CARNUM=#{SHUTTLE_CARNUM},</if>
             MOD_DATE=sysdate,
-            MOD_ID=#{MOD_ID}
+            MOD_ID=#{MOD_ID},
+        </set>
         where SHUTTLE_NO = #{SHUTTLE_NO}
     </update>
     <insert id="shuttleInsert" useGeneratedKeys="true" parameterType="map" >
