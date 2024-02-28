@@ -135,30 +135,34 @@ public class MemberController {
     }
 
     @GetMapping("shuttleCalList")
-    public List<Map<String, Object>> shuttleCalList(@RequestParam Map<String, Object> sMap) {
+    public List<Map<String, Object>> shuttleCalList(@RequestParam Map<String, Object> scMap) {
         log.info("shuttleCalList");
-        List<Map<String, Object>> result = memberService.shuttleCalList(sMap);
-        log.info(sMap.toString());
+        log.info(scMap.toString());
+        List<Map<String, Object>> result = memberService.shuttleCalList(scMap);
+        log.info(scMap.toString());
         return result;
     }
 
     @PostMapping("shuttleCalAdd")
-    public String ShuttleCalAdd(@RequestBody Map<String, Object> sMap) {
-        log.info("ShuttleCalAdd", sMap);
+    public String ShuttleCalAdd(@RequestBody Map<String, Object> scMap) {
+        log.info("ShuttleCalAdd");
+        log.info(scMap.toString());
         int result = 0;
-        result = memberService.ShuttleCalAdd(sMap);
+        result = memberService.ShuttleCalAdd(scMap);
         return String.valueOf(result);
     }
     @CrossOrigin(origins = "http://localhost:3000")
-    @PutMapping("shuttleCalupdate")
-    public void shuttleCalUpdate(@RequestBody Map<String, Object> sMap) {
-        log.info("shuttleCalUpdate", sMap);
-        memberService.shuttleCalUpdate(sMap);
+    @PutMapping("shuttleCalUpdate")
+    public void shuttleCalUpdate(@RequestBody Map<String, Object> scMap) {
+        log.info("shuttleCalUpdate");
+        log.info(scMap.toString());
+        memberService.shuttleCalUpdate(scMap);
     }
     @CrossOrigin(origins = "http://localhost:3000")
     @DeleteMapping("shuttleCalDelete")
-    public void shuttleCalDelete(@RequestParam Map<String, Object> sMap) {
-        log.info("shuttleCalDelete", sMap);
-        memberService.shuttleCalDelete(sMap);
+    public void shuttleCalDelete(@RequestParam Map<String, Object> scMap) {
+        log.info("shuttleCalDelete");
+        log.info(scMap.toString());
+        memberService.shuttleCalDelete(scMap);
     }
 }
