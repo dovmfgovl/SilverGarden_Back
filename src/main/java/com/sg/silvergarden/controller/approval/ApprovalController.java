@@ -150,6 +150,12 @@ public class ApprovalController {
         result = approvalService.approvalInsert(pmap);
         return result == 0 || result == -1 ?"error":"ok";//결과값이 -1 혹은 0이면 에러를 반환
     }
+    @PostMapping("approvalVacationRequest")
+    public String approvalVacationRequest(@RequestParam Map<String, Object> pmap){
+        int result = -1;
+        result = approvalService.approvalVacationRequest(pmap);
+        return result == 0 || result == -1 ?"error":"ok";//결과값이 -1 혹은 0이면 에러를 반환
+    }
 
     @GetMapping("approvalFileDownload")
     public ResponseEntity<Object> fileDownload(@RequestParam(value="filename") String filename) {

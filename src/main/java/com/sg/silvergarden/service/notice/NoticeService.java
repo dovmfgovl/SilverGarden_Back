@@ -14,12 +14,12 @@ public class NoticeService {
 
     @Autowired
     NoticeDao noticeDao;
-    public List<Map<String, Object>> noticeList(Map<String, Object> rmap) {
+    public List<Map<String, Object>> noticeList(Map<String, Object> rmap) throws Exception{
         List<Map<String, Object>> nlist = null;
         nlist = noticeDao.noticeList(rmap);
         return nlist;
     }
-    public List<Map<String, Object>> noticeDetail(int n_no) {
+    public List<Map<String, Object>> noticeDetail(int n_no) throws Exception{
         List<Map<String, Object>> nlist = null;
         int result = -1;
         nlist = noticeDao.noticeDetail(n_no);
@@ -28,23 +28,23 @@ public class NoticeService {
         }
         return nlist;
     }
-    public int noticeDelete(Map<String, Object> pmap) {
+    public int noticeDelete(Map<String, Object> pmap) throws Exception{
         int result = -1;
         result = noticeDao.noticeDelete(pmap);
         return result;
     }
-    public int noticeUpdate(Map<String, Object> pmap) {
+    public int noticeUpdate(Map<String, Object> pmap) throws Exception{
         int result = -1;
         result = noticeDao.noticeUpdate(pmap);
         return result;
     }
-    public int fileUpload(List<Map<String, Object>> list){
+    public int fileUpload(List<Map<String, Object>> list) throws Exception{
         int result = -1;
         result = noticeDao.fileUpload(list);
         return result;
     }
     @Transactional
-    public int noticeInsert(Map<String, Object> pmap) {
+    public int noticeInsert(Map<String, Object> pmap) throws Exception{
         int result = -1;
         if(pmap.containsKey("list")){//파일이 있는 경우 noticeInsert를 먼저하고 시퀀스 값을 받아옴
             List<Map<String, Object>> flist = (List)pmap.get("list");
@@ -59,7 +59,7 @@ public class NoticeService {
         return result;
     }
 
-    public int deleteFile(String filename) {
+    public int deleteFile(String filename) throws Exception{
         int result = -1;
         result = noticeDao.fileDelete(filename);
         return result;

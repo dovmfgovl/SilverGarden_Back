@@ -232,4 +232,13 @@
         delete from APPROVAL_DOC where d_no = #{value}
     </delete>
 
+    <insert id="vacationDateInsert" parameterType="list">
+        INSERT ALL
+        <foreach collection="list" item="item" index="index" separator=" ">
+            INTO ATTENDANCE (AT_DATE, E_NO, AT_START, AT_STATUS, REG_DATE, REG_ID)
+            VALUES (#{item.date}, #{item.e_no}, TO_DATE(#{item.date}), #{item.at_status}, sysdate, #{item.e_no})
+        </foreach>
+        SELECT * FROM DUAL
+    </insert>
+
 </mapper>

@@ -112,4 +112,9 @@ public class ApprovalDao {
         return dList;
     }
 
+    public int vacationDateInsert(List<Map<String, Object>> dateList) {
+        int result = -1;
+        result = sqlSessionTemplate.insert("vacationDateInsert", dateList);
+        return result;
+    }
 }
