@@ -26,10 +26,12 @@ public class EmpVO implements UserDetails {
     private String e_profile;
     private Role e_auth;
     private String e_rank;
+    private String reg_id;
+    private String mod_id;
 
     @Builder
     public EmpVO(String e_no, String e_birth, String e_name, String e_phone, String dept_name, String e_email,
-            String e_password, Role e_auth, String e_profile, String e_rank) {
+            String e_password, Role e_auth, String e_profile, String e_rank, String reg_id, String mod_id) {
         super();
         this.e_no = e_no;
         this.e_birth = e_birth;
@@ -41,6 +43,8 @@ public class EmpVO implements UserDetails {
         this.e_auth = e_auth;
         this.e_profile = e_profile;
         this.e_rank = e_rank;
+        this.reg_id = reg_id;
+        this.mod_id = mod_id;
 
     }
 

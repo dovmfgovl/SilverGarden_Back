@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mybatis.mapper.ShuttleMapper">
+    <select id="shuttleList" resultType="java.util.Map">
+        SELECT SHUTTLE_NO,SHUTTLE_TYPE,SHUTTLE_DRIVER,SHUTTLE_CARNUM
+        , REG_ID, MOD_ID,REG_DATE, MOD_DATE
+        FROM SHUTTLE
+    </select>
+    <delete id="shuttleDelete" parameterType="map">
+        delete from SHUTTLE where SHUTTLE_NO = #{SHUTTLE_NO}
+    </delete>
+    <update id="shuttleUpdate" parameterType="map">
+        update SHUTTLE
+        <set>
+            <if test="SHUTTLE_TYPE != null">SHUTTLE_TYPE=#{SHUTTLE_TYPE},</if>
+            <if test="SHUTTLE_DRIVER != null">SHUTTLE_DRIVER=#{SHUTTLE_DRIVER},</if>
+            <if test="SHUTTLE_CARNUM != null">SHUTTLE_CARNUM=#{SHUTTLE_CARNUM},</if>
+            MOD_DATE=sysdate,
+            MOD_ID=#{MOD_ID},
+        </set>
+        where SHUTTLE_NO = #{SHUTTLE_NO}
+    </update>
+    <insert id="shuttleInsert" useGeneratedKeys="true" parameterType="map" >
+        INSERT INTO SHUTTLE
+        (SHUTTLE_NO,SHUTTLE_TYPE,SHUTTLE_DRIVER,SHUTTLE_CARNUM,REG_ID, MOD_ID, REG_DATE, MOD_DATE)
+        VALUES
+        (SEQ_SHUTTLE_NO.nextval,#{SHUTTLE_TYPE},#{SHUTTLE_DRIVER},#{SHUTTLE_CARNUM},#{REG_ID},#{MOD_ID},SYSDATE,SYSDATE)
+    </insert>
+</mapper>
+

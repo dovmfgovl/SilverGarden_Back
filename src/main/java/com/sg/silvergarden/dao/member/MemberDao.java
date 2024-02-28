@@ -61,4 +61,48 @@ public class MemberDao {
         clist = sqlSessionTemplate.selectList("counselList",cMap);
         return clist;
     }
+
+    public List<Map<String, Object>> shuttleList(Map<String, Object> sMap) {
+        List<Map<String, Object>> sList = null;
+        sList = sqlSessionTemplate.selectList("shuttleList",sMap);
+        return sList;
+    }
+
+    public int shuttleDelete(Map<String, Object> sMap) {
+        int result = 0;
+        result = sqlSessionTemplate.delete("shuttleDelete", sMap);
+        return result;
+    }
+
+    public int shuttleUpdate(Map<String, Object> sMap) {
+        int result = 0;
+        result = sqlSessionTemplate.update("shuttleUpdate", sMap);
+        return result;
+    }
+
+    public int shuttleInsert(Map<String, Object> sMap) {
+        int result = 0;
+        result = sqlSessionTemplate.insert("shuttleInsert", sMap);
+        return result;
+    }
+
+    public List<Map<String, Object>> shttleCalList(Map<String, Object> sMap) {
+        log.info("shuttleCalList-dao");
+        return sqlSessionTemplate.selectList("shuttleCalList",sMap);
+    }
+
+    public int ShuttleCalAdd(Map<String, Object> sMap) {
+        log.info("shuttleCalAdd-dao");
+        return sqlSessionTemplate.insert("shuttleCalAdd",sMap);
+    }
+
+    public int shttleCalUpdate(Map<String, Object> sMap) {
+        log.info("shuttleCalUpdate-dao");
+        return sqlSessionTemplate.update("shuttleCalUpdate",sMap);
+    }
+
+    public int shttleCalDelete(Map<String, Object> sMap) {
+        log.info("shuttleCalDelete-dao");
+        return sqlSessionTemplate.delete("shuttleCalDelete",sMap);
+    }
 }
