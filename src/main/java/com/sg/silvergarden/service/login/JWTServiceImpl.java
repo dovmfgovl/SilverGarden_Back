@@ -29,7 +29,7 @@ public class JWTServiceImpl implements JWTService {
         log.info("@@generateToken@@");
         return Jwts.builder().setSubject(userDetails.getUsername())// jwt생성하기 위한 빌더 시작 > jwt의 sub 클레임을 설정
                 .setIssuedAt(new Date(System.currentTimeMillis()))// jwt 토큰 발급시간
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24))// jwt 토큰 만료 시간
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60))// jwt 토큰 만료 시간
                 .signWith(getSignKey(), SignatureAlgorithm.HS256)// jwt 서명추가
                 .compact();// jwt 문자열로 변환하여 반환
     }
