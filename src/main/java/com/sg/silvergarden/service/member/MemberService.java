@@ -95,19 +95,23 @@ public class MemberService{
         return result;
     }
 
-    public int ShuttleCalAdd(Map<String, Object> sMap) {
-        return memberDao.ShuttleCalAdd(sMap);
+    public int ShuttleCalAdd(Map<String, Object> scMap) {
+        log.info("shuttleCalAdd-service",scMap);
+        return memberDao.ShuttleCalAdd(scMap);
     }
 
-    public List<Map<String, Object>> shuttleCalList(Map<String, Object> sMap) {
-        return memberDao.shttleCalList(sMap);
+    public List<Map<String, Object>> shuttleCalList(Map<String, Object> scMap) {
+        log.info("shuttleCalList-service",scMap);
+        return memberDao.shttleCalList(scMap);
     }
 
-    public int shuttleCalUpdate(Map<String, Object> sMap) {
-        return memberDao.shttleCalUpdate(sMap);
+    public int shuttleCalUpdate(Map<String, Object> scMap) {
+        log.info("shuttleCalUpdate-service",scMap);
+        return memberDao.shttleCalUpdate(scMap);
     }
 
-    public int shuttleCalDelete(Map<String, Object> sMap) {
-        return memberDao.shttleCalDelete(sMap);
+    public int shuttleCalDelete(Map<String, Object> scMap) {
+        log.info("shuttleCalDelete-service", scMap);
+        return memberDao.shttleCalDelete(scMap);
     }
 }
