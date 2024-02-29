@@ -22,6 +22,7 @@
                 WHEN A.AT_STATUS = '조퇴' THEN '#FFD700'
                 WHEN A.AT_STATUS = '결근' THEN '#FF00FF'
                 WHEN A.AT_STATUS = '지각' THEN '#00FFFF'
+                WHEN A.AT_STATUS = '휴가' THEN '#8A2BE2'
                 ELSE '#C0C0C0'
             END AS COLOR
         from ATTENDANCE A inner join EMPLOYEE E
@@ -84,14 +85,16 @@
             MOD_DATE = sysdate,
             AT_STATUS = #{AT_STATUS},
             <if test="MOD_ID != null">MOD_ID = #{MOD_ID},</if>
+            <!--<if test="AT_START != null">AT_START = #{AT_START},</if>-->
+            <!--<if test="AT_END != null">AT_END = #{AT_END},</if>-->
             <!--<if test="AT_STATUS">AT_STATUS = #{AT_STATUS}</if>-->
         </set>
         WHERE AT_DATE = #{AT_DATE}
           AND E_NO = #{E_NO}
     </update>
     <insert id="noneAtInsert">
-        INSERT INTO ATTENDANCE (AT_DATE, E_NO, AT_START, AT_STATUS, REG_DATE, REG_ID)
-        SELECT TRUNC(SYSDATE), E.E_NO, SYSDATE, '결근', SYSDATE, '일괄처리'
+        INSERT INTO ATTENDANCE (AT_DATE, E_NO, AT_START, AT_END, AT_STATUS, REG_DATE, REG_ID)
+        SELECT TRUNC(SYSDATE), E.E_NO, SYSDATE, SYSDATE, '결근', SYSDATE, '일괄처리'
             FROM EMPLOYEE E
         WHERE NOT EXISTS(
             SELECT 1

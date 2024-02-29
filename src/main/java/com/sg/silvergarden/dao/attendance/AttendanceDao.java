@@ -43,6 +43,7 @@ public class AttendanceDao {
     }
 
     public void noneAtInsert() {
+        logger.info("근태 일괄처리 완료");
         String sql = "";
         sqlSessionTemplate.insert("noneAtInsert", sql);
     }
