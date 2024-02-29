@@ -62,46 +62,11 @@ public class EmpInfoController {
 
     // 직원 수정
     @PutMapping("empUpdate")
-    public String empUpdate(@RequestParam Map<String, Object> eMap, @RequestParam(name="files", required=false) MultipartFile[] files) {
+    public String empUpdate(@RequestBody Map<String, Object> eMap) {
         logger.info("empUpdate");
-        logger.info(eMap.toString());
-        List<Map<String, Object>> list = new ArrayList<>();
-        if (files != null) {
-            for (MultipartFile file : files) {
-                logger.info("Received file: " + file.getOriginalFilename() + ", size: " + file.getSize());
-            }
-        } else {
-            logger.info("No files received");
-        }
-        if (files != null) {
-            for (MultipartFile file : files) {
-                Map<String, Object> nmap = new HashMap<>();
-                String originalFilename = file.getOriginalFilename();
-                String uploadFilename = getCurrentTimeMillisFormat() + "_" + FilenameUtils.getName(originalFilename);
-                File upFile = new File(config.getUploadPath(), uploadFilename);//지정된 경로에 파일저장
-                try {
-                    file.transferTo(upFile);
-                    nmap.put("e_no", eMap.get("e_no"));
-                    nmap.put("n_filepath", config.getUploadPath());
-                    nmap.put("n_fileorigin", originalFilename);
-                    nmap.put("n_filename", uploadFilename);
-                    list.add(nmap);
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            eMap.put("list", list); // 맵에 파일리스트 추가
-        }
-        logger.info(eMap.toString());
         int result = 0;
         result = empInfoService.empUpdate(eMap);
         return String.valueOf(result);
-    }
-
-    private String getCurrentTimeMillisFormat() {
-        long currentTime = System.currentTimeMillis();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmssSSS");
-        return dateFormat.format(new Date(currentTime));
     }
 
     // 직원 삭제
