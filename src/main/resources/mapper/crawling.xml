@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mybatis.mapper.CrawlingMapper">
+    <!-- 추가 -->
+    <insert id="insertCrawledData" parameterType="java.util.List">
+        <foreach collection="crawledDataList" item="item" index="index" separator=";">
+            INSERT INTO CRAWLED_DATA
+            (CRAWLED_NO, CRAWLED_TITLE, CRAWLED_URL, REG_DATE)
+            VALUES
+            (
+            SEQ_CRAWLED_NO.nextval,
+            #{item.crawledTitle},
+            #{item.crawledUrl},
+            TO_DATE(#{item.regDate}, 'YYYY.MM.DD')
+            )
+        </foreach>
+    </insert>
+
+
+
+    <!--조회-->
+    <select id="getAllCrawledData" resultType="java.util.Map">
+        SELECT * FROM CRAWLED_DATA
+    </select>
+</mapper>
