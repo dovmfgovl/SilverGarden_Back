@@ -42,17 +42,6 @@ public class EmpInfoDao {
         return result;
     }
 
-    public int fileUpload(List<Map<String, Object>> list) {
-        int result = 0;
-        logger.info("fileUpload"+list.toString());
-        try {
-            result = sqlSessionTemplate.update("fileUpload", list);
-        } catch (Exception e) {
-            logger.error("사진 업로드 실패: " + e.getMessage());
-        }
-        return result;
-    }
-
     public int empDelete(int e_no) {
         logger.info("empDelete");
         int result = 0;

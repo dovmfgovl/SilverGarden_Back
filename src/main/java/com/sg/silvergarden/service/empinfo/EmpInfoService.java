@@ -40,20 +40,10 @@ public class EmpInfoService {
         return eList;
     }
 
-    @Transactional
     public int empUpdate(Map<String, Object> eMap) {
         logger.info("empUpdate");
         int result = 0;
-        if(eMap.containsKey("list")){//파일이 있는 경우 empUpdate를 먼저하고 시퀀스 값을 받아옴
-            List<Map<String, Object>> flist = (List)eMap.get("list");
-            empInfoDao.empUpdate(eMap);
-            for(Map<String, Object> map : flist){
-                map.put("E_NO", eMap.get("E_NO"));
-            }
-            result = empInfoDao.fileUpload(flist);
-        }else{
-            result = empInfoDao.empUpdate(eMap);
-        }
+        result = empInfoDao.empUpdate(eMap);
         return result;
     }
 
