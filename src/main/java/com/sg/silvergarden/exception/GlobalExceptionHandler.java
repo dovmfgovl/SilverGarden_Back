@@ -54,7 +54,7 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(getBody(message), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    @ExceptionHandler({NullPointerException.class})
+    //@ExceptionHandler({NullPointerException.class})
     public ResponseEntity<Map<String, Object>> handleNullPointerException(Exception ex, HttpServletRequest request){
         log.info("nullPointerException");
         String requestURL = request.getRequestURL().toString();
@@ -70,13 +70,13 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(getBody(message), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    @ExceptionHandler({
-            MethodArgumentNotValidException.class,
-            HttpMessageNotReadableException.class,
-            MissingServletRequestParameterException.class,
-            MethodArgumentTypeMismatchException.class,
-            IllegalArgumentException.class
-    })
+//    @ExceptionHandler({
+//            MethodArgumentNotValidException.class,
+//            HttpMessageNotReadableException.class,
+//            MissingServletRequestParameterException.class,
+//            MethodArgumentTypeMismatchException.class,
+//            IllegalArgumentException.class
+//    })
     public ResponseEntity<Map<String, Object>> handleBadRequestException(RuntimeException ex, HttpServletRequest request){
         log.info("RuntimeException");
         Map<String, Object> body = new HashMap<>();
@@ -86,7 +86,7 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(body, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    @ExceptionHandler({ClassCastException.class})
+    //@ExceptionHandler({ClassCastException.class})
     public ResponseEntity<Map<String, Object>> handleClassCastException(Exception ex, HttpServletRequest request){
         log.info("ClassCastException");
         String requestURL = request.getRequestURL().toString();
@@ -102,7 +102,7 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(getBody(message), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    @ExceptionHandler({NoSuchFileException.class})
+    //@ExceptionHandler({NoSuchFileException.class})
     public ResponseEntity<Map<String, Object>> handleNoSuchFileException(Exception ex, HttpServletRequest request){
         log.info("NoSuchFileException");
         String requestURL = request.getRequestURL().toString();

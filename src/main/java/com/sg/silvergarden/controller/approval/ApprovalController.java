@@ -11,6 +11,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -47,6 +48,9 @@ public class ApprovalController {
     @GetMapping("approvalWaitList")
     public String approvalWaitList(@RequestParam Map<String, Object> pmap){
         log.info("approvalWaitList");
+        if(ObjectUtils.isEmpty(pmap)){//요청파라미터가 null일 때 방어하는 코드
+            return "";
+        }
         List<Map<String, Object>> dList = null;
         dList = approvalService.approvalWaitList(pmap);
         Gson g = new Gson();
@@ -57,6 +61,9 @@ public class ApprovalController {
     @GetMapping("approvalCompleteList")
     public String approvalCompleteList(@RequestParam Map<String, Object> pmap){
         log.info("approvalCompleteList");
+        if(ObjectUtils.isEmpty(pmap)){//요청파라미터가 null일 때 방어하는 코드
+            return "";
+        }
         List<Map<String, Object>> dList = null;
         dList = approvalService.approvalCompleteList(pmap);
         Gson g = new Gson();
@@ -67,6 +74,9 @@ public class ApprovalController {
     @GetMapping("approvalDenyList")
     public String approvalDenyList(@RequestParam Map<String, Object> pmap){
         log.info("approvalDenyList");
+        if(ObjectUtils.isEmpty(pmap)){//요청파라미터가 null일 때 방어하는 코드
+            return "";
+        }
         List<Map<String, Object>> dList = null;
         dList = approvalService.approvalDenyList(pmap);
         Gson g = new Gson();
@@ -77,6 +87,9 @@ public class ApprovalController {
     @GetMapping("approvalProgressList")
     public String approvalProgressList(@RequestParam Map<String, Object> pmap){
         log.info("approvalProgressList");
+        if(ObjectUtils.isEmpty(pmap)){//요청파라미터가 null일 때 방어하는 코드
+            return "";
+        }
         List<Map<String, Object>> dList = null;
         dList = approvalService.approvalProgressList(pmap);
         Gson g = new Gson();
@@ -86,6 +99,9 @@ public class ApprovalController {
     @GetMapping("approvalTempList")
     public String approvalTempList(@RequestParam Map<String, Object> pmap){
         log.info("approvalTempList");
+        if(ObjectUtils.isEmpty(pmap)){//요청파라미터가 null일 때 방어하는 코드
+            return "";
+        }
         List<Map<String, Object>> dList = null;
         dList = approvalService.approvalTempList(pmap);
         Gson g = new Gson();
@@ -105,6 +121,9 @@ public class ApprovalController {
     @GetMapping("getApprovalDocCount")
     public String getApprovalDocCount(String e_no) {
         log.info("ApprovalController: getApprovalDocCount");
+        if(ObjectUtils.isEmpty(e_no)){//요청파라미터가 null일 때 방어하는 코드
+            return "";
+        }
         Map<String, Object> rmap = null;
         rmap = approvalService.getApprovalDocCount(e_no);
         Gson g = new Gson();
@@ -116,6 +135,9 @@ public class ApprovalController {
     public String getApprovalDetail(int d_no){
         log.info("getApprovalDetail");
         log.info(String.valueOf(d_no));
+        if(ObjectUtils.isEmpty(d_no)){//요청파라미터가 null일 때 방어하는 코드
+            return "";
+        }
         List<Map<String, Object>> dList = null;
         dList = approvalService.getApprovalDetail(d_no);
         Gson g = new Gson();
@@ -126,6 +148,9 @@ public class ApprovalController {
     @PostMapping("approvalInsert")
     public String approvalInsert(@RequestParam Map<String, Object> pmap, @RequestParam(name="files", required = false) MultipartFile[] files){
         int result = -1;
+        if(ObjectUtils.isEmpty(pmap)){
+            return "";
+        }
         List<Map<String, Object>> fileList = new ArrayList<>();
         if(files != null){//파일이 있는 경우
             for(MultipartFile file : files){
