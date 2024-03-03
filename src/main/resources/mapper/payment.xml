@@ -31,6 +31,15 @@
                     <when test = 'gubun.equals("refund")'>
                         AND p.PAY_CATEGORY = '환불'
                     </when>
+                    <when test = 'gubun.equals("pending")'>
+                        AND p.STATUS = '결제대기'
+                    </when>
+                    <when test = 'gubun.equals("completed")'>
+                        AND p.STATUS = '결제완료'
+                    </when>
+                    <when test = 'gubun.equals("refundcom")'>
+                        AND p.STATUS = '환불완료'
+                    </when>
                 </choose>
             </if>
         </where>
