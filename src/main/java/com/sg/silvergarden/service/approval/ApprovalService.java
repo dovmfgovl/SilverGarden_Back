@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,10 +18,10 @@ import java.util.Map;
 public class ApprovalService {
     @Autowired
     ApprovalDao approvalDao;
-    public List<Map<String, Object>> allApprovalList(String e_no) {
+    public List<Map<String, Object>> allApprovalList(Map<String, Object> pmap) {
         log.info("approvalService: allApprovalList");
         List<Map<String, Object>> dList = null;
-        dList = approvalDao.allApprovalList(e_no);
+        dList = approvalDao.allApprovalList(pmap);
         log.info(dList.toString());
         return dList;
     }
@@ -80,6 +82,33 @@ public class ApprovalService {
         log.info(String.valueOf(result));
         return result;
     }
+    @Transactional
+    public int approvalVacationRequest(Map<String, Object> pmap) {
+        int result = -1;
+        Gson g = new Gson();
+        List<Map<String, Object>> line = g.fromJson(pmap.get("line").toString(), List.class);//결재라인
+        Map<String, Object> content = g.fromJson(pmap.get("d_content").toString(), Map.class);//휴가정보
+        List<Map<String, Object>> dateList = new ArrayList<>();//휴가일자 리스트
+        int days = Integer.parseInt(content.get("totalDate").toString());//휴가 일수
+        LocalDate startDate = LocalDate.parse(content.get("startDate").toString());//시작일자
+
+        for(int i = 0; i< days; i++){//시작일자부터 휴가일수 만큼 반복
+            LocalDate date = startDate.plusDays(i);
+            Map<String, Object> map = new HashMap<>();
+            map.put("date", date.toString());
+            map.put("e_no", pmap.get("e_no"));
+            map.put("at_status", "휴가");
+            dateList.add(map);
+        }
+        log.info(dateList.toString());
+        approvalDao.approvalInsert(pmap);
+        for(Map<String, Object> map : line){//결재라인리스트에 d_no를 넣어줌
+            map.put("d_no", pmap.get("d_no"));
+        }
+        approvalDao.approvalHistoryInsert(line);
+        result = approvalDao.vacationDateInsert(dateList);
+        return result;
+    }
 
     @Transactional
     public int passOrDeny(Map<String, Object> pmap) {
@@ -106,37 +135,37 @@ public class ApprovalService {
         return result;
     }
 
-    public List<Map<String, Object>> approvalWaitList(String e_no) {
+    public List<Map<String, Object>> approvalWaitList(Map<String, Object> pmap) {
         log.info("approvalService: approvalWaitList");
         List<Map<String, Object>> dList = null;
-        dList = approvalDao.approvalWaitList(e_no);
+        dList = approvalDao.approvalWaitList(pmap);
         return dList;
     }
 
-    public List<Map<String, Object>> approvalCompleteList(String e_no) {
+    public List<Map<String, Object>> approvalCompleteList(Map<String, Object> pmap) {
         List<Map<String, Object>> dList = null;
-        dList = approvalDao.approvalCompleteList(e_no);
+        dList = approvalDao.approvalCompleteList(pmap);
         log.info(dList.toString());
         return dList;
     }
 
-    public List<Map<String, Object>> approvalDenyList(String e_no) {
+    public List<Map<String, Object>> approvalDenyList(Map<String, Object> pmap) {
         List<Map<String, Object>> dList = null;
-        dList = approvalDao.approvalDenyList(e_no);
+        dList = approvalDao.approvalDenyList(pmap);
         log.info(dList.toString());
         return dList;
     }
 
-    public List<Map<String, Object>> approvalProgressList(String e_no) {
+    public List<Map<String, Object>> approvalProgressList(Map<String, Object> pmap) {
         List<Map<String, Object>> dList = null;
-        dList = approvalDao.approvalProgressList(e_no);
+        dList = approvalDao.approvalProgressList(pmap);
         log.info(dList.toString());
         return dList;
     }
 
-    public List<Map<String, Object>> approvalTempList(String e_no) {
+    public List<Map<String, Object>> approvalTempList(Map<String, Object> pmap) {
         List<Map<String, Object>> dList = null;
-        dList = approvalDao.approvalTempList(e_no);
+        dList = approvalDao.approvalTempList(pmap);
         log.info(dList.toString());
         return dList;
     }
@@ -155,4 +184,5 @@ public class ApprovalService {
         result =approvalDao.statusUpdate(map);
         return result;
     }
+
 }

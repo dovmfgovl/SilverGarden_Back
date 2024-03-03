@@ -13,10 +13,10 @@ import java.util.Map;
 public class ApprovalDao {
     @Autowired
     SqlSessionTemplate sqlSessionTemplate;
-    public List<Map<String, Object>> allApprovalList(String e_no) {
+    public List<Map<String, Object>> allApprovalList(Map<String, Object> pmap) {
         log.info("ApprovalDao: allApprovalList");
         List<Map<String, Object>> dList = null;
-        dList = sqlSessionTemplate.selectList("allApprovalList",e_no);
+        dList = sqlSessionTemplate.selectList("allApprovalList",pmap);
         return dList;
     }
 
@@ -58,9 +58,9 @@ public class ApprovalDao {
         return result;
     }
 
-    public List<Map<String, Object>> approvalWaitList(String e_no) {
+    public List<Map<String, Object>> approvalWaitList(Map<String, Object> pmap) {
         List<Map<String, Object>> dList = null;
-        dList = sqlSessionTemplate.selectList("approvalWaitList",e_no);
+        dList = sqlSessionTemplate.selectList("approvalWaitList",pmap);
         return dList;
     }
 
@@ -88,28 +88,33 @@ public class ApprovalDao {
         return result;
     }
 
-    public List<Map<String, Object>> approvalCompleteList(String e_no) {
+    public List<Map<String, Object>> approvalCompleteList(Map<String, Object> pmap) {
         List<Map<String, Object>> dList = null;
-        dList = sqlSessionTemplate.selectList("approvalCompleteList",e_no);
+        dList = sqlSessionTemplate.selectList("approvalCompleteList",pmap);
         return dList;
     }
 
-    public List<Map<String, Object>> approvalDenyList(String e_no) {
+    public List<Map<String, Object>> approvalDenyList(Map<String, Object> pmap) {
         List<Map<String, Object>> dList = null;
-        dList = sqlSessionTemplate.selectList("approvalDenyList",e_no);
+        dList = sqlSessionTemplate.selectList("approvalDenyList",pmap);
         return dList;
     }
 
-    public List<Map<String, Object>> approvalProgressList(String e_no) {
+    public List<Map<String, Object>> approvalProgressList(Map<String, Object> pmap) {
         List<Map<String, Object>> dList = null;
-        dList = sqlSessionTemplate.selectList("approvalProgressList",e_no);
+        dList = sqlSessionTemplate.selectList("approvalProgressList",pmap);
         return dList;
     }
 
-    public List<Map<String, Object>> approvalTempList(String e_no) {
+    public List<Map<String, Object>> approvalTempList(Map<String, Object> pmap) {
         List<Map<String, Object>> dList = null;
-        dList = sqlSessionTemplate.selectList("approvalTempList",e_no);
+        dList = sqlSessionTemplate.selectList("approvalTempList",pmap);
         return dList;
     }
 
+    public int vacationDateInsert(List<Map<String, Object>> dateList) {
+        int result = -1;
+        result = sqlSessionTemplate.insert("vacationDateInsert", dateList);
+        return result;
+    }
 }

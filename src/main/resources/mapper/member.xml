@@ -9,6 +9,7 @@
         , CLIENT_ADDRESS, CLIENT_MANAGER
         , REG_ID, MOD_ID, TO_CHAR(REG_DATE,'YYYY-MM-DD')AS REG_DATE, MOD_DATE
         FROM CLIENT
+        order by CLIENT_ID desc
     </select>
     <delete id="memberDelete" parameterType="map">
         delete from CLIENT where CLIENT_ID =  #{CLIENT_ID}
