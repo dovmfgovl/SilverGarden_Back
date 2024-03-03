@@ -42,26 +42,26 @@ public class MessageService {
         return result;
     }
 
-    public List<Map<String, Object>> messageReceiveList(String e_no) {
+    public List<Map<String, Object>> messageReceiveList(Map<String, Object> rmap) {
         List<Map<String, Object>> mList = null;
-        mList = messageDao.messageReceiveList(e_no);
+        mList = messageDao.messageReceiveList(rmap);
         return mList;
     }
-    public List<Map<String, Object>> messageSendList(String e_no) {
+    public List<Map<String, Object>> messageSendList(Map<String, Object> rmap) {
         List<Map<String, Object>> mList = null;
-        mList = messageDao.messageSendList(e_no);
-        return mList;
-    }
-
-    public List<Map<String, Object>> messageDeletedList(String e_no) {
-        List<Map<String, Object>> mList = null;
-        mList = messageDao.messageDeletedList(e_no);
+        mList = messageDao.messageSendList(rmap);
         return mList;
     }
 
-    public List<Map<String, Object>> messageStoredList(String e_no) {
+    public List<Map<String, Object>> messageDeletedList(Map<String, Object> rmap) {
         List<Map<String, Object>> mList = null;
-        mList = messageDao.messageStoredList(e_no);
+        mList = messageDao.messageDeletedList(rmap);
+        return mList;
+    }
+
+    public List<Map<String, Object>> messageStoredList(Map<String, Object> rmap) {
+        List<Map<String, Object>> mList = null;
+        mList = messageDao.messageStoredList(rmap);
         return mList;
     }
 
@@ -85,6 +85,12 @@ public class MessageService {
     public int messageDelete(Map<String, Object> rmap) {
         int result = -1;
         rmap.put("me_status","N");
+        result = messageDao.messageStatusChange(rmap);
+        return result;
+    }
+    public int messageCompleteDelete(Map<String, Object> rmap) {
+        int result = -1;
+        rmap.put("me_status","D");
         result = messageDao.messageStatusChange(rmap);
         return result;
     }

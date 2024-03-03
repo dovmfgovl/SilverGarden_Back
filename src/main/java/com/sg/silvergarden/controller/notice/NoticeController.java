@@ -36,7 +36,7 @@ public class NoticeController {
     YAMLConfiguration config;
 
     @GetMapping("noticeList")
-    public String noticeList(@RequestParam Map<String, Object> rmap){
+    public String noticeList(@RequestParam Map<String, Object> rmap) throws Exception{
         log.info("noticeList");
         log.info(rmap.toString());
         List<Map<String, Object>> nlist = null;
@@ -47,7 +47,7 @@ public class NoticeController {
         return temp;
     }
     @GetMapping("noticeDetail")
-    public String noticeDetail(int n_no){
+    public String noticeDetail(int n_no) throws Exception{
         log.info("noticeDetail");
         log.info(String.valueOf(n_no));
         List<Map<String, Object>> nlist = null;
@@ -57,7 +57,7 @@ public class NoticeController {
         return temp;
     }
     @PostMapping("noticeInsert")
-    public String noticeInsert(@RequestParam Map<String, Object> pmap, @RequestParam(name="files", required = false) MultipartFile[] files){
+    public String noticeInsert(@RequestParam Map<String, Object> pmap, @RequestParam(name="files", required = false) MultipartFile[] files) throws Exception{
         log.info(pmap.toString());
         List<Map<String, Object>> list = new ArrayList<>();
         if(files != null){//파일이 있는 경우
@@ -74,7 +74,7 @@ public class NoticeController {
                     nmap.put("n_filename", uploadFilename);
                     list.add(nmap);
                 } catch (IOException e) {
-                    throw new RuntimeException(e);
+                    throw new IOException(e);
                 }
             }
             pmap.put("list", list);//맵에 파일리스트를 추가해줌
@@ -86,7 +86,7 @@ public class NoticeController {
     }
 
     @GetMapping("noticeDelete")
-    public String noticeDelete(@RequestParam Map<String, Object> pmap){
+    public String noticeDelete(@RequestParam Map<String, Object> pmap) throws Exception{
         log.info(pmap.toString());
         int result = -1;
         result = noticeService.noticeDelete(pmap);
@@ -94,7 +94,7 @@ public class NoticeController {
     }
 
     @GetMapping("noticeUpdate")
-    public String noticeUpdate(@RequestParam Map<String, Object> pmap){
+    public String noticeUpdate(@RequestParam Map<String, Object> pmap) throws Exception{
         log.info(pmap.toString());
         int result = -1;
         result = noticeService.noticeUpdate(pmap);
@@ -107,7 +107,7 @@ public class NoticeController {
         return dateFormat.format(new Date(currentTime));
     }
     @PostMapping("imageUpload")
-    public String imageUpload(@RequestParam(value = "image") MultipartFile image){
+    public String imageUpload(@RequestParam(value = "image") MultipartFile image) throws Exception{
         log.info("이미지 업로드");
         log.info(image.getOriginalFilename());
         String newFilename = getCurrentTimeMillisFormat()+"_"+FilenameUtils.getName(image.getOriginalFilename());
@@ -123,7 +123,7 @@ public class NoticeController {
     }
 
     @GetMapping("fileDownload")
-    public ResponseEntity<Object> fileDownload(@RequestParam(value="filename") String filename) {
+    public ResponseEntity<Object> fileDownload(@RequestParam(value="filename") String filename) throws Exception{
         log.info("fileDownload 호출 성공");
         log.info(filename);
         try {
@@ -148,21 +148,20 @@ public class NoticeController {
 
         } catch (IOException e) {
             // TODO Auto-generated catch block
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("파일 다운로드 오류");
+            throw e;
         }
     }// end of fileDownLoad
     //파일 삭제 처리
     @PostMapping("deleteFile")
-    public ResponseEntity<String> deleteFile(String filename){
-        log.info(filename);
+    public ResponseEntity<String> deleteFile(String filename) throws Exception{
         File file = null;
-        //String encodedFilename = URLEncoder.encode(filename, "UTF-8").replace("+", "_");
-        file = new File(config.getUploadPath() + filename);
-        log.info(file.toString());
+        if(filename != null){
+            file = new File(config.getUploadPath() + filename);
+        }
         if(file.delete() == true){
             int result = -1;
             result = noticeService.deleteFile(filename);
+            log.info(String.valueOf(result));
             return new ResponseEntity<>("삭제성공!!!", HttpStatus.OK);
         }else{
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
