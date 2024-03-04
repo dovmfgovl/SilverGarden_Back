@@ -1,5 +1,6 @@
 package com.sg.silvergarden.dao.payment;
 
+import com.sg.silvergarden.vo.payment.PaymentResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -23,10 +24,10 @@ public class PaymentDao {
         sqlSessionTemplate.insert("paymentMapper.payInsert",pmap);
     }
 
-    public void payUpdate(Map<String, Object> pmap) {
+    public void payUpdate(PaymentResponse paymentResponse) {
         log.info("payUpdate-dao호출");
-        log.info(pmap);
-        sqlSessionTemplate.update("paymentMapper.payUpdate",pmap);
+        log.info(paymentResponse);
+        sqlSessionTemplate.update("paymentMapper.payUpdate",paymentResponse);
     }
 
     public List<Map<String, Object>> payList(Map<String, Object> pmap) {

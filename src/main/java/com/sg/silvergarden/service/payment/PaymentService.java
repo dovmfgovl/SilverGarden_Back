@@ -1,6 +1,7 @@
 package com.sg.silvergarden.service.payment;
 
 import com.sg.silvergarden.dao.payment.PaymentDao;
+import com.sg.silvergarden.vo.payment.PaymentResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,10 +24,10 @@ public class PaymentService {
         paymentDao.payInsert(pmap);
     }
 
-    public void payUpdate(Map<String, Object> pmap) {
+    public void payUpdate(PaymentResponse paymentResponse) {
         log.info("payUpdate-service 호출");
-        log.info(pmap);
-        paymentDao.payUpdate(pmap);
+        log.info(paymentResponse);
+        paymentDao.payUpdate(paymentResponse);
     }
 
     public List<Map<String, Object>> payList(Map<String, Object> pmap) {

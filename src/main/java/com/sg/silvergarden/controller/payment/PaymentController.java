@@ -3,9 +3,11 @@ package com.sg.silvergarden.controller.payment;
 import com.google.gson.Gson;
 import com.sg.silvergarden.service.payment.PaymentService;
 import com.sg.silvergarden.vo.payment.PayTokenResponse;
+import com.sg.silvergarden.vo.payment.PaymentResponse;
 import com.sg.silvergarden.vo.payment.RefundResponse;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -22,17 +24,21 @@ import java.util.Map;
 @RestController
 @RequestMapping("/payment")
 public class PaymentController {
-    private String imp_key = "7086623178580746";
-    private String imp_secret = "nybY42gU0Cd5a9QDq9HMP5kpL3LPzDweF1mOMWnoPu7DUMcamECU00XXr6Hgwp5qm6xXJj6wP1kHnOOr";
+
+    @Value("${imp_key}")
+    private String imp_key;
+
+    @Value("${imp_secret}")
+    private String imp_secret;
 
     @Autowired
     PaymentService paymentService = null;
 
     @PostMapping("/redirect")
-    public void paySuccess(@RequestBody Map<String, Object> pmap) {
+    public void paySuccess(@RequestBody PaymentResponse paymentResponse) {
         log.info("Success@@");
-        log.info(pmap);
-        paymentService.payUpdate(pmap);
+        log.info(paymentResponse);
+        paymentService.payUpdate(paymentResponse);
     }
 
     @GetMapping("paylist")
@@ -62,16 +68,12 @@ public class PaymentController {
     @PostMapping("/refund")
     public void payRefund(@RequestParam Map<String, Object> pmap) {
 
-        log.info("refund@@");
-        log.info(pmap);
         String merchant_uid = (String) pmap.get("merchant_uid");
+
         //access token 발급
-        log.info("@@@@accessToken@@@@");
         HttpHeaders tokenHeader = new HttpHeaders();
         tokenHeader.add("Content-type", "application/json");
-        log.info(tokenHeader);//[Content-type:"application/json"]
         String jsonBody = "{\"imp_key\": \"" + imp_key + "\", \"imp_secret\": \"" + imp_secret + "\"}";
-        log.info(jsonBody);
         HttpEntity<String> tokenRequest = new HttpEntity<>(jsonBody, tokenHeader);
         log.info(tokenRequest);
         RestTemplate rt = new RestTemplate();

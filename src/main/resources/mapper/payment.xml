@@ -51,6 +51,6 @@
         WHERE MERCHANT_UID = #{merchant_uid}
     </update>
     <select id="payClientList" parameterType="map" resultType="map">
-        select CLIENT_ID, CLIENT_NAME, CLIENT_BIRTH, CLIENT_TEL, CLIENT_GENDER from CLIENT
+        select CLIENT_ID, CLIENT_NAME, CLIENT_BIRTH, CLIENT_TEL, CLIENT_GENDER from CLIENT order by CLIENT_ID DESC
     </select>
 </mapper>
