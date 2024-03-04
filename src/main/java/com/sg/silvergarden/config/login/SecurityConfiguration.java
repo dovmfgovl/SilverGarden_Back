@@ -58,7 +58,9 @@ public class SecurityConfiguration {
                                 "/emp/**",
                                 "/empcreate/**",
                                 "/crawling/**",
-                                "/schedule/**")
+                                "/schedule/**",
+                                "/payment/**",
+                                "/sms/**")
                         .permitAll()
                         .requestMatchers(HttpMethod.POST, "/**").permitAll()
                         .requestMatchers(HttpMethod.PUT, "/**").permitAll()

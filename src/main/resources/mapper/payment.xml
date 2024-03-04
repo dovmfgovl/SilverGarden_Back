@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="paymentMapper">
+    <insert id="payInsert" parameterType="map">
+        INSERT INTO PAYMENT(MERCHANT_UID, STATUS, PAY_NO, PAY_PRICE, PAY_CATEGORY, PAY_DATE, MEMO, CLIENT_ID, REG_DATE, MOD_DATE, REG_ID, MOD_ID)
+        VALUES (#{orderno}, '결제대기', to_char('PAYMENT')||lpad(SEQ_PAY_NO.nextval,5,0), #{amount}, '매입', sysdate, #{memo}, #{id}, sysdate, sysdate, #{e_no}, #{e_no})
+    </insert>
+    <update id="payUpdate" parameterType="map">
+        UPDATE PAYMENT
+        SET STATUS = '결제완료', SUCCESS_DATE = sysdate
+        WHERE MERCHANT_UID = #{merchant_uid}
+    </update>
+    <select id="payList" resultType="map" parameterType="map">
+        SELECT p.MERCHANT_UID, p.STATUS, p.PAY_NO, p.PAY_PRICE, p.PAY_CATEGORY, p.PAY_DATE, p.STATUS, p.SUCCESS_DATE,p.REFUND_DATE, p.MEMO, p.REFUDNMEMO, c.CLIENT_ID, c.CLIENT_NAME, c.CLIENT_BIRTH, c.CLIENT_TEL
+        FROM PAYMENT p
+        LEFT OUTER JOIN CLIENT c ON p.CLIENT_ID = c.CLIENT_ID
+        <where>
+            <if test = 'gubun!=null'>
+                <choose>
+                    <when test = 'gubun.equals("name")'>
+                        AND c.CLIENT_NAME LIKE '%'||#{keyword}||'%'
+                    </when>
+                    <when test = 'gubun.equals("phone")'>
+                        AND c.CLIENT_TEL LIKE '%'||#{keyword}||'%'
+                    </when>
+                    <when test = 'gubun.equals("pay")'>
+                        AND p.PAY_CATEGORY = '매입'
+                    </when>
+                    <when test = 'gubun.equals("refund")'>
+                        AND p.PAY_CATEGORY = '환불'
+                    </when>
+                    <when test = 'gubun.equals("pending")'>
+                        AND p.STATUS = '결제대기'
+                    </when>
+                    <when test = 'gubun.equals("completed")'>
+                        AND p.STATUS = '결제완료'
+                    </when>
+                    <when test = 'gubun.equals("refundcom")'>
+                        AND p.STATUS = '환불완료'
+                    </when>
+                </choose>
+            </if>
+        </where>
+        ORDER BY p.PAY_DATE DESC
+    </select>
+    <update id="payRefund" parameterType="map">
+        UPDATE PAYMENT
+        SET STATUS = '환불완료', REFUND_DATE = sysdate, PAY_CATEGORY = '환불', REFUDNMEMO = #{refundmemo}, MOD_DATE = sysdate, MOD_ID = #{e_no}
+        WHERE MERCHANT_UID = #{merchant_uid}
+    </update>
+    <select id="payClientList" parameterType="map" resultType="map">
+        select CLIENT_ID, CLIENT_NAME, CLIENT_BIRTH, CLIENT_TEL, CLIENT_GENDER from CLIENT order by CLIENT_ID DESC
+    </select>
+</mapper>
