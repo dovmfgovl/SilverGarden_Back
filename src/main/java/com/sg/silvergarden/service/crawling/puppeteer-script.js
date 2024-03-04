@@ -16,10 +16,14 @@ async function performCrawling() {
     const page = await browser.newPage();
     await page.goto('http://www.kaswcs.or.kr/bj_board/bjbrd_list.htm?board_id=0307');
     const html = await page.content();
+    await page.waitForSelector('tbody');
     const $ = cheerio.load(html);
+    const baseUrl = "http://www.kaswcs.or.kr/bj_board/";
     $('td.title').each((index, element) => {
         const siteName = '한국노인종합복지관협회';
-        const href = $(element).find('a').attr('href');
+        const baseUrl = "http://www.kaswcs.or.kr/bj_board/";
+        const url = $(element).find('a').attr('href');
+        const href = baseUrl+url
         const title = $(element).find('a').text();
         const date = normalizeDate($(element).next('td').next('td').text());
         hrefArr.push({
