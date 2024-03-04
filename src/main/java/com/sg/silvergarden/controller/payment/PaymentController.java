@@ -1,10 +1,12 @@
 package com.sg.silvergarden.controller.payment;
 
 import com.google.gson.Gson;
+import com.sg.silvergarden.service.payment.PayUrlService;
 import com.sg.silvergarden.service.payment.PaymentService;
 import com.sg.silvergarden.vo.payment.PayTokenResponse;
 import com.sg.silvergarden.vo.payment.PaymentResponse;
 import com.sg.silvergarden.vo.payment.RefundResponse;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,13 +25,10 @@ import java.util.Map;
 @Log4j2
 @RestController
 @RequestMapping("/payment")
+@RequiredArgsConstructor
 public class PaymentController {
 
-    @Value("${imp_key}")
-    private String imp_key;
-
-    @Value("${imp_secret}")
-    private String imp_secret;
+    private final PayUrlService payUrlService;
 
     @Autowired
     PaymentService paymentService = null;
@@ -69,23 +68,7 @@ public class PaymentController {
     public void payRefund(@RequestParam Map<String, Object> pmap) {
 
         String merchant_uid = (String) pmap.get("merchant_uid");
-
-        //access token 발급
-        HttpHeaders tokenHeader = new HttpHeaders();
-        tokenHeader.add("Content-type", "application/json");
-        String jsonBody = "{\"imp_key\": \"" + imp_key + "\", \"imp_secret\": \"" + imp_secret + "\"}";
-        HttpEntity<String> tokenRequest = new HttpEntity<>(jsonBody, tokenHeader);
-        log.info(tokenRequest);
-        RestTemplate rt = new RestTemplate();
-        ResponseEntity<String> response = rt.exchange("https://api.iamport.kr/users/getToken", HttpMethod.POST, tokenRequest, String.class);
-        log.info(response);
-        String responsetoken = response.getBody();
-        log.info(responsetoken);
-        Gson g = new Gson();
-        PayTokenResponse res = g.fromJson(responsetoken, PayTokenResponse.class);
-        String accessToken = res.getResponse().getAccess_token();
-        log.info(accessToken);
-
+        String accessToken = payUrlService.getToken();
         //refund
         log.info("@@@@refund@@@@");
         HttpHeaders refundHeader = new HttpHeaders();
@@ -95,13 +78,13 @@ public class PaymentController {
         String refundBody = "{\"merchant_uid\": \""+ merchant_uid +"\"}";
         log.info(refundBody);
         HttpEntity<String> refundRequest = new HttpEntity<>(refundBody, refundHeader);
-        RestTemplate rt2 = new RestTemplate();
-        ResponseEntity<String> refundresponse = rt2.exchange("https://api.iamport.kr/payments/cancel", HttpMethod.POST, refundRequest, String.class);
-        log.info(refundresponse);
+        RestTemplate rt = new RestTemplate();
+        ResponseEntity<String> response = rt.exchange("https://api.iamport.kr/payments/cancel", HttpMethod.POST, refundRequest, String.class);
+        log.info(response);
 
         String responsebody = response.getBody();
         log.info(responsebody);
-        Gson g2 = new Gson();
+        Gson g = new Gson();
         RefundResponse refundResponse = g.fromJson(responsebody, RefundResponse.class);
         int code = refundResponse.getCode();
         log.info(code);

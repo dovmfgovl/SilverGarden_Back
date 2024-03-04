@@ -1,7 +1,9 @@
 package com.sg.silvergarden.service.payment;
 
 import com.google.gson.Gson;
+import com.sg.silvergarden.vo.payment.PayTokenResponse;
 import com.sg.silvergarden.vo.payment.UrlResponse;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -20,6 +22,13 @@ public class PayUrlServiceImpl implements PayUrlService{
 
     @Value("${impCode}")
     private String code;
+
+    @Value("${imp_key}")
+    private String imp_key;
+
+    @Value("${imp_secret}")
+    private String imp_secret;
+
     @Override
     public String generateUrl(Map<String, Object> pmap) {
 
@@ -46,5 +55,25 @@ public class PayUrlServiceImpl implements PayUrlService{
         String url = res.getShortenedUrl();
 
         return url;
+    }
+
+    @Override
+    public String getToken() {
+        //access token 발급
+        HttpHeaders tokenHeader = new HttpHeaders();
+        tokenHeader.add("Content-type", "application/json");
+        String jsonBody = "{\"imp_key\": \"" + imp_key + "\", \"imp_secret\": \"" + imp_secret + "\"}";
+        HttpEntity<String> tokenRequest = new HttpEntity<>(jsonBody, tokenHeader);
+        log.info(tokenRequest);
+        RestTemplate rt = new RestTemplate();
+        ResponseEntity<String> response = rt.exchange("https://api.iamport.kr/users/getToken", HttpMethod.POST, tokenRequest, String.class);
+        log.info(response);
+        String responsetoken = response.getBody();
+        log.info(responsetoken);
+        Gson g = new Gson();
+        PayTokenResponse res = g.fromJson(responsetoken, PayTokenResponse.class);
+        String accessToken = res.getResponse().getAccess_token();
+        log.info(accessToken);
+        return accessToken;
     }
 }
