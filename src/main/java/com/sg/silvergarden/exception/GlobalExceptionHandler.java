@@ -22,6 +22,7 @@ import java.util.Map;
 @Slf4j
 //@RestControllerAdvice
 public class GlobalExceptionHandler {
+
     //@Autowired
     ExceptionHandlerService exceptionHandlerService;
 
@@ -29,7 +30,7 @@ public class GlobalExceptionHandler {
         Map<String, Object> body = new HashMap<>();
         body.put("status", "500");
         body.put("error", "Internal Server Error");
-        body.put("message", message);
+        body.put("message", "에러가 발생했습니다. 관리자에게 문의하세요");
         return body;
     }
 
@@ -39,22 +40,22 @@ public class GlobalExceptionHandler {
         return sw.toString();
     }
     @ExceptionHandler({Exception.class})
-    public ResponseEntity<Map<String, Object>> handleETCException(Exception ex, HttpServletRequest request){
+    private ResponseEntity<Map<String, Object>> handleException(Exception ex, HttpServletRequest request){
         log.info("Exception");
-        String requestURL = request.getRequestURL().toString();
-        String requestMethod = request.getMethod();
+        HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
         String message = ex.getMessage() == null ? "예외메시지 없음" : ex.getMessage();
         Map<String, Object> exMap = new HashMap<>();
-        exMap.put("req_url", requestURL);
-        exMap.put("req_method", requestMethod);
+        exMap.put("req_url", request.getRequestURL().toString());
+        exMap.put("req_method", request.getMethod());
         exMap.put("ex_message", message);
         exMap.put("ex_full", getStackTraceAsString(ex));
-        exMap.put("ex_type", "ETCException");
-        //exceptionHandlerService.exceptionMessageInsert(exMap);
-        return new ResponseEntity<>(getBody(message), HttpStatus.INTERNAL_SERVER_ERROR);
+        exMap.put("ex_type", ex.getClass().getSimpleName());
+        log.info(exMap.toString());
+        exceptionHandlerService.exceptionMessageInsert(exMap);
+        return new ResponseEntity<>(getBody(message), status);
     }
 
-    @ExceptionHandler({NullPointerException.class})
+    //@ExceptionHandler({NullPointerException.class})
     public ResponseEntity<Map<String, Object>> handleNullPointerException(Exception ex, HttpServletRequest request){
         log.info("nullPointerException");
         String requestURL = request.getRequestURL().toString();
@@ -70,13 +71,13 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(getBody(message), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    @ExceptionHandler({
-            MethodArgumentNotValidException.class,
-            HttpMessageNotReadableException.class,
-            MissingServletRequestParameterException.class,
-            MethodArgumentTypeMismatchException.class,
-            IllegalArgumentException.class
-    })
+//    @ExceptionHandler({
+//            MethodArgumentNotValidException.class,
+//            HttpMessageNotReadableException.class,
+//            MissingServletRequestParameterException.class,
+//            MethodArgumentTypeMismatchException.class,
+//            IllegalArgumentException.class
+//    })
     public ResponseEntity<Map<String, Object>> handleBadRequestException(RuntimeException ex, HttpServletRequest request){
         log.info("RuntimeException");
         Map<String, Object> body = new HashMap<>();
@@ -86,7 +87,7 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(body, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    @ExceptionHandler({ClassCastException.class})
+    //@ExceptionHandler({ClassCastException.class})
     public ResponseEntity<Map<String, Object>> handleClassCastException(Exception ex, HttpServletRequest request){
         log.info("ClassCastException");
         String requestURL = request.getRequestURL().toString();
@@ -102,7 +103,7 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(getBody(message), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    @ExceptionHandler({NoSuchFileException.class})
+    //@ExceptionHandler({NoSuchFileException.class})
     public ResponseEntity<Map<String, Object>> handleNoSuchFileException(Exception ex, HttpServletRequest request){
         log.info("NoSuchFileException");
         String requestURL = request.getRequestURL().toString();
