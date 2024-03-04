@@ -39,9 +39,6 @@ public class NoticeController {
     @GetMapping("noticeList")
     public String noticeList(@RequestParam Map<String, Object> rmap) throws Exception{
         log.info("noticeList");
-        if(ObjectUtils.isEmpty(rmap)){
-            return "잘못된 요청입니다";
-        }
         log.info(rmap.toString());
         List<Map<String, Object>> nlist = null;
         nlist = noticeService.noticeList(rmap);
