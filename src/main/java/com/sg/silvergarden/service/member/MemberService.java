@@ -33,16 +33,7 @@ public class MemberService{
     }
     public int memberInsert(Map<String, Object> mMap) {
         int result = 0;
-//        if(mMap.containsKey("list")){//파일이 있는 경우 memberInsert를 먼저하고 시퀀스 값을 받아옴
-//            List<Map<String, Object>> flist = (List)mMap.get("list");
-//            memberDao.memberInsert(mMap);
-//            for(Map<String, Object> map : flist){
-//                map.put("member_id", mMap.get("member_id"));
-//            }
-//            result = memberDao.fileUpload(flist);
-//        }else{
             result = memberDao.memberInsert(mMap);
-      //  }
         return result;
     }
 
@@ -53,7 +44,6 @@ public class MemberService{
     }
 
     public int counselDelete(Map<String, Object> cMap) {
-        log.info("counselDelete");
         int result = 0;
         result = memberDao.counselDelete(cMap);
         return result;
@@ -96,22 +86,18 @@ public class MemberService{
     }
 
     public int ShuttleCalAdd(Map<String, Object> scMap) {
-        log.info("shuttleCalAdd-service",scMap);
         return memberDao.ShuttleCalAdd(scMap);
     }
 
     public List<Map<String, Object>> shuttleCalList(Map<String, Object> scMap) {
-        log.info("shuttleCalList-service",scMap);
         return memberDao.shttleCalList(scMap);
     }
 
     public int shuttleCalUpdate(Map<String, Object> scMap) {
-        log.info("shuttleCalUpdate-service",scMap);
         return memberDao.shttleCalUpdate(scMap);
     }
 
     public int shuttleCalDelete(Map<String, Object> scMap) {
-        log.info("shuttleCalDelete-service", scMap);
         return memberDao.shttleCalDelete(scMap);
     }
 }

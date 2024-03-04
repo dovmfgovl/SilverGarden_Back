@@ -44,7 +44,7 @@ public class NoticeController {
         nlist = noticeService.noticeList(rmap);
         Gson g = new Gson();
         String temp = g.toJson(nlist);
-        log.info(temp);
+//        log.info(temp);
         return temp;
     }
     @GetMapping("noticeDetail")

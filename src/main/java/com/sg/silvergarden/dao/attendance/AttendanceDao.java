@@ -47,4 +47,9 @@ public class AttendanceDao {
         String sql = "";
         sqlSessionTemplate.insert("noneAtInsert", sql);
     }
+
+    public int atDelete(Map<String, Object> atMap) {
+        logger.info("atDelete");
+        return sqlSessionTemplate.delete("atDelete", atMap);
+    }
 }

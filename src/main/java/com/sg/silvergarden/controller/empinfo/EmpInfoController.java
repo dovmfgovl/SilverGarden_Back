@@ -49,6 +49,16 @@ public class EmpInfoController {
         return temp;
     }
 
+    @GetMapping("certiList")
+    public String certiList(@RequestParam Map<String, Object> eMap) {
+        logger.info("certiList");
+        List<Map<String, Object>> eList = null;
+        eList = empInfoService.certiList(eMap);
+        Gson g = new Gson();
+        String temp = g.toJson(eList);
+        return temp;
+    }
+
     // 직원 상세조회
     @GetMapping("empDetail")
     public String empDetail(@RequestParam Map<String, Object> eMap) {
@@ -119,5 +129,15 @@ public class EmpInfoController {
         int result = 0;
         result = empInfoService.certiInsert(eMap);
         return String.valueOf(result);
+    }
+
+    @DeleteMapping("certiDelete")
+    public String certiDelete(int certi_no) {
+        logger.info("certiDelete");
+        int result = 0;
+        result = empInfoService.certiDelete(certi_no);
+        Gson g = new Gson();
+        String temp = g.toJson(result);
+        return temp;
     }
 }

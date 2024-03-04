@@ -30,6 +30,13 @@ public class EmpInfoDao {
         return eList;
     }
 
+    public List<Map<String, Object>> certiList(Map<String, Object> eMap) {
+        logger.info("certiList");
+        List<Map<String, Object>> eList = sqlSessionTemplate.selectList("certificationList", eMap);
+        logger.info(eList.toString());
+        return eList;
+    }
+
     public int empUpdate(Map<String, Object> eMap) {
         logger.info("empUpdate");
         int result = 0;
@@ -158,6 +165,17 @@ public class EmpInfoDao {
         logger.info(eMap.toString());
         int result = 0;
         result = sqlSessionTemplate.insert("certiInsert", eMap);
+        return result;
+    }
+
+    public int certiDelete(int certi_no) {
+        logger.info("certiDelete");
+        int result = 0;
+        try {
+            result = sqlSessionTemplate.delete("certiDelete", certi_no);
+        } catch (Exception e) {
+            logger.info(e.toString());
+        }
         return result;
     }
 }

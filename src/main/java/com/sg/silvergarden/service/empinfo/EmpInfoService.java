@@ -33,6 +33,13 @@ public class EmpInfoService {
         return eList;
     }
 
+    public List<Map<String, Object>> certiList(Map<String, Object> eMap) {
+        logger.info("certiList");
+        List<Map<String, Object>> eList = null;
+        eList = empInfoDao.certiList(eMap);
+        return eList;
+    }
+
     public List<Map<String, Object>> empDetail(Map<String, Object> eMap) {
         logger.info("empDetail");
         List<Map<String, Object>> eList = null;
@@ -81,6 +88,13 @@ public class EmpInfoService {
         logger.info("certiInset");
         int result = 0;
         result = empInfoDao.certiInsert(eMap);
+        return result;
+    }
+
+    public int certiDelete(int certi_no) {
+        logger.info("certiDelete");
+        int result = 0;
+        result = empInfoDao.certiDelete(certi_no);
         return result;
     }
 }

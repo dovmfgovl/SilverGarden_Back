@@ -287,6 +287,7 @@
             cer.CERTI_ACQUIRE
         FROM EMPLOYEE emp
                  RIGHT JOIN CERTIFICATION cer ON emp.E_NO = cer.E_NO
+        ORDER BY cer.CERTI_NO
     </select>
 
     <update id="empInfoUpdate" parameterType="map">
@@ -377,7 +378,11 @@
     </delete>
 
     <insert id="certiInsert" parameterType="map">
-        INSERT INTO certification (certi_no, certi_cate, certi_code, certi_issuer, certi_acquire, e_no, reg_date, reg_id)
-        VALUES (seq_certification_no.NEXTVAL,#{certi_cate}, #{certi_code}, #{certi_issuer}, #{certi_acquire}, #{e_no}, sysdate, #{reg_id})
+        INSERT INTO certification (CERTI_NO, CERTI_CATE, CERTI_CODE, CERTI_ISSUER, CERTI_ACQUIRE, E_NO, REG_DATE, REG_ID)
+        VALUES (seq_certification_no.NEXTVAL,#{CERTI_CATE}, #{CERTI_CODE}, #{CERTI_ISSUER}, #{CERTI_ACQUIRE}, #{E_NO}, sysdate, #{REG_ID})
     </insert>
+    <delete id="certiDelete" parameterType="int">
+        DELETE FROM certification
+        WHERE CERTI_NO = #{certi_no}
+    </delete>
 </mapper>
