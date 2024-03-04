@@ -37,9 +37,7 @@ public class PayUrlServiceImpl implements PayUrlService{
         String name = (String) pmap.get("name");
         String orderno = (String) pmap.get("orderno");
         String phone = (String) pmap.get("phone");
-        // 현재 시간 기준으로 1일을 더한 시간을 얻음
         Instant tomorrow = Instant.now().plusSeconds(86400); // 1일 = 86400초
-        // 타임스탬프 생성 (초 단위)
         long timestemp = tomorrow.getEpochSecond();
 
         //결제링크 생성
@@ -59,21 +57,19 @@ public class PayUrlServiceImpl implements PayUrlService{
 
     @Override
     public String getToken() {
+
         //access token 발급
         HttpHeaders tokenHeader = new HttpHeaders();
         tokenHeader.add("Content-type", "application/json");
         String jsonBody = "{\"imp_key\": \"" + imp_key + "\", \"imp_secret\": \"" + imp_secret + "\"}";
         HttpEntity<String> tokenRequest = new HttpEntity<>(jsonBody, tokenHeader);
-        log.info(tokenRequest);
         RestTemplate rt = new RestTemplate();
         ResponseEntity<String> response = rt.exchange("https://api.iamport.kr/users/getToken", HttpMethod.POST, tokenRequest, String.class);
-        log.info(response);
         String responsetoken = response.getBody();
-        log.info(responsetoken);
         Gson g = new Gson();
         PayTokenResponse res = g.fromJson(responsetoken, PayTokenResponse.class);
         String accessToken = res.getResponse().getAccess_token();
-        log.info(accessToken);
+
         return accessToken;
     }
 }

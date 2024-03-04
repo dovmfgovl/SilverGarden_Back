@@ -35,15 +35,11 @@ public class PaymentController {
 
     @PostMapping("/redirect")
     public void paySuccess(@RequestBody PaymentResponse paymentResponse) {
-        log.info("Success@@");
-        log.info(paymentResponse);
         paymentService.payUpdate(paymentResponse);
     }
 
     @GetMapping("paylist")
     public String payList(@RequestParam Map<String, Object> pmap){
-        log.info("payList-controller 호출");
-        log.info(pmap);
         List<Map<String, Object>> list = null;
         list = paymentService.payList(pmap);
         Gson g = new Gson();
@@ -54,8 +50,6 @@ public class PaymentController {
 
     @GetMapping("payclientlist")
     public String payClientList(@RequestParam Map<String, Object> pmap){
-        log.info("payClientList-controller 호출");
-        log.info(pmap);
         List<Map<String, Object>> list = null;
         list = paymentService.payClientList(pmap);
         Gson g = new Gson();
@@ -69,25 +63,20 @@ public class PaymentController {
 
         String merchant_uid = (String) pmap.get("merchant_uid");
         String accessToken = payUrlService.getToken();
+
         //refund
-        log.info("@@@@refund@@@@");
         HttpHeaders refundHeader = new HttpHeaders();
         refundHeader.add("Content-type", "application/json");
         refundHeader.add("Authorization", accessToken);
-        log.info(refundHeader);
         String refundBody = "{\"merchant_uid\": \""+ merchant_uid +"\"}";
-        log.info(refundBody);
         HttpEntity<String> refundRequest = new HttpEntity<>(refundBody, refundHeader);
         RestTemplate rt = new RestTemplate();
         ResponseEntity<String> response = rt.exchange("https://api.iamport.kr/payments/cancel", HttpMethod.POST, refundRequest, String.class);
-        log.info(response);
 
         String responsebody = response.getBody();
-        log.info(responsebody);
         Gson g = new Gson();
         RefundResponse refundResponse = g.fromJson(responsebody, RefundResponse.class);
         int code = refundResponse.getCode();
-        log.info(code);
         if(code == 0){
             paymentService.payRefund(pmap);
         }
