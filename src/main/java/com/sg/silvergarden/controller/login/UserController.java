@@ -17,13 +17,11 @@ public class UserController {
     public ResponseEntity<String> usera() {
         log.info("UseraController 호출");
         return ResponseEntity.ok("usera");
-
     }
 
     @GetMapping("/userb")
     public ResponseEntity<String> userb() {
         log.info("UserbController 호출");
         return ResponseEntity.ok("userb");
-
     }
 }

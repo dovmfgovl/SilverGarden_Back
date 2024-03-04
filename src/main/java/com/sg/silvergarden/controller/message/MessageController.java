@@ -35,10 +35,10 @@ public class MessageController {
     YAMLConfiguration config;
 
     @GetMapping("messageReceiveList")
-    public String messageReceiveList(String e_no){
+    public String messageReceiveList(@RequestParam Map<String, Object> rmap){
         log.info("messageReceiveList");
         List<Map<String, Object>> mList = null;
-        mList = messageService.messageReceiveList(e_no);
+        mList = messageService.messageReceiveList(rmap);
         Gson g = new Gson();
         String temp = g.toJson(mList);
         log.info(temp);
@@ -46,10 +46,10 @@ public class MessageController {
     }
 
     @GetMapping("messageSendList")
-    public String messageSendList(String e_no){
+    public String messageSendList(@RequestParam Map<String, Object> rmap){
         log.info("messageSendList");
         List<Map<String, Object>> mList = null;
-        mList = messageService.messageSendList(e_no);
+        mList = messageService.messageSendList(rmap);
         Gson g = new Gson();
         String temp = g.toJson(mList);
         log.info(temp);
@@ -57,10 +57,10 @@ public class MessageController {
     }
 
     @GetMapping("messageStoredList")
-    public String messageStoredList(String e_no){
+    public String messageStoredList(@RequestParam Map<String, Object> rmap){
         log.info("messageStoredList");
         List<Map<String, Object>> mList = null;
-        mList = messageService.messageStoredList(e_no);
+        mList = messageService.messageStoredList(rmap);
         Gson g = new Gson();
         String temp = g.toJson(mList);
         log.info(temp);
@@ -68,10 +68,10 @@ public class MessageController {
     }
 
     @GetMapping("messageDeletedList")
-    public String messageDeletedList(String e_no){
+    public String messageDeletedList(@RequestParam Map<String, Object> rmap){
         log.info("messageDeletedList");
         List<Map<String, Object>> mList = null;
-        mList = messageService.messageDeletedList(e_no);
+        mList = messageService.messageDeletedList(rmap);
         Gson g = new Gson();
         String temp = g.toJson(mList);
         log.info(temp);
@@ -168,6 +168,13 @@ public class MessageController {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("파일 다운로드 오류");
         }
+    }
+
+    @GetMapping("messageCompleteDelete")
+    public String messageCompleteDelete(@RequestParam Map<String, Object> rmap) {
+        int result = -1;
+        result = messageService.messageCompleteDelete(rmap);
+        return result == 0?"error":"ok";
     }
     private String getCurrentTimeMillisFormat() {
         long currentTime = System.currentTimeMillis();
