@@ -25,9 +25,9 @@ public class UserDaoImpl implements UserDao {
         log.info("findById호출");
         log.info(e_no);
         List<EmpVO> mVO = sqlSessionTemplate.selectList("loginMapper.findById", e_no);
-        log.info("@@@");
-        log.info(mVO);
-        log.info(Optional.of(mVO.get(0)));
+//        log.info("@@@");
+//        log.info(mVO);
+//        log.info(Optional.of(mVO.get(0)));
         return Optional.of(mVO.get(0));
     }
 

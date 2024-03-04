@@ -38,4 +38,8 @@ public class AttendanceService {
     public void noneAtInsert() {
         attendanceDao.noneAtInsert();
     }
+
+    public int atDelete(Map<String, Object> atMap) {
+        return attendanceDao.atDelete(atMap);
+    }
 }
