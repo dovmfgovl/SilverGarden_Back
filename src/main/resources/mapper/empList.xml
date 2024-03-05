@@ -15,7 +15,7 @@
         FROM COMMON_CD c2
         WHERE GRP_CD = 'ext01' AND USE_YN = 'Y'
         ) c3 ON COMMON_CD.CD = c3.HIGH_CD
-        WHERE E_STATUS != '퇴직' OR E_STATUS IS NULL;
+        WHERE E_STATUS != '퇴직' OR E_STATUS IS NULL
     <where>
         <if test="gubun != null and menuTitle != null and !menuTitle.equals('전체')">
             AND DEPT_NAME LIKE '%' || #{menuTitle} || '%'
