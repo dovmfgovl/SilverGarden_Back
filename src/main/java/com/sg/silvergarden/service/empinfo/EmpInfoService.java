@@ -33,6 +33,13 @@ public class EmpInfoService {
         return eList;
     }
 
+    public List<Map<String, Object>> certiList(Map<String, Object> eMap) {
+        logger.info("certiList");
+        List<Map<String, Object>> eList = null;
+        eList = empInfoDao.certiList(eMap);
+        return eList;
+    }
+
     public List<Map<String, Object>> empDetail(Map<String, Object> eMap) {
         logger.info("empDetail");
         List<Map<String, Object>> eList = null;
@@ -40,20 +47,10 @@ public class EmpInfoService {
         return eList;
     }
 
-    @Transactional
     public int empUpdate(Map<String, Object> eMap) {
         logger.info("empUpdate");
         int result = 0;
-        if(eMap.containsKey("list")){//파일이 있는 경우 empUpdate를 먼저하고 시퀀스 값을 받아옴
-            List<Map<String, Object>> flist = (List)eMap.get("list");
-            empInfoDao.empUpdate(eMap);
-            for(Map<String, Object> map : flist){
-                map.put("E_NO", eMap.get("E_NO"));
-            }
-            result = empInfoDao.fileUpload(flist);
-        }else{
-            result = empInfoDao.empUpdate(eMap);
-        }
+        result = empInfoDao.empUpdate(eMap);
         return result;
     }
 
@@ -91,6 +88,13 @@ public class EmpInfoService {
         logger.info("certiInset");
         int result = 0;
         result = empInfoDao.certiInsert(eMap);
+        return result;
+    }
+
+    public int certiDelete(int certi_no) {
+        logger.info("certiDelete");
+        int result = 0;
+        result = empInfoDao.certiDelete(certi_no);
         return result;
     }
 }

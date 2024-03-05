@@ -47,6 +47,9 @@ dependencies {
 	runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-impl', version: '0.11.5'
 	runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.11.5'
 	implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.0'
+
+	//sms
+	implementation 'net.nurigo:sdk:4.2.7'
 }
 
 tasks.named('bootBuildImage') {

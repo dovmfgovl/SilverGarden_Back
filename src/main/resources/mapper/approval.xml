@@ -14,18 +14,34 @@
         </collection>
     </resultMap>
 
-    <select id="allApprovalList" parameterType="String" resultType="map">
+    <select id="allApprovalList" parameterType="map" resultType="map">
         select ad.d_no as "d_no", ad.d_title as "d_title", DBMS_LOB.SUBSTR(ad.d_content, 4000, 1) AS "d_content", ad.d_status as "d_status",
                ad.e_no as "e_no", ad.d_category as "d_category",
                to_char(ad.reg_date, 'YYYY-MM-DD') as "reg_date", e.e_name as "e_name", e.dept_name "dept_name"
         from approval_doc ad
                  left join employee e
                       on ad.e_no = e.e_no
-        where e.e_no = #{value} and ad.d_status not in('종결', '반려', '임시저장')
+        <where>
+            e.e_no = #{e_no} and ad.d_status not in('종결', '반려', '임시저장')
+            <if test = 'gubun!=null'>
+                <choose>
+                    <when test = 'gubun.equals("d_title")'>
+                        AND ad.d_title LIKE '%'||#{keyword}||'%'
+                    </when>
+                    <when test = 'gubun.equals("d_content")'>
+                        AND ad.d_content LIKE '%'||#{keyword}||'%'
+                    </when>
+                    <when test = 'gubun.equals("e_name")'>
+                        AND e.e_no IN (select e_no from EMPLOYEE where e_name LIKE '%'||#{keyword}||'%')
+                    </when>
+                </choose>
+            </if>
+        </where>
         order by ad.d_no desc
     </select>
 
-    <select id="approvalWaitList" parameterType="String" resultType="map">
+
+    <select id="approvalWaitList" parameterType="map" resultType="map">
         select distinct ad.d_no as "d_no", ad.d_title as "d_title", DBMS_LOB.SUBSTR(ad.d_content, 4000, 1) AS "d_content", ad.d_status as "d_status",
                ad.e_no as "e_no", ad.d_category as "d_category",
                to_char(ad.reg_date, 'YYYY-MM-DD') as "reg_date", e.e_name as "e_name", e.dept_name "dept_name"
@@ -34,11 +50,26 @@
                            on ad.e_no = e.e_no
                  join APPROVAL_HISTORY ah
                            on ah.d_no = ad.D_NO
-        where ah.ap_id = #{value} and ap_result = '대기중' and ad.d_status in('진행중', '상신')
+        <where>
+            ah.ap_id = #{e_no} and ap_result = '대기중' and ad.d_status in('진행중', '상신')
+            <if test = 'gubun!=null'>
+                <choose>
+                    <when test = 'gubun.equals("d_title")'>
+                        AND ad.d_title LIKE '%'||#{keyword}||'%'
+                    </when>
+                    <when test = 'gubun.equals("d_content")'>
+                        AND ad.d_content LIKE '%'||#{keyword}||'%'
+                    </when>
+                    <when test = 'gubun.equals("e_name")'>
+                        AND e.e_no IN (select e_no from EMPLOYEE where e_name LIKE '%'||#{keyword}||'%')
+                    </when>
+                </choose>
+            </if>
+        </where>
         order by ad.d_no desc
     </select>
 
-    <select id="approvalProgressList" parameterType="String" resultType="map">
+    <select id="approvalProgressList" parameterType="map" resultType="map">
         select distinct ad.d_no as "d_no", ad.d_title as "d_title", DBMS_LOB.SUBSTR(ad.d_content, 4000, 1) AS "d_content", ad.d_status as "d_status",
                ad.e_no as "e_no", ad.d_category as "d_category",
                to_char(ad.reg_date, 'YYYY-MM-DD') as "reg_date", e.e_name as "e_name", e.dept_name "dept_name"
@@ -47,11 +78,26 @@
                       on ad.e_no = e.e_no
                  join APPROVAL_HISTORY ah
                       on ah.d_no = ad.D_NO
-        where ah.ap_id = #{value} and ah.ap_result = '승인' and ad.D_STATUS = '진행중'
+        <where>
+            ah.ap_id = #{e_no} and ah.ap_result = '승인' and ad.D_STATUS = '진행중'
+            <if test = 'gubun!=null'>
+                <choose>
+                    <when test = 'gubun.equals("d_title")'>
+                        AND ad.d_title LIKE '%'||#{keyword}||'%'
+                    </when>
+                    <when test = 'gubun.equals("d_content")'>
+                        AND ad.d_content LIKE '%'||#{keyword}||'%'
+                    </when>
+                    <when test = 'gubun.equals("e_name")'>
+                        AND e.e_no IN (select e_no from EMPLOYEE where e_name LIKE '%'||#{keyword}||'%')
+                    </when>
+                </choose>
+            </if>
+        </where>
         order by ad.d_no desc
     </select>
 
-    <select id="approvalDenyList" parameterType="String" resultType="map">
+    <select id="approvalDenyList" parameterType="map" resultType="map">
         select distinct ad.d_no as "d_no", ad.d_title as "d_title", DBMS_LOB.SUBSTR(ad.d_content, 4000, 1) AS "d_content", ad.d_status as "d_status",
                         ad.e_no as "e_no", ad.d_category as "d_category",
                         to_char(ad.reg_date, 'YYYY-MM-DD') as "reg_date", e.e_name as "e_name", e.dept_name "dept_name"
@@ -60,11 +106,26 @@
                       on ad.e_no = e.e_no
                  join APPROVAL_HISTORY ah
                       on ah.d_no = ad.D_NO
-        where #{value} in(e.e_no, ah.ap_id) and ad.D_STATUS = '반려'
+        <where>
+            #{e_no} in(e.e_no, ah.ap_id) and ad.D_STATUS = '반려'
+            <if test = 'gubun!=null'>
+                <choose>
+                    <when test = 'gubun.equals("d_title")'>
+                        AND ad.d_title LIKE '%'||#{keyword}||'%'
+                    </when>
+                    <when test = 'gubun.equals("d_content")'>
+                        AND ad.d_content LIKE '%'||#{keyword}||'%'
+                    </when>
+                    <when test = 'gubun.equals("e_name")'>
+                        AND e.e_no IN (select e_no from EMPLOYEE where e_name LIKE '%'||#{keyword}||'%')
+                    </when>
+                </choose>
+            </if>
+        </where>
         order by ad.d_no desc
     </select>
 
-    <select id="approvalCompleteList" parameterType="String" resultType="map">
+    <select id="approvalCompleteList" parameterType="map" resultType="map">
         select distinct ad.d_no as "d_no", ad.d_title as "d_title", DBMS_LOB.SUBSTR(ad.d_content, 4000, 1) AS "d_content", ad.d_status as "d_status",
                         ad.e_no as "e_no", ad.d_category as "d_category",
                         to_char(ad.reg_date, 'YYYY-MM-DD') as "reg_date", e.e_name as "e_name", e.dept_name "dept_name"
@@ -73,18 +134,48 @@
                       on ad.e_no = e.e_no
                  join APPROVAL_HISTORY ah
                       on ah.d_no = ad.D_NO
-        where #{value} in(e.e_no, ah.ap_id) and ad.D_STATUS = '종결'
+        <where>
+            #{e_no} in(e.e_no, ah.ap_id) and ad.D_STATUS = '종결'
+            <if test = 'gubun!=null'>
+                <choose>
+                    <when test = 'gubun.equals("d_title")'>
+                        AND ad.d_title LIKE '%'||#{keyword}||'%'
+                    </when>
+                    <when test = 'gubun.equals("d_content")'>
+                        AND ad.d_content LIKE '%'||#{keyword}||'%'
+                    </when>
+                    <when test = 'gubun.equals("e_name")'>
+                        AND e.e_no IN (select e_no from EMPLOYEE where e_name LIKE '%'||#{keyword}||'%')
+                    </when>
+                </choose>
+            </if>
+        </where>
         order by ad.d_no desc
     </select>
 
-    <select id="approvalTempList" parameterType="String" resultType="map">
+    <select id="approvalTempList" parameterType="map" resultType="map">
         select distinct ad.d_no as "d_no", ad.d_title as "d_title", DBMS_LOB.SUBSTR(ad.d_content, 4000, 1) AS "d_content", ad.d_status as "d_status",
                         ad.e_no as "e_no", ad.d_category as "d_category",
                         to_char(ad.reg_date, 'YYYY-MM-DD') as "reg_date", e.e_name as "e_name", e.dept_name "dept_name"
         from approval_doc ad
                  join employee e
                       on ad.e_no = e.e_no
-        where ad.E_NO = #{value} and ad.D_STATUS = '임시저장'
+        <where>
+            ad.E_NO = #{e_no} and ad.D_STATUS = '임시저장'
+            <if test = 'gubun!=null'>
+                <choose>
+                    <when test = 'gubun.equals("d_title")'>
+                        AND ad.d_title LIKE '%'||#{keyword}||'%'
+                    </when>
+                    <when test = 'gubun.equals("d_content")'>
+                        AND ad.d_content LIKE '%'||#{keyword}||'%'
+                    </when>
+                    <when test = 'gubun.equals("e_name")'>
+                        AND e.e_no IN (select e_no from EMPLOYEE where e_name LIKE '%'||#{keyword}||'%')
+                    </when>
+                </choose>
+            </if>
+        </where>
         order by ad.d_no desc
     </select>
 
@@ -232,7 +323,13 @@
         delete from APPROVAL_DOC where d_no = #{value}
     </delete>
 
-
-
+    <insert id="vacationDateInsert" parameterType="list">
+        INSERT ALL
+        <foreach collection="list" item="item" index="index" separator=" ">
+            INTO ATTENDANCE (AT_DATE, E_NO, AT_START, AT_STATUS, REG_DATE, REG_ID)
+            VALUES (#{item.date}, #{item.e_no}, TO_DATE(#{item.date}), #{item.at_status}, sysdate, #{item.e_no})
+        </foreach>
+        SELECT * FROM DUAL
+    </insert>
 
 </mapper>

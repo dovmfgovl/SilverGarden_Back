@@ -287,6 +287,7 @@
             cer.CERTI_ACQUIRE
         FROM EMPLOYEE emp
                  RIGHT JOIN CERTIFICATION cer ON emp.E_NO = cer.E_NO
+        ORDER BY cer.CERTI_NO
     </select>
 
     <update id="empInfoUpdate" parameterType="map">
@@ -309,35 +310,6 @@
             <if test="E_PROFILE != null">E_PROFILE = #{E_PROFILE},</if>
         </set>
         where E_NO = #{E_NO}
-    </update>
-
-<!--    <insert id="fileUpload" parameterType="java.util.List">
-        INSERT INTO emp_file(e_file_no, e_no, e_filename, e_fileorigin, e_filepath, reg_date, mod_date, reg_id, mod_id)
-        SELECT seq_noticefile_no.nextval, A.* from
-        (
-        <foreach collection="list" item="item" index="index" separator="UNION ALL">
-            SELECT
-            #{item.e_no} as e_no,
-            #{item.e_filename} as e_filename,
-            #{item.e_fileorigin} as e_fileorigin,
-            #{item.e_filepath} as e_filepath,
-            sysdate as reg_date,
-            sysdate as mod_date,
-            #{item.e_no} as reg_id,
-            #{item.e_no} as mod_id
-            from dual
-        </foreach>
-        ) A
-    </insert>-->
-
-    <update id="fileUpload" parameterType="java.util.Map">
-        UPDATE EMP_FILE
-        SET E_FILENAME = #{E_FILENAME},
-            E_FILEORIGIN = #{E_FILEORIGIN},
-            E_FILEPATH = #{E_FILEPATH},
-            MOD_DATE = SYSDATE,
-            MOD_ID = #{E_NO}
-        WHERE E_NO = #{E_NO}
     </update>
 
     <update id="empEduUpdate" parameterType="map">
@@ -406,7 +378,11 @@
     </delete>
 
     <insert id="certiInsert" parameterType="map">
-        INSERT INTO certification (certi_no, certi_cate, certi_code, certi_issuer, certi_acquire, e_no, reg_date, reg_id)
-        VALUES (seq_certification_no.NEXTVAL,#{certi_cate}, #{certi_code}, #{certi_issuer}, #{certi_acquire}, #{e_no}, sysdate, #{reg_id})
+        INSERT INTO certification (CERTI_NO, CERTI_CATE, CERTI_CODE, CERTI_ISSUER, CERTI_ACQUIRE, E_NO, REG_DATE, REG_ID)
+        VALUES (seq_certification_no.NEXTVAL,#{CERTI_CATE}, #{CERTI_CODE}, #{CERTI_ISSUER}, #{CERTI_ACQUIRE}, #{E_NO}, sysdate, #{REG_ID})
     </insert>
+    <delete id="certiDelete" parameterType="int">
+        DELETE FROM certification
+        WHERE CERTI_NO = #{certi_no}
+    </delete>
 </mapper>
