@@ -18,7 +18,6 @@ async function performCrawling() {
     const html = await page.content();
     await page.waitForSelector('tbody');
     const $ = cheerio.load(html);
-    const baseUrl = "http://www.kaswcs.or.kr/bj_board/";
     $('td.title').each((index, element) => {
         const siteName = '한국노인종합복지관협회';
         const baseUrl = "http://www.kaswcs.or.kr/bj_board/";

@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 
@@ -12,8 +13,8 @@ public class TriggerCrawlingService {
     Logger logger = LoggerFactory.getLogger(TriggerCrawlingService.class);
 
     // 매일 밤 12시에 크롤링을 실행예정(우선 월요일)
-    @Scheduled(cron = "0 0 0 * * ?")
-//    @Scheduled(cron = "30 42 09 ? * MON")
+//    @Scheduled(cron = "0 0 0 * * ?")
+    @Scheduled(cron = "00 00 00 ? * WED")
     public void triggerCrawling() {
         logger.info("///////////triggerCrawling-triggerCrawling - " + java.time.LocalDateTime.now());
         try {

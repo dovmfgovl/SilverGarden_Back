@@ -25,14 +25,45 @@
         </foreach>
     </insert>
 
+<!--    <insert id="insertCrawledData" parameterType="java.util.List">-->
+<!--        <foreach collection="list" item="item" index="index" separator=" ">-->
+<!--        INSERT INTO CRAWLED_DATA(-->
+<!--            CRAWLED_NO,-->
+<!--            CRAWLED_SITENAME,-->
+<!--            CRAWLED_TITLE,-->
+<!--            CRAWLED_URL,-->
+<!--            REG_DATE,-->
+<!--            MOD_DATE-->
+<!--        )-->
+<!--        SELECT-->
+<!--            SEQ_CRAWLED_NO.nextval,-->
+<!--            #{item.siteName},-->
+<!--            #{item.title},-->
+<!--            #{item.href},-->
+<!--            TO_DATE(#{item.date}, 'YYYY.MM.DD'),-->
+<!--            sysdate-->
+<!--        FROM DUAL-->
+<!--        WHERE NOT EXISTS (-->
+<!--            SELECT 1-->
+<!--            FROM CRAWLED_DATA-->
+<!--            WHERE CRAWLED_TITLE = #{item.title}-->
+<!--        );-->
+<!--        </foreach>-->
+<!--    </insert>-->
+
+
     <!--조회-->
     <select id="getAllCrawledData" resultType="java.util.Map">
         select
         CRAWLED_NO, CRAWLED_SITENAME, CRAWLED_TITLE,CRAWLED_URL, TO_CHAR(REG_DATE, 'YYYY-MM-DD') as REG_DATE
         from CRAWLED_DATA
         <where>
-            <if test = 'gubun!=null'>
+            <if test = 'crawled_no!=null'>And crawled_no=#{crawled_no}</if>
+            <if test ="gubun!=null">
                 <choose>
+                    <when test='gubun.equals("crawled_no")'>
+                        AND crawled_no LIKE %||#{keyword}||'%'
+                    </when>
                     <when test = 'gubun.equals("crawled_title")'>
                         AND crawled_title LIKE '%'||#{keyword}||'%'
                     </when>
