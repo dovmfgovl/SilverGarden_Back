@@ -16,7 +16,7 @@ public class MessageService {
     @Autowired
     MessageDao messageDao;
     @Transactional
-    public int messageSend(Map<String, Object> pmap) {
+    public int messageSend(Map<String, Object> pmap) throws Exception{
         int result = -1;
         Gson g = new Gson();
         List<Map<String, Object>> receiverList = null;
@@ -42,53 +42,53 @@ public class MessageService {
         return result;
     }
 
-    public List<Map<String, Object>> messageReceiveList(Map<String, Object> rmap) {
+    public List<Map<String, Object>> messageReceiveList(Map<String, Object> rmap) throws Exception{
         List<Map<String, Object>> mList = null;
         mList = messageDao.messageReceiveList(rmap);
         return mList;
     }
-    public List<Map<String, Object>> messageSendList(Map<String, Object> rmap) {
+    public List<Map<String, Object>> messageSendList(Map<String, Object> rmap) throws Exception{
         List<Map<String, Object>> mList = null;
         mList = messageDao.messageSendList(rmap);
         return mList;
     }
 
-    public List<Map<String, Object>> messageDeletedList(Map<String, Object> rmap) {
+    public List<Map<String, Object>> messageDeletedList(Map<String, Object> rmap) throws Exception{
         List<Map<String, Object>> mList = null;
         mList = messageDao.messageDeletedList(rmap);
         return mList;
     }
 
-    public List<Map<String, Object>> messageStoredList(Map<String, Object> rmap) {
+    public List<Map<String, Object>> messageStoredList(Map<String, Object> rmap) throws Exception{
         List<Map<String, Object>> mList = null;
         mList = messageDao.messageStoredList(rmap);
         return mList;
     }
 
-    public Map<String, Object> messageDetail(int me_no) {
+    public Map<String, Object> messageDetail(int me_no) throws Exception{
         Map<String, Object> meMap = null;
         meMap = messageDao.messageDetail(me_no);
         return meMap;
     }
-    public int messageRead(Map<String, Object> rmap) {
+    public int messageRead(Map<String, Object> rmap) throws Exception{
         int result = -1;
         result = messageDao.messageRead(rmap);
         return result;
     }
-    public int messageStore(Map<String, Object> rmap) {
+    public int messageStore(Map<String, Object> rmap) throws Exception{
         int result = -1;
         rmap.put("me_status","S");
         result = messageDao.messageStatusChange(rmap);
         return result;
     }
 
-    public int messageDelete(Map<String, Object> rmap) {
+    public int messageDelete(Map<String, Object> rmap) throws Exception{
         int result = -1;
         rmap.put("me_status","N");
         result = messageDao.messageStatusChange(rmap);
         return result;
     }
-    public int messageCompleteDelete(Map<String, Object> rmap) {
+    public int messageCompleteDelete(Map<String, Object> rmap) throws Exception{
         int result = -1;
         rmap.put("me_status","D");
         result = messageDao.messageStatusChange(rmap);

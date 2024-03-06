@@ -73,6 +73,7 @@
             <if test="SERV_CARTYPE != null">SERV_CARTYPE = #{SERV_CARTYPE},</if>
             <if test="SERV_TITLE != null">SERV_TITLE = #{SERV_TITLE},</if>
             <if test="SERV_USERNO != null">SERV_USERNO = #{SERV_USERNO},</if>
+            <if test="SERV_USER != null">SERV_USER = #{SERV_USER},</if>
             <if test="SERV_CAR_NO= null">SERV_CAR_NO = #{SERV_CAR_NO},</if>
             MOD_DATE = sysdate,
         </set>
