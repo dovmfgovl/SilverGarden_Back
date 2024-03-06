@@ -7,6 +7,6 @@
        INSERT INTO EMPLOYEE(e_no, e_birth, e_name, e_phone, dept_name, e_email, e_password, e_auth, e_rank, e_status, reg_date, mod_date, reg_id, mod_id) VALUES (to_char(sysdate,'YYYYMM_')||lpad(SEQ_EMPLOYEE_NO.nextval, 8, 0), #{e_birth}, #{e_name}, #{e_phone}, #{dept_name}, #{e_email}, #{e_password}, #{e_auth}, #{e_rank}, '재직',sysdate, sysdate, #{reg_id}, #{mod_id})
    </insert>
     <select id="deptname" resultType="map" parameterType="map">
-        SELECT CD_VALUE FROM COMMON_CD WHERE GRP_CD = 'dept01' AND USE_YN = 'Y'
+        SELECT CD, CD_VALUE FROM COMMON_CD WHERE GRP_CD = 'dept01' AND USE_YN = 'Y'
     </select>
 </mapper>
