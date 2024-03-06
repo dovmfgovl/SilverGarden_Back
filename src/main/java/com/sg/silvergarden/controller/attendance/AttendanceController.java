@@ -71,9 +71,9 @@ public class AttendanceController {
         attendanceService.atDelete(atMap);
     }
 
-    // 매주 월-금요일 오후 11시 59분 50초에 실행
+    // 매주 월-금요일 오후 11시 00분 00초에 실행
     // 공휴일에는 실행되지 않음
-    @Scheduled(cron = "50 59 23 ? * 1-5")
+    @Scheduled(cron = "00 00 23 ? * 1-5")
     public void noneAtInsert() {
         logger.info("근태 일괄처리 실행");
         //if (!holidayCheckTest.isHoliday()) {

@@ -1,7 +1,9 @@
 package com.sg.silvergarden.service.payment;
 
 import com.google.gson.Gson;
+import com.sg.silvergarden.vo.payment.PayTokenResponse;
 import com.sg.silvergarden.vo.payment.UrlResponse;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -20,6 +22,13 @@ public class PayUrlServiceImpl implements PayUrlService{
 
     @Value("${impCode}")
     private String code;
+
+    @Value("${imp_key}")
+    private String imp_key;
+
+    @Value("${imp_secret}")
+    private String imp_secret;
+
     @Override
     public String generateUrl(Map<String, Object> pmap) {
 
@@ -28,9 +37,7 @@ public class PayUrlServiceImpl implements PayUrlService{
         String name = (String) pmap.get("name");
         String orderno = (String) pmap.get("orderno");
         String phone = (String) pmap.get("phone");
-        // 현재 시간 기준으로 1일을 더한 시간을 얻음
         Instant tomorrow = Instant.now().plusSeconds(86400); // 1일 = 86400초
-        // 타임스탬프 생성 (초 단위)
         long timestemp = tomorrow.getEpochSecond();
 
         //결제링크 생성
@@ -46,5 +53,23 @@ public class PayUrlServiceImpl implements PayUrlService{
         String url = res.getShortenedUrl();
 
         return url;
+    }
+
+    @Override
+    public String getToken() {
+
+        //access token 발급
+        HttpHeaders tokenHeader = new HttpHeaders();
+        tokenHeader.add("Content-type", "application/json");
+        String jsonBody = "{\"imp_key\": \"" + imp_key + "\", \"imp_secret\": \"" + imp_secret + "\"}";
+        HttpEntity<String> tokenRequest = new HttpEntity<>(jsonBody, tokenHeader);
+        RestTemplate rt = new RestTemplate();
+        ResponseEntity<String> response = rt.exchange("https://api.iamport.kr/users/getToken", HttpMethod.POST, tokenRequest, String.class);
+        String responsetoken = response.getBody();
+        Gson g = new Gson();
+        PayTokenResponse res = g.fromJson(responsetoken, PayTokenResponse.class);
+        String accessToken = res.getResponse().getAccess_token();
+
+        return accessToken;
     }
 }
