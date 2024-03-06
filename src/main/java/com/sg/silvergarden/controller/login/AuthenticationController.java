@@ -28,6 +28,8 @@ public class AuthenticationController {
 
     @PostMapping("/refresh")
     public ResponseEntity<JwtAuthentucationResponse> refresh(@RequestBody RefreshTokenRequest refreshTokenRequest) {
+        log.info(refreshTokenRequest);
+        log.info(authenticationService.refreshToken(refreshTokenRequest));
         return ResponseEntity.ok(authenticationService.refreshToken(refreshTokenRequest));
     }
 }

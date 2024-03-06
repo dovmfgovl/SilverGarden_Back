@@ -53,7 +53,7 @@ public class SmsUtil {
 
     // 단일 메시지 발송 예제
     @PostMapping("request")
-    public SingleMessageSentResponse sendOne(@RequestParam Map<String, Object> pmap) {
+    public SingleMessageSentResponse sendOne(@RequestBody Map<String, Object> pmap) {
 
 
         String name = (String) pmap.get("name");

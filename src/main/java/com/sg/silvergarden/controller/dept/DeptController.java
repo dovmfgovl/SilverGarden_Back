@@ -31,7 +31,7 @@ public class DeptController {
     }
 
     @GetMapping("deptcheck")
-    public int deptCheck(@RequestParam Map<String, Object> pmap){
+    public int deptCheck(@RequestBody Map<String, Object> pmap){
         log.info("deptCheck-controller 호출");
         log.info(pmap);
         int result = deptService.deptCheck(pmap);
@@ -41,21 +41,21 @@ public class DeptController {
     }
 
     @PostMapping("deptinsert")
-    public void deptInsert(@RequestParam Map<String, Object> pmap){
+    public void deptInsert(@RequestBody Map<String, Object> pmap){
         log.info("deptInsert-controller 호출");
         log.info(pmap);
         deptService.deptInsert(pmap);
     }
 
     @PutMapping("deptupdate")
-    public void deptUpdate(@RequestParam Map<String, Object> pmap){
+    public void deptUpdate(@RequestBody Map<String, Object> pmap){
         log.info("deptUpdate-controller 호출");
         log.info(pmap);
         deptService.deptUpdate(pmap);
     }
 
     @PutMapping("deptdelete")
-    public void deptDelete(@RequestParam Map<String, Object> pmap){
+    public void deptDelete(@RequestBody Map<String, Object> pmap){
         log.info("deptDelete-controller 호출");
         log.info(pmap);
         deptService.deptDelete(pmap);
@@ -74,14 +74,14 @@ public class DeptController {
     }
 
     @PostMapping("jobinsert")
-    public void jobInsert(@RequestParam Map<String, Object> pmap){
+    public void jobInsert(@RequestBody Map<String, Object> pmap){
         log.info("jobInsert-controller 호출");
         log.info(pmap);
         deptService.jobInsert(pmap);
     }
 
     @PutMapping("jobdelete")
-    public void jobDelete(@RequestParam Map<String, Object> pmap){
+    public void jobDelete(@RequestBody Map<String, Object> pmap){
         log.info("jobDelete-controller 호출");
         log.info(pmap);
         deptService.jobDelete(pmap);
