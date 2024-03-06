@@ -13,7 +13,7 @@ public class ApprovalTest {
     ApprovalDao approvalDao;
 
     @Test
-    public void getFinalApprovalLevelTest(){
+    public void getFinalApprovalLevelTest() throws Exception{
         int d_no = 43;
         assertEquals(approvalDao.getFinalApprovalLevel(d_no), 3);
     }
