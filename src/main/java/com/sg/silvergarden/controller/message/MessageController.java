@@ -11,6 +11,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -35,8 +36,11 @@ public class MessageController {
     YAMLConfiguration config;
 
     @GetMapping("messageReceiveList")
-    public String messageReceiveList(@RequestParam Map<String, Object> rmap){
+    public String messageReceiveList(@RequestParam Map<String, Object> rmap) throws Exception{
         log.info("messageReceiveList");
+        if(ObjectUtils.isEmpty(rmap)){
+            return "잘못된 요청입니다";
+        }
         List<Map<String, Object>> mList = null;
         mList = messageService.messageReceiveList(rmap);
         Gson g = new Gson();
@@ -46,8 +50,11 @@ public class MessageController {
     }
 
     @GetMapping("messageSendList")
-    public String messageSendList(@RequestParam Map<String, Object> rmap){
+    public String messageSendList(@RequestParam Map<String, Object> rmap) throws Exception{
         log.info("messageSendList");
+        if(ObjectUtils.isEmpty(rmap)){
+            return "잘못된 요청입니다";
+        }
         List<Map<String, Object>> mList = null;
         mList = messageService.messageSendList(rmap);
         Gson g = new Gson();
@@ -57,8 +64,11 @@ public class MessageController {
     }
 
     @GetMapping("messageStoredList")
-    public String messageStoredList(@RequestParam Map<String, Object> rmap){
+    public String messageStoredList(@RequestParam Map<String, Object> rmap) throws Exception{
         log.info("messageStoredList");
+        if(ObjectUtils.isEmpty(rmap)){
+            return "잘못된 요청입니다";
+        }
         List<Map<String, Object>> mList = null;
         mList = messageService.messageStoredList(rmap);
         Gson g = new Gson();
@@ -68,8 +78,11 @@ public class MessageController {
     }
 
     @GetMapping("messageDeletedList")
-    public String messageDeletedList(@RequestParam Map<String, Object> rmap){
+    public String messageDeletedList(@RequestParam Map<String, Object> rmap) throws Exception{
         log.info("messageDeletedList");
+        if(ObjectUtils.isEmpty(rmap)){
+            return "잘못된 요청입니다";
+        }
         List<Map<String, Object>> mList = null;
         mList = messageService.messageDeletedList(rmap);
         Gson g = new Gson();
@@ -79,8 +92,11 @@ public class MessageController {
     }
 
     @GetMapping("messageDetail")
-    public String messageDetail(int me_no){
+    public String messageDetail(int me_no) throws Exception{
         log.info("messageDetail");
+        if(ObjectUtils.isEmpty(me_no)){
+            return "잘못된 요청입니다";
+        }
         Map<String, Object> meMap = null;
         meMap = messageService.messageDetail(me_no);
         Gson g = new Gson();
@@ -89,8 +105,11 @@ public class MessageController {
     }
 
     @PostMapping("messageSend")
-    public String messageSend(@RequestParam Map<String, Object> pmap, @RequestParam(name="files", required = false) MultipartFile[] files ){
-        log.info(pmap.toString());
+    public String messageSend(@RequestParam Map<String, Object> rmap, @RequestParam(name="files", required = false) MultipartFile[] files ) throws Exception{
+        log.info(rmap.toString());
+        if(ObjectUtils.isEmpty(rmap)){
+            return "잘못된 요청입니다";
+        }
         List<Map<String, Object>> list = new ArrayList<>();
         if(files != null){//파일이 있는 경우
             for(MultipartFile file : files){
@@ -100,7 +119,7 @@ public class MessageController {
                 File upFile = new File(config.getUploadPath(), uploadFilename);//지정된 경로에 파일저장
                 try {
                     file.transferTo(upFile);
-                    nmap.put("send_id", pmap.get("send_id"));
+                    nmap.put("send_id", rmap.get("send_id"));
                     nmap.put("me_filepath", config.getUploadPath());
                     nmap.put("me_fileorigin", originalFilename);
                     nmap.put("me_filename", uploadFilename);
@@ -109,40 +128,51 @@ public class MessageController {
                     throw new RuntimeException(e);
                 }
             }
-            pmap.put("list", list);//맵에 파일리스트를 추가해줌
+            rmap.put("list", list);//맵에 파일리스트를 추가해줌
         }
-        log.info(pmap.toString());
+        log.info(rmap.toString());
         int result = -1;
-        result = messageService.messageSend(pmap);
+        result = messageService.messageSend(rmap);
         return result == 0?"error":"ok";
     }
 
     @GetMapping("messageRead")
-    public String messageRead(@RequestParam Map<String, Object> rmap){
+    public String messageRead(@RequestParam Map<String, Object> rmap) throws Exception{
         log.info(rmap.toString());
+        if(ObjectUtils.isEmpty(rmap)){
+            return "잘못된 요청입니다";
+        }
         int result = -1;
         result = messageService.messageRead(rmap);
         return result == 0?"error":"ok";
     }
     @GetMapping("messageStore")
-    public String messageStore(@RequestParam Map<String, Object> rmap){
+    public String messageStore(@RequestParam Map<String, Object> rmap) throws Exception{
         log.info(rmap.toString());
+        if(ObjectUtils.isEmpty(rmap)){
+            return "잘못된 요청입니다";
+        }
         int result = -1;
         result = messageService.messageStore(rmap);
-        log.info(String.valueOf(result));
         return result == 0?"error":"ok";
     }
     @GetMapping("messageDelete")
-    public String messageDelete(@RequestParam Map<String, Object> rmap){
+    public String messageDelete(@RequestParam Map<String, Object> rmap) throws Exception{
         log.info(rmap.toString());
+        if(ObjectUtils.isEmpty(rmap)){
+            return "잘못된 요청입니다";
+        }
         int result = -1;
         result = messageService.messageDelete(rmap);
         return result == 0?"error":"ok";
     }
 
     @GetMapping("messageFileDownload")
-    public ResponseEntity<Object> fileDownload(@RequestParam(value="filename") String filename) {
+    public ResponseEntity<Object> fileDownload(@RequestParam(value="filename") String filename) throws Exception{
         log.info(filename);
+        if(ObjectUtils.isEmpty(filename)){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("잘못된 요청");
+        }
         try {
             String encodedFilename = URLEncoder.encode(filename, "UTF-8").replace("+", "%20");
             File file = new File(config.getUploadPath(), URLDecoder.decode(encodedFilename, "UTF-8"));
@@ -171,8 +201,11 @@ public class MessageController {
     }
 
     @GetMapping("messageCompleteDelete")
-    public String messageCompleteDelete(@RequestParam Map<String, Object> rmap) {
+    public String messageCompleteDelete(@RequestParam Map<String, Object> rmap) throws Exception{
         int result = -1;
+        if(ObjectUtils.isEmpty(rmap)){
+            return "잘못된 요청입니다";
+        }
         result = messageService.messageCompleteDelete(rmap);
         return result == 0?"error":"ok";
     }

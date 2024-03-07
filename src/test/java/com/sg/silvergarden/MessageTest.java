@@ -18,7 +18,7 @@ public class MessageTest {
     MessageDao messageDao;
 
     @Test
-    public void messageRecipientInsertTest(){
+    public void messageRecipientInsertTest() throws Exception{
         List<Map<String, Object>> receiverList = new ArrayList<>();
         Map<String, Object> rmap = new HashMap<>();
         rmap.put("me_no", 1);
@@ -35,7 +35,7 @@ public class MessageTest {
         assertEquals(messageDao.messageRecipientInsert(receiverList), 3);
     }
     @Test
-    public void messsageReceiveList(){
+    public void messsageReceiveList() throws Exception{
         Map<String, Object> rmap = new HashMap<>();
         rmap.put("e_no","202402_00000030");
         rmap.put("gubun", "period");
@@ -44,7 +44,7 @@ public class MessageTest {
         assertEquals(messageDao.messageReceiveList(rmap).size(), 4);
     }
     @Test
-    public void messageSendList(){
+    public void messageSendList() throws Exception{
         Map<String, Object> rmap = new HashMap<>();
         assertEquals(messageDao.messageSendList(rmap).size(), 5);
     }

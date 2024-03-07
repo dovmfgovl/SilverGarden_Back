@@ -11,6 +11,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -49,6 +50,9 @@ public class NoticeController {
     @GetMapping("noticeDetail")
     public String noticeDetail(int n_no) throws Exception{
         log.info("noticeDetail");
+        if(ObjectUtils.isEmpty(n_no)){
+            return "잘못된 요청입니다";
+        }
         log.info(String.valueOf(n_no));
         List<Map<String, Object>> nlist = null;
         nlist = noticeService.noticeDetail(n_no);
@@ -58,6 +62,9 @@ public class NoticeController {
     }
     @PostMapping("noticeInsert")
     public String noticeInsert(@RequestParam Map<String, Object> pmap, @RequestParam(name="files", required = false) MultipartFile[] files) throws Exception{
+        if(ObjectUtils.isEmpty(pmap)){
+            return "잘못된 요청입니다";
+        }
         log.info(pmap.toString());
         List<Map<String, Object>> list = new ArrayList<>();
         if(files != null){//파일이 있는 경우
@@ -87,6 +94,9 @@ public class NoticeController {
 
     @GetMapping("noticeDelete")
     public String noticeDelete(@RequestParam Map<String, Object> pmap) throws Exception{
+        if(ObjectUtils.isEmpty(pmap)){
+            return "잘못된 요청입니다";
+        }
         log.info(pmap.toString());
         int result = -1;
         result = noticeService.noticeDelete(pmap);
@@ -95,6 +105,9 @@ public class NoticeController {
 
     @GetMapping("noticeUpdate")
     public String noticeUpdate(@RequestParam Map<String, Object> pmap) throws Exception{
+        if(ObjectUtils.isEmpty(pmap)){
+            return "잘못된 요청입니다";
+        }
         log.info(pmap.toString());
         int result = -1;
         result = noticeService.noticeUpdate(pmap);
@@ -109,7 +122,9 @@ public class NoticeController {
     @PostMapping("imageUpload")
     public String imageUpload(@RequestParam(value = "image") MultipartFile image) throws Exception{
         log.info("이미지 업로드");
-        log.info(image.getOriginalFilename());
+        if(ObjectUtils.isEmpty(image)){
+            return "잘못된 요청입니다";
+        }
         String newFilename = getCurrentTimeMillisFormat()+"_"+FilenameUtils.getName(image.getOriginalFilename());
         File upImage = new File(config.getUploadPath(), newFilename);
         log.info(newFilename);
@@ -125,6 +140,9 @@ public class NoticeController {
     @GetMapping("fileDownload")
     public ResponseEntity<Object> fileDownload(@RequestParam(value="filename") String filename) throws Exception{
         log.info("fileDownload 호출 성공");
+        if(ObjectUtils.isEmpty(filename)){
+            return ResponseEntity.badRequest().body("잘못된 요청");
+        }
         log.info(filename);
         try {
             String encodedFilename = URLEncoder.encode(filename, "UTF-8").replace("+", "%20");
@@ -154,6 +172,9 @@ public class NoticeController {
     //파일 삭제 처리
     @PostMapping("deleteFile")
     public ResponseEntity<String> deleteFile(String filename) throws Exception{
+        if(ObjectUtils.isEmpty(filename)){
+            return ResponseEntity.badRequest().body("잘못된 요청");
+        }
         File file = null;
         if(filename != null){
             file = new File(config.getUploadPath() + filename);
