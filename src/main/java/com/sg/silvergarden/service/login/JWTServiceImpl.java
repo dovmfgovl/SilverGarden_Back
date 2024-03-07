@@ -30,7 +30,7 @@ public class JWTServiceImpl implements JWTService {
         log.info(userDetails.getAuthorities());
         return Jwts.builder().setSubject(userDetails.getUsername())// jwt생성하기 위한 빌더 시작 > jwt의 sub 클레임을 설정
                 .setIssuedAt(new Date(System.currentTimeMillis()))// jwt 토큰 발급시간
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 30))// jwt 토큰 만료 시간
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 30))// jwt 토큰 만료 시간 30분
                 .signWith(getSignKey(), SignatureAlgorithm.HS256)// jwt 서명추가
                 .claim("roles", userDetails.getAuthorities())
                 .compact();// jwt 문자열로 변환하여 반환
@@ -41,7 +41,7 @@ public class JWTServiceImpl implements JWTService {
         log.info("@@refreshToken@@");
         return Jwts.builder().setClaims(extraClaims).setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 604800000))
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24 * 7))// jwt 토큰 만료 시간 7일
                 .signWith(getSignKey(), SignatureAlgorithm.HS256)
                 .compact();
     }

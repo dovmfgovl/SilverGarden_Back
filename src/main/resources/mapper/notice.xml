@@ -33,10 +33,10 @@
     </select>
 
     <select id="noticeDetail" resultType="map" parameterType="int">
-        select n.n_no, n.n_title, n.n_content, TO_CHAR(n.REG_DATE,'YYYY-MM-DD') as reg_date ,
+        select n.n_no, n.n_title, n.n_content, (select e_name from EMPLOYEE where n.REG_ID = e_no) e_name, TO_CHAR(n.REG_DATE,'YYYY-MM-DD') as reg_date ,
                n.n_hit, n.reg_id, nf.n_filename, nf.n_file_no
         from notice n LEFT JOIN NOTICE_FILE nf
-        ON n.n_no = nf.n_no
+                                ON n.n_no = nf.n_no
         WHERE n.n_no = #{value}
     </select>
 
