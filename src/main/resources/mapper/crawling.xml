@@ -12,15 +12,17 @@
                 CRAWLED_TITLE,
                 CRAWLED_URL,
                 REG_DATE,
-                MOD_DATE
+                MOD_DATE,
+                CRAWLED_CONTENT
                 )
             VALUES(
                 SEQ_CRAWLED_NO.nextval + #{index},
                 #{item.siteName},
                 #{item.title},
                 #{item.href},
-                TO_DATE(#{item.date}, 'YYYY.MM.DD'),
-                sysdate
+                TO_DATE(#{item.date}, 'YYYY-MM-DD'),
+                sysdate,
+                <![CDATA[ #{item.content} ]]>
                 )
         </foreach>
     </insert>
@@ -28,46 +30,32 @@
     <!--조회-->
     <select id="getAllCrawledData" resultType="java.util.Map">
         select
-        CRAWLED_NO, CRAWLED_SITENAME, CRAWLED_TITLE,CRAWLED_URL, TO_CHAR(REG_DATE, 'YYYY-MM-DD') as REG_DATE
+        CRAWLED_NO, CRAWLED_SITENAME, CRAWLED_TITLE,CRAWLED_URL, TO_CHAR(REG_DATE, 'YYYY-MM-DD') as REG_DATE, TO_CHAR(MOD_DATE, 'YYYY-MM-DD') as MOD_DATE, CRAWLED_CONTENT
         from CRAWLED_DATA
         <where>
-            <if test = 'gubun!=null'>
+            <if test = 'crawled_no!=null'>And crawled_no=#{crawled_no}</if>
+            <if test ="gubun!=null">
                 <choose>
+                    <when test='gubun.equals("crawled_no")'>
+                        AND crawled_no LIKE %||#{keyword}||'%'
+                    </when>
                     <when test = 'gubun.equals("crawled_title")'>
                         AND crawled_title LIKE '%'||#{keyword}||'%'
                     </when>
                     <when test = 'gubun.equals("crawled_sitename")'>
                         AND crawled_sitename LIKE '%'||#{keyword}||'%'
                     </when>
+                    <when test = 'gubun.equals("crawled_content")'>
+                        AND crawled_content LIKE '%'||#{keyword}||'%'
+                    </when>
                 </choose>
             </if>
         </where>
         order by REG_DATE desc
     </select>
-    <!--<insert id="insertCrawledData" parameterType="java.util.List">
-        <foreach collection="list" item="item" index="index" separator=" " open="INSERT ALL" close="SELECT 1 FROM DUAL">
-            INTO CRAWLED_DATA(
-            CRAWLED_NO,
-            CRAWLED_TITLE,
-            CRAWLED_URL,
-            REG_DATE,
-            MOD_DATE
-            )
-            VALUES(
-            SEQ_CRAWLED_NO.nextval,
-            #{item.title},
-            #{item.href},
-            TO_DATE(#{item.date}, 'YYYY.MM.DD'),
-            sysdate
-            )
-            SELECT 1 FROM DUAL
-            WHERE NOT EXISTS(
-            SELECT CRAWLED_TITLE
-            FROM CRAWLED_DATA
-            WHERE CRAWLED_TITLE = #{item.title}
-            );
-        </foreach>
-    </insert>-->
 
+    <delete id="deleteAllCrawledData" parameterType="java.util.Map">
+        DELETE FROM CRAWLED_DATA
+    </delete>
 
 </mapper>

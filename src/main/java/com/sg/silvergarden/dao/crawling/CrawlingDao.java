@@ -19,7 +19,6 @@ public class CrawlingDao {
     @Autowired
     private SqlSessionTemplate sqlSessionTemplate;
 
-
     public List<Map<String, Object>> dataList(Map<String, Object> pmap) {
         return sqlSessionTemplate.selectList("getAllCrawledData",pmap);
     }
@@ -29,17 +28,22 @@ public class CrawlingDao {
         sqlSessionTemplate.insert("insertCrawledData", insertData);
     }
 
-//    @Transactional //유니크키값을 가진 데이터 중복처리 예정
+    public void deleteAllData() {
+        sqlSessionTemplate.delete("deleteAllCrawledData");
+
+    }
+
 //    public void dataInsert(List<Map<String, Object>> insertData) {
-//        for (Map<String, Object> crawledData : insertData) {
-//            try {
-//                sqlSessionTemplate.insert("insertCrawledData", crawledData);
-//            } catch (DuplicateKeyException e) {
-//                logger.info("중복된 데이터가 있어 삽입하지 않습니다. 타이틀: {}", crawledData.get("title"));
-//                // 중복이 발생하면 로그를 남기고 계속 진행
-//            } catch (Exception e) {
-//                logger.error("데이터 삽입 중 에러 발생", e);
-//                // 기타 예외 처리 로직 추가
+//        logger.info(insertData.toString());
+//        logger.info("///////////CrawlingService-dataInsert - " + java.time.LocalDateTime.now());
+//
+//        for (Map<String, Object> item : insertData) {
+//            // 중복 여부를 확인하는 쿼리 실행
+//            int duplicateCount = sqlSessionTemplate.selectOne("checkDuplicateCrawledData", item.get("title"));
+//
+//            // 중복된 데이터가 아니면 저장
+//            if (duplicateCount == 0) {
+//                sqlSessionTemplate.insert("insertCrawledData", item);
 //            }
 //        }
 //    }
