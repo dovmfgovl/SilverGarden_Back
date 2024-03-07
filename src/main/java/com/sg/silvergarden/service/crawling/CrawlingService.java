@@ -36,4 +36,9 @@ public class CrawlingService {
             // 에러 발생 시 로그 출력 및 필요한 예외 처리 추가
         }
     }
+
+    public void deleteAllData() {
+        crawlingDao.deleteAllData();
+
+    }
 }

@@ -19,7 +19,6 @@ public class CrawlingDao {
     @Autowired
     private SqlSessionTemplate sqlSessionTemplate;
 
-
     public List<Map<String, Object>> dataList(Map<String, Object> pmap) {
         return sqlSessionTemplate.selectList("getAllCrawledData",pmap);
     }
@@ -27,6 +26,11 @@ public class CrawlingDao {
         logger.info(insertData.toString());
         logger.info("///////////CrawlingService-dataInsert - " + java.time.LocalDateTime.now());
         sqlSessionTemplate.insert("insertCrawledData", insertData);
+    }
+
+    public void deleteAllData() {
+        sqlSessionTemplate.delete("deleteAllCrawledData");
+
     }
 
 //    public void dataInsert(List<Map<String, Object>> insertData) {

@@ -12,9 +12,9 @@ import java.io.IOException;
 public class TriggerCrawlingService {
     Logger logger = LoggerFactory.getLogger(TriggerCrawlingService.class);
 
-    // 매일 밤 12시에 크롤링을 실행예정(우선 월요일)
-//    @Scheduled(cron = "0 0 0 * * ?")
-    @Scheduled(cron = "00 00 00 ? * WED")
+//    @Scheduled(cron = "00 19 04 ? * THU")
+    // 매일 밤 12시에 크롤링을 실행예정
+    @Scheduled(cron = "00 32 08 * * ?")
     public void triggerCrawling() {
         logger.info("///////////triggerCrawling-triggerCrawling - " + java.time.LocalDateTime.now());
         try {

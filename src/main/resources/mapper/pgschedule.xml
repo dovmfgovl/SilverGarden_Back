@@ -8,7 +8,7 @@
             PS_NO, PS_TEACHER, PS_NAME, PS_START, PS_END, PS_INFO, REG_DATE, REG_ID, MOD_DATE,PS_DAYSOFWEEK,PS_CATEGORY)
         VALUES (
             PS_NO_SEQUENCE.nextval,
-            #{PG_TEACHER},
+            #{PG_TEACHER, jdbcType=VARCHAR},
             #{PS_NAME, jdbcType=VARCHAR},
             TO_DATE(#{PS_START},'YYYY-MM-DD"T"HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'),
             TO_DATE(#{PS_END},'YYYY-MM-DD"T"HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'),
