@@ -33,11 +33,6 @@ public class PaymentController {
     @Autowired
     PaymentService paymentService = null;
 
-    @PostMapping("/redirect")
-    public void paySuccess(@RequestBody PaymentResponse paymentResponse) {
-        paymentService.payUpdate(paymentResponse);
-    }
-
     @GetMapping("paylist")
     public String payList(@RequestParam Map<String, Object> pmap){
         List<Map<String, Object>> list = null;
@@ -59,7 +54,7 @@ public class PaymentController {
     }
 
     @PostMapping("/refund")
-    public void payRefund(@RequestParam Map<String, Object> pmap) {
+    public void payRefund(@RequestBody Map<String, Object> pmap) {
 
         String merchant_uid = (String) pmap.get("merchant_uid");
         String accessToken = payUrlService.getToken();

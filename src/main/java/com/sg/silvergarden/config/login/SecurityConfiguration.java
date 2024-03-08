@@ -68,6 +68,7 @@ public class SecurityConfiguration {
 //                        .requestMatchers(HttpMethod.POST, "/**").permitAll()
 //                        .requestMatchers(HttpMethod.PUT, "/**").permitAll()
 //                        .requestMatchers(HttpMethod.DELETE, "/**").permitAll()
+                        .requestMatchers("/pay/redirect").permitAll()
                         .requestMatchers("/approval/**").hasAnyAuthority(Role.ADMIN.name(),Role.USERA.name(),Role.USERB.name())
                         .requestMatchers("/notice/fileDownload/**").permitAll()
                         .requestMatchers("/notice/**").hasAnyAuthority(Role.ADMIN.name(),Role.USERA.name(),Role.USERB.name())

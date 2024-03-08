@@ -31,7 +31,7 @@ public class DeptController {
     }
 
     @GetMapping("deptcheck")
-    public int deptCheck(@RequestBody Map<String, Object> pmap){
+    public int deptCheck(@RequestParam Map<String, Object> pmap){
         log.info("deptCheck-controller 호출");
         log.info(pmap);
         int result = deptService.deptCheck(pmap);
