@@ -1,9 +1,11 @@
 package com.sg.silvergarden.service.notice;
 
+import com.google.gson.Gson;
 import com.sg.silvergarden.dao.notice.NoticeDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -18,6 +20,10 @@ public class NoticeService {
         List<Map<String, Object>> nlist = null;
         nlist = noticeDao.noticeList(rmap);
         return nlist;
+    }
+    public Map<String, Object> noticeTotalCount(Map<String, Object> rmap) throws Exception{
+        Map<String, Object> count = noticeDao.noticeTotalCount(rmap);
+        return count;
     }
     public List<Map<String, Object>> noticeDetail(int n_no) throws Exception{
         List<Map<String, Object>> nlist = null;

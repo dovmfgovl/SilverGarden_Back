@@ -21,6 +21,12 @@ public class NoticeDao {
         nlist = sqlSessionTemplate.selectList("noticeList",rmap);
         return nlist;
     }
+
+    public Map<String, Object> noticeTotalCount(Map<String, Object> rmap) throws Exception{
+        Map<String, Object> count = null;
+        count = sqlSessionTemplate.selectOne("noticeTotalCount",rmap);
+        return count;
+    }
     public List<Map<String, Object>> noticeDetail(int n_no) throws Exception{
         List<Map<String, Object>> nlist = null;
         nlist = sqlSessionTemplate.selectList("noticeDetail",n_no);
