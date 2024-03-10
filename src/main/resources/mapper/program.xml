@@ -31,7 +31,6 @@
             PG_CATEGORY,
             PG_CONTENT,
             PG_REPEAT_TYPE,
-            E_NAME,
             TO_CHAR(REG_DATE, 'YYYY-MM-DD"T"HH24:MI') AS REG_DATE,
             TO_CHAR(MOD_DATE, 'YYYY-MM-DD"T"HH24:MI') AS MOD_DATE,
             REG_ID,
@@ -82,7 +81,6 @@
             <if test="PG_END != null">PG_END = to_date(#{PG_END}, 'YYYY-MM-DD"T"HH24:MI:SS'),</if>
             <if test="PG_CONTENT != null">PG_CONTENT = #{PG_CONTENT},</if>
             <if test="PG_REPEAT_TYPE != null">PG_REPEAT_TYPE = #{PG_REPEAT_TYPE},</if>
-            <if test="E_NAME != null">E_NAME = #{E_NAME},</if>
             <if test="REG_DATE != null">REG_DATE = to_date(#{REG_DATE}, 'YYYY-MM-DD"T"HH24:MI'),</if>
             MOD_DATE=sysdate,
             <if test="REG_ID != null">REG_ID = #{REG_ID},</if>

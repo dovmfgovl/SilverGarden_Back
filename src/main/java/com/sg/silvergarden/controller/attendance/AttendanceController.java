@@ -24,6 +24,10 @@ public class AttendanceController {
     @Autowired
     private AttendanceService attendanceService;
 
+    @Autowired
+    private HolidayCheck holidayCheck;
+    //private HolidayCheckTest holidayCheckTest;
+
     // 근태 조회
     @GetMapping("atList")
     public List<Map<String, Object>> atList(@RequestParam Map<String, Object> atMap) {
@@ -60,9 +64,21 @@ public class AttendanceController {
         attendanceService.adminAtUpdate(atMap);
     }
 
-    // 매주 월-금요일 오후 11시 59분 59초에 실행
-    @Scheduled(cron = "00 58 23 ? * 1-5")
+    @DeleteMapping("atDelete")
+    public void atDelete(@RequestParam Map<String, Object> atMap) {
+        logger.info("atDelete");
+        logger.info(atMap.toString());
+        attendanceService.atDelete(atMap);
+    }
+
+    // 매주 월-금요일 오후 11시 00분 00초에 실행
+    // 공휴일에는 실행되지 않음
+    @Scheduled(cron = "00 00 23 ? * 1-5")
     public void noneAtInsert() {
-        attendanceService.noneAtInsert();
+        logger.info("근태 일괄처리 실행");
+        //if (!holidayCheckTest.isHoliday()) {
+        if (!holidayCheck.isHoliday()) {
+            attendanceService.noneAtInsert();
+        }
     }
 }

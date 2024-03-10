@@ -21,8 +21,6 @@ public class MypageController {
     MypageService mypageService=null;
     @GetMapping("mypage")
     public String callMypage(@RequestParam Map<String, Object> mMap) {
-        log.info("mypage");
-        log.info(mMap.toString());
         List<Map<String, Object>> mList = null;
         mList = mypageService.callMypage(mMap);
         Gson g = new Gson();
@@ -31,7 +29,6 @@ public class MypageController {
     }
     @PostMapping("/changePassword")
     public ResponseEntity<String> changePassword(@RequestBody Map<String, Object> pMap){
-        log.info("changePw");
         int result = mypageService.changePassword(pMap);
         return ResponseEntity.ok(String.valueOf(result));
     }

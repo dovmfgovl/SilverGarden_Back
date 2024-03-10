@@ -20,7 +20,6 @@ public class EmpListController {
     EmpListService empListService=null;
     @GetMapping("all")
     public String allEmpList(@RequestParam Map<String,Object> eMap){
-        log.info("empList");
         List<Map<String, Object>> eList = null;
         eList = empListService.allEmpList(eMap);
         Gson g = new Gson();

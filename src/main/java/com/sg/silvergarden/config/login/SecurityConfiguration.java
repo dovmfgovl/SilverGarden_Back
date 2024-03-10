@@ -19,6 +19,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.filter.CorsFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -29,44 +30,55 @@ public class SecurityConfiguration {
 
     private final UserService userService;
 
+    private final CorsFilter corsFilter;
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
-        CorsConfiguration corsConfiguration = new CorsConfiguration();
-        corsConfiguration.addAllowedOrigin("*");
-        corsConfiguration.addAllowedHeader("*");
-        corsConfiguration.addAllowedMethod("*");
-
-        // CORS 필터를 보안 필터 체인에 추가
-        http.cors().configurationSource(request -> corsConfiguration);
-
-        http.csrf(AbstractHttpConfigurer::disable)
+        http.cors().and().addFilter(corsFilter)
+                .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(request -> request.requestMatchers("/api/v1/auth/**").permitAll()
-                        .requestMatchers(HttpMethod.OPTIONS, "/api/v1/**").permitAll()
-                        .requestMatchers(HttpMethod.GET,
-                                "/approval/**",
-                                "/at/**",
-                                "/dept/**",
-                                "/program/**",
-                                "/calendar/**",
-                                "/program/**",
-                                "/program3/**",
-                                "/notice/**",
-                                "/my/**",
-                                "/message/**",
-                                "/member/**",
-                                "/emplist/**",
-                                "/emp/**",
-                                "/empcreate/**",
-                                "/schedule/**")
-                        .permitAll()
-                        .requestMatchers(HttpMethod.POST, "/**").permitAll()
-                        .requestMatchers(HttpMethod.PUT, "/**").permitAll()
-                        .requestMatchers(HttpMethod.DELETE, "/**").permitAll()
-                        .requestMatchers("/api/v1/admin").hasAnyAuthority(Role.ADMIN.name())
-                        .requestMatchers("/api/v1/usera")
-                        .hasAnyAuthority(Role.USERA.name(), Role.ADMIN.name(), Role.USERB.name())
-                        .requestMatchers("/api/v1/userb").hasAnyAuthority(Role.USERB.name(), Role.ADMIN.name())
+//                        .requestMatchers(HttpMethod.OPTIONS, "/api/v1/**").permitAll()
+//                        .requestMatchers(HttpMethod.GET,
+//                                "/approval/**",
+//                                "/at/**",
+//                                "/dept/**",
+//                                "/program/**",
+//                                "/calendar/**",
+//                                "/program/**",
+//                                "/notice/**",
+//                                "/my/**",
+//                                "/message/**",
+//                                "/member/**",
+//                                "/emplist/**",
+//                                "/emp/**",
+//                                "/empcreate/**",
+//                                "/crawling/**",
+//                                "/schedule/**",
+//                                "/payment/**",
+//                                "/sms/**").permitAll()
+//                        .requestMatchers(HttpMethod.POST, "/**").permitAll()
+//                        .requestMatchers(HttpMethod.PUT, "/**").permitAll()
+//                        .requestMatchers(HttpMethod.DELETE, "/**").permitAll()
+                        .requestMatchers("/pay/redirect").permitAll()
+                        .requestMatchers("/approval/**").hasAnyAuthority(Role.ADMIN.name(),Role.USERA.name(),Role.USERB.name())
+                        .requestMatchers("/notice/fileDownload/**").permitAll()
+                        .requestMatchers("/notice/**").hasAnyAuthority(Role.ADMIN.name(),Role.USERA.name(),Role.USERB.name())
+                        .requestMatchers("/schedule/schedulelist/**").hasAnyAuthority(Role.ADMIN.name(),Role.USERA.name(),Role.USERB.name())
+                        .requestMatchers("/at/**").hasAnyAuthority(Role.ADMIN.name())
+                        .requestMatchers("/dept/**").hasAnyAuthority(Role.ADMIN.name())
+                        .requestMatchers("/program/**").hasAnyAuthority(Role.ADMIN.name(),Role.USERA.name(),Role.USERB.name())
+                        .requestMatchers("/calendar/**").hasAnyAuthority(Role.ADMIN.name(),Role.USERA.name(),Role.USERB.name())
+                        .requestMatchers("/my/**").hasAnyAuthority(Role.ADMIN.name(),Role.USERA.name(),Role.USERB.name())
+                        .requestMatchers("/message/**").hasAnyAuthority(Role.ADMIN.name(),Role.USERA.name(),Role.USERB.name())
+                        .requestMatchers("/member/**").hasAnyAuthority(Role.ADMIN.name(),Role.USERA.name(),Role.USERB.name())
+                        .requestMatchers("/emplist/**").hasAnyAuthority(Role.ADMIN.name(),Role.USERA.name(),Role.USERB.name())
+                        .requestMatchers("/member/**").hasAnyAuthority(Role.ADMIN.name(),Role.USERA.name(),Role.USERB.name())
+                        .requestMatchers("/emp/**").hasAnyAuthority(Role.ADMIN.name(),Role.USERA.name(),Role.USERB.name())
+                        .requestMatchers("/empcreate/**").hasAnyAuthority(Role.ADMIN.name())
+                        .requestMatchers("/crawling/**").hasAnyAuthority(Role.ADMIN.name(),Role.USERA.name(),Role.USERB.name())
+                        .requestMatchers("/payment/**").hasAnyAuthority(Role.ADMIN.name(),Role.USERA.name(),Role.USERB.name())
+                        .requestMatchers("/sms/**").hasAnyAuthority(Role.ADMIN.name(),Role.USERA.name(),Role.USERB.name())
                         .anyRequest().authenticated())
                 .sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider())

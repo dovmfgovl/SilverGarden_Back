@@ -38,15 +38,26 @@ public class NoticeController {
 
     @GetMapping("noticeList")
     public String noticeList(@RequestParam Map<String, Object> rmap) throws Exception{
+        long startTime = System.currentTimeMillis(); // 요청 시작 시간 측정
         log.info("noticeList");
         log.info(rmap.toString());
-        List<Map<String, Object>> nlist = null;
-        nlist = noticeService.noticeList(rmap);
+        List<Map<String, Object>> nlist = noticeService.noticeList(rmap);
         Gson g = new Gson();
         String temp = g.toJson(nlist);
+        long endTime = System.currentTimeMillis(); // 요청 종료 시간 측정
+        long duration = endTime - startTime; // 처리 시간 계산
+        log.info("API 요청부터 반환까지의 시간: " + duration + " ms"); // 로그에 시간 출력
+        return temp;
+    }
+    @GetMapping("noticeTotalCount")
+    public String noticeTotalCount(@RequestParam Map<String, Object> rmap) throws Exception{
+        Map<String, Object> count = noticeService.noticeTotalCount(rmap);
+        Gson g = new Gson();
+        String temp = g.toJson(count);
         log.info(temp);
         return temp;
     }
+
     @GetMapping("noticeDetail")
     public String noticeDetail(int n_no) throws Exception{
         log.info("noticeDetail");

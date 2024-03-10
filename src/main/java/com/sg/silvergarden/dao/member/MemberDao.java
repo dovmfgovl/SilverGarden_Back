@@ -50,7 +50,6 @@ public class MemberDao {
     }
 
     public int counselDelete(Map<String, Object> cMap) {
-        log.info("counselDelete-dao");
         int result=0;
         result = sqlSessionTemplate.delete("counselDelete", cMap);
         return result;
@@ -87,26 +86,18 @@ public class MemberDao {
     }
 
     public List<Map<String, Object>> shttleCalList(Map<String, Object> scMap) {
-        log.info("shuttleCalList-dao");
-        log.info(scMap.toString());
         return sqlSessionTemplate.selectList("shuttleCalList",scMap);
     }
 
     public int ShuttleCalAdd(Map<String, Object> scMap) {
-        log.info("shuttleCalAdd-dao");
-        log.info(scMap.toString());
         return sqlSessionTemplate.insert("shuttleCalAdd",scMap);
     }
 
     public int shttleCalUpdate(Map<String, Object> scMap) {
-        log.info("shuttleCalUpdate-dao");
-        log.info(scMap.toString());
         return sqlSessionTemplate.update("shuttleCalUpdate",scMap);
     }
 
     public int shttleCalDelete(Map<String, Object> scMap) {
-        log.info("shuttleCalDelete-dao");
-        log.info(scMap.toString());
         return sqlSessionTemplate.delete("shuttleCalDelete",scMap);
     }
 }

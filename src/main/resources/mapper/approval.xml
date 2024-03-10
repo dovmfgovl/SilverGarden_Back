@@ -15,7 +15,7 @@
     </resultMap>
 
     <select id="allApprovalList" parameterType="map" resultType="map">
-        select ad.d_no as "d_no", ad.d_title as "d_title", DBMS_LOB.SUBSTR(ad.d_content, 4000, 1) AS "d_content", ad.d_status as "d_status",
+        select ad.d_no as "d_no", ad.d_title as "d_title",/* DBMS_LOB.SUBSTR(ad.d_content, 4000, 1) AS "d_content",*/ ad.d_status as "d_status",
                ad.e_no as "e_no", ad.d_category as "d_category",
                to_char(ad.reg_date, 'YYYY-MM-DD') as "reg_date", e.e_name as "e_name", e.dept_name "dept_name"
         from approval_doc ad
@@ -42,7 +42,7 @@
 
 
     <select id="approvalWaitList" parameterType="map" resultType="map">
-        select distinct ad.d_no as "d_no", ad.d_title as "d_title", DBMS_LOB.SUBSTR(ad.d_content, 4000, 1) AS "d_content", ad.d_status as "d_status",
+        select distinct ad.d_no as "d_no", ad.d_title as "d_title",/* DBMS_LOB.SUBSTR(ad.d_content, 4000, 1) AS "d_content",*/ ad.d_status as "d_status",
                ad.e_no as "e_no", ad.d_category as "d_category",
                to_char(ad.reg_date, 'YYYY-MM-DD') as "reg_date", e.e_name as "e_name", e.dept_name "dept_name"
         from approval_doc ad
@@ -70,7 +70,7 @@
     </select>
 
     <select id="approvalProgressList" parameterType="map" resultType="map">
-        select distinct ad.d_no as "d_no", ad.d_title as "d_title", DBMS_LOB.SUBSTR(ad.d_content, 4000, 1) AS "d_content", ad.d_status as "d_status",
+        select distinct ad.d_no as "d_no", ad.d_title as "d_title", /*DBMS_LOB.SUBSTR(ad.d_content, 4000, 1) AS "d_content",*/ ad.d_status as "d_status",
                ad.e_no as "e_no", ad.d_category as "d_category",
                to_char(ad.reg_date, 'YYYY-MM-DD') as "reg_date", e.e_name as "e_name", e.dept_name "dept_name"
         from approval_doc ad
@@ -98,7 +98,7 @@
     </select>
 
     <select id="approvalDenyList" parameterType="map" resultType="map">
-        select distinct ad.d_no as "d_no", ad.d_title as "d_title", DBMS_LOB.SUBSTR(ad.d_content, 4000, 1) AS "d_content", ad.d_status as "d_status",
+        select distinct ad.d_no as "d_no", ad.d_title as "d_title", /*DBMS_LOB.SUBSTR(ad.d_content, 4000, 1) AS "d_content",*/ ad.d_status as "d_status",
                         ad.e_no as "e_no", ad.d_category as "d_category",
                         to_char(ad.reg_date, 'YYYY-MM-DD') as "reg_date", e.e_name as "e_name", e.dept_name "dept_name"
         from approval_doc ad
@@ -126,7 +126,7 @@
     </select>
 
     <select id="approvalCompleteList" parameterType="map" resultType="map">
-        select distinct ad.d_no as "d_no", ad.d_title as "d_title", DBMS_LOB.SUBSTR(ad.d_content, 4000, 1) AS "d_content", ad.d_status as "d_status",
+        select distinct ad.d_no as "d_no", ad.d_title as "d_title", /*DBMS_LOB.SUBSTR(ad.d_content, 4000, 1) AS "d_content",*/ ad.d_status as "d_status",
                         ad.e_no as "e_no", ad.d_category as "d_category",
                         to_char(ad.reg_date, 'YYYY-MM-DD') as "reg_date", e.e_name as "e_name", e.dept_name "dept_name"
         from approval_doc ad
@@ -154,7 +154,7 @@
     </select>
 
     <select id="approvalTempList" parameterType="map" resultType="map">
-        select distinct ad.d_no as "d_no", ad.d_title as "d_title", DBMS_LOB.SUBSTR(ad.d_content, 4000, 1) AS "d_content", ad.d_status as "d_status",
+        select distinct ad.d_no as "d_no", ad.d_title as "d_title", /*DBMS_LOB.SUBSTR(ad.d_content, 4000, 1) AS "d_content",*/ ad.d_status as "d_status",
                         ad.e_no as "e_no", ad.d_category as "d_category",
                         to_char(ad.reg_date, 'YYYY-MM-DD') as "reg_date", e.e_name as "e_name", e.dept_name "dept_name"
         from approval_doc ad

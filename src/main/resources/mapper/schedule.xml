@@ -23,25 +23,15 @@
                 ELSE '#6495ED'
                 --#FFFFCC / #6495ED / #F0F8FF
                 END AS COLOR
-/*            CASE
-                --연보라/연핑크/연민트/기본 : 연초록 '신체', '교양', '문화', '교육', '여가'
-                WHEN PS_CATEGORY = '교육' THEN '#E0FFFF'
-                WHEN PS_CATEGORY = '문화' THEN '#E6E6FA'
-                WHEN PS_CATEGORY = '신체' THEN '#FFF0F5'
-                WHEN PS_CATEGORY = '교양' THEN '#FFFFCC'
-                WHEN PS_CATEGORY = '여가' THEN '#6495ED'
-                ELSE '#6495ED'
-                --#FFFFCC / #6495ED / #F0F8FF
-                END AS COLOR*/
         FROM SCHEDULE
-
     </select>
     <insert id="scheduleInsert" parameterType="map">
         INSERT INTO SCHEDULE (
             SC_NO, SC_NAME, SC_START, SC_END, SC_INFO, REG_DATE, REG_ID, MOD_DATE,SC_CATEGORY)
         VALUES (
-              200,
-                   #{SC_NAME, jdbcType=VARCHAR},
+--               200,
+              sc_no_sequence.nextval,
+              #{SC_NAME, jdbcType=VARCHAR},
                    TO_DATE(#{SC_START},'YYYY-MM-DD"T"HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'),
                    TO_DATE(#{SC_END},'YYYY-MM-DD"T"HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'),
                    #{SC_INFO, jdbcType=VARCHAR},

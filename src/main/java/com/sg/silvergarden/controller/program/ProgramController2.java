@@ -2,13 +2,11 @@ package com.sg.silvergarden.controller.program;
 
 import com.google.gson.Gson;
 import com.sg.silvergarden.service.program.ProgramService2;
-import com.sg.silvergarden.vo.programcal.ProgramSchedule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
-
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
@@ -29,14 +27,11 @@ public class ProgramController2 {
         int result = -1;
         result=programService.pgInsert(pmap);
         logger.info("pmap after pgInsert: {}", pmap);
-        //{pmap after pgInsert: {PG_NAME=체육, PG_CATEGORY=신체, PG_TEACHER=철이!!!, PG_DAYSOFWEEK=목요일, PG_REPEAT_TYPE=매주, PG_START=2024-02-01T22:52, PG_END=2024-03-07T22:52, PG_CONTENT=체육활동입니다!!!, pg_no=104}}
         logger.info("result: {}", result); //{result: 1}
-        // 두 번째 SQL 쿼리 실행
         if (result == 1) {
             logger.info("secontQuery");
             BigDecimal pg_no = (BigDecimal) pmap.get("pg_no");
             logger.info("pg_no:"+pg_no);//{pg_no:null}
-            // pg_no가 null이 아닌 경우에만 두 번째 쿼리 실행
             if (pg_no != null) {
                 int secondResult = programService.pgCalendarInsert(pg_no);
                 // 두 번째 쿼리 실행 결과에 따른 처리
