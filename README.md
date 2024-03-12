@@ -1,7 +1,12 @@
+## 사용방법 
+ https://github.com/Suyeon12345/SilverGarden_Front 에서 프론트앤드를 받은 후 위 백앤드 프로젝트를 작동합니다.
+
+## 사용 프로그램
 <img width="382" alt="스크린샷 2024-03-12 오후 12 41 45" src="https://github.com/Suyeon12345/SilverGarden_Back/assets/144109053/373aedcd-724f-49f9-9612-b36d9bd482e5">
 <br>
 
-제작기간
+## 제작기간 
+
 <img width="528" alt="스크린샷 2024-03-12 오전 9 24 04" src="https://github.com/Suyeon12345/SilverGarden_Back/assets/144109053/bd6ccc38-e22a-428a-b000-23a847b41790">
 
 
