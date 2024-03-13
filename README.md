@@ -26,11 +26,197 @@
 
 </div>
 
-
-## 🗂️ API
-
-
 <br>
 
 ## 💻ERD
 <img width="698" alt="스크린샷 2024-03-12 오후 1 16 52" src="https://github.com/Suyeon12345/SilverGarden_Back/assets/144109053/e4583039-239b-4c29-bc88-ee88ea61eceb">
+
+
+## 프로젝트 구성
+```
+├── README.md
+├── .build.gradle
+├── .gitignore
+├── package-lock.json
+├── package.json
+│
+├── main
+│     │
+│     ├── java/com.sg/silvergarden
+│     │     ├── config
+│     │     │      ├── login
+│     │     │      │      ├── CorsConfig.java
+│     │     │      │      ├── JwtAuthentification.java
+│     │     │      │      └── SecurityConfiguration.java
+│     │     │      ├── CorsConfiguration.java
+│     │     │      ├── DatabaseConfiguration.java
+│     │     │      └── YAMLConfiguration.java
+│     │     └── controller
+│     │     │      ├── approval
+│     │     │      │      └── ApprovalController.java
+│     │     │      ├── attendance
+│     │     │      │      ├── AttendanceController.java
+│     │     │      │      ├── HolidayCheck.java
+│     │     │      │      └── HolidayCheckTest.java
+│     │     │      ├── crawling
+│     │     │      │      └── CrawlingController.java
+│     │     │      ├── dept
+│     │     │      │      └── DeptController.java
+│     │     │      ├── empcreate
+│     │     │      │      └── SignupController.java
+│     │     │      ├── empinfo
+│     │     │      │      └── EmpinfoController.java
+│     │     │      ├── emplist
+│     │     │      │      └── EmpListController.java
+│     │     │      ├── login
+│     │     │      │      ├── AdminController.java
+│     │     │      │      ├── AuthentificationController.java
+│     │     │      │      └── UserController.java
+│     │     │      ├── member
+│     │     │      │      └── MemberController.java
+│     │     │      ├── message
+│     │     │      │      └── MessageController.java
+│     │     │      ├── mypage
+│     │     │      │      └── MypageController.java
+│     │     │      ├── notice
+│     │     │      │      └── NoticeController.java
+│     │     │      ├── payment
+│     │     │      │      ├── PaymentController.java
+│     │     │      │      ├── RedirectController.java
+│     │     │      │      └── SmartUtil.java
+│     │     │      ├── program
+│     │     │      │      └── ProgramController2.java
+│     │     │      ├── programcal
+│     │     │      │      └── ProgramScheduleController.java
+│     │     │      └── schedule
+│     │     │             └── ScheduleController.java
+│     │     ├──   dao
+│     │     │      ├── approval
+│     │     │      │      └── ApprovalDao.java
+│     │     │      ├── attendance
+│     │     │      │      └── AttendanceDao.java
+│     │     │      ├── crawling
+│     │     │      │      └── CrawlingDao.java
+│     │     │      ├── dept
+│     │     │      │      └── DeptDao.java
+│     │     │      ├── empcreate
+│     │     │      │      ├── SignupDao.java
+│     │     │      │      └── SignupDaoImpl.java
+│     │     │      ├── empinfo
+│     │     │      │      └── EmpinfoDao.java
+│     │     │      ├── emplist
+│     │     │      │      └── EmpListDao.java
+│     │     │      ├── login
+│     │     │      │      ├── UserDao.java
+│     │     │      │      └── UserDaoImpl.java
+│     │     │      ├── member
+│     │     │      │      └── MemberDao.java
+│     │     │      ├── message
+│     │     │      │      └── MessageDao.java
+│     │     │      ├── mypage
+│     │     │      │      └── MypageDao.java
+│     │     │      ├── notice
+│     │     │      │      └── NoticeDao.java
+│     │     │      ├── payment
+│     │     │      │      └── PaymemtDao.java
+│     │     │      ├── program
+│     │     │      │      └── ProgramDao2.java
+│     │     │      ├── programcal
+│     │     │      │      └── ProgramScheduleDao.java
+│     │     │      └── schedule
+│     │     │             └── ScheduleDao.java
+│     │     ├── error
+│     │     │      └── ErrorPageHandler.java
+│     │     ├── exception
+│     │     │     ├── ExceptionHandlerDao.java
+│     │     │     ├── ExceptionHandlerService.java
+│     │     │     └── GlobalExceptionHandler.java
+│     │     ├── service
+│     │     │      ├── approval
+│     │     │      │      └── ApprovalService.java
+│     │     │      ├── attendance
+│     │     │      │      └── AttendanceService.java
+│     │     │      ├── crawling
+│     │     │      │      ├── CrawlingService.java
+│     │     │      │      └── TriggerCrawlingService.java
+│     │     │      │      └── pupperteer-script.js
+│     │     │      ├── dept
+│     │     │      │      └── DeptService.java
+│     │     │      ├── empcreate
+│     │     │      │      ├── SignupService.java
+│     │     │      │      └── SignupServiceImpl.java
+│     │     │      ├── empinfo
+│     │     │      │      └── EmpinfoService.java
+│     │     │      ├── emplist
+│     │     │      │      └── EmpListService.java
+│     │     │      ├── login
+│     │     │      │      ├── AuthentificationService.java
+│     │     │      │      ├── AutthentificationServiceImpl.java
+│     │     │      │      ├── JWTService.java
+│     │     │      │      ├── JWTServiceImpl.java
+│     │     │      │      ├── UserService.java
+│     │     │      │      └── UserServiceImpl.java
+│     │     │      ├── member
+│     │     │      │      └── MemberService.java
+│     │     │      ├── message
+│     │     │      │      └── MessageService.java
+│     │     │      ├── mypage
+│     │     │      │      └── MypageService.java
+│     │     │      ├── notice
+│     │     │      │      └── NoticeService.java
+│     │     │      ├── payment
+│     │     │      │      ├── PayUrlService.java
+│     │     │      │      ├── PayUrlServiceImpl.java
+│     │     │      │      └── PaymentService.java
+│     │     │      ├── program
+│     │     │      │      └── ProgramService2.java
+│     │     │      ├── programcal
+│     │     │      │      └── ProgramScheduleService.java
+│     │     │      └── schedule
+│     │     │             └── ScheduleService.java
+│     │     ├── vo
+│     │     │      ├── attendance
+│     │     │      │      └── AttendanceVO.java
+│     │     │      ├── notice
+│     │     │      │       ├── EmpVO.java
+│     │     │      │       ├── Role.java
+│     │     │      │       └── SignupRequest.java
+│     │     │      ├── login
+│     │     │      │      ├── JwtAuthetificationResponse.java
+│     │     │      │      ├── RefreshTokenRequest.java
+│     │     │      │      └── SigninRequest.java
+│     │     │      ├── payment
+│     │     │      │      ├── PayTokenResponse.java
+│     │     │      │      ├── PayTokenVO.java
+│     │     │      │      ├── PaymentResponse.java
+│     │     │      │      ├── RefundResponse.java
+│     │     │      │      └── UrlResponse.java
+│     │     │      └── programcal
+│     │     │             └── ProgramSchedule.java
+│     │     ├── ServletInitializer.java
+│     │     └── SilvergardenApplication.java
+│     │    
+│     ├── resources
+│     │     ├── mapper
+│     │     │     ├── approval.xml
+│     │     │     ├── attendance.xml
+│     │     │     ├── crawling.xml
+│     │     │     ├── dept.xml
+│     │     │     ├── empInfo.xml
+│     │     │     ├── empList.jsx
+│     │     │     ├── empCreate.xml
+│     │     │     ├── exceptionHandler.xml
+│     │     │     ├── login.xml
+│     │     │     ├── member.xml
+│     │     │     ├── message.xml
+│     │     │     ├── mypage.xml
+│     │     │     ├── notice.xml
+│     │     │     ├── payment.xml
+│     │     │     ├── pgschedule.xml
+│     │     │     ├── program.xml
+│     │     │     ├── schedule.xml
+│     │     │     ├── shuttle.xml
+│     │     │     └── shuttleSchedule.xml
+            └── logback-spring.xml
+ 
+```
